@@ -1,0 +1,8 @@
+.idea
+vendor
+volumes
+bin
+.env
+
+## debug
+__debug_bin

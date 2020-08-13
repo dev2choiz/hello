@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: '{{ .Values.app.service.name }}'
+  labels:
+    app: '{{ .Chart.Name }}'
+    component: '{{ .Values.app.service.name }}'
+  namespace: '{{ .Values.gcp.namespace }}'
+spec:
+  selector:
+    app: '{{ .Chart.Name }}'
+    component: '{{ .Values.app.deployment.name }}'
+  type: LoadBalancer
+  ports:
+    - port: {{ .Values.app.service.port.http }}
+      targetPort: {{ .Values.app.deployment.port.http }}

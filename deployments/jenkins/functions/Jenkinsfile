@@ -1,0 +1,52 @@
+#!groovy
+
+parameters([
+    string(name: 'VERSION', defaultValue: 'dev', description: 'branch or tag'),
+])
+
+node {
+    version = params.VERSION
+    def repoURL = 'git@github.com:dev2choiz/hello.git'
+    def helmTag = '3.2.4'
+    def projectName = 'hello'
+    def projectId = "samyn-project4"
+    def gcloudCredentialsId = projectId
+    def gcpRegion = "europe-west1"
+    def gcpZone = "europe-west1-d"
+    def commitShort = ""
+    sh "echo version=${version}"
+
+    echo "start building version ${version}"
+    checkout scm: [
+        $class: 'GitSCM',
+        userRemoteConfigs: [[url: repoURL]],
+        branches: [[name: version]]
+    ], poll: false
+    commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0,7)
+    sh "ls -la ${pwd()}"
+
+    def cbSubstitutions = [
+        _COMMIT_SHORT: commitShort,
+        _GCP_REGION: gcpRegion,
+        _KMS_KEYRING_NAME: "kr-hello",
+        _KMS_KEY_NAME: "key-default-hello",
+        _GITHUB_PRIVATE_KEY_ENCRYPTED_PATH: "deployments/security/hello_github_deploy_id_rsa.enc",
+        _GITHUB_PRIVATE_KEY_DECRYPTED_FILE: "hello_github_deploy_id_rsa",
+        _GITHUB_REPOSITORY: "github.com/dev2choiz/hello",
+        _SERVICE_ACCOUNT: "sa-serverless@${projectId}.iam.gserviceaccount.com",
+    ]
+
+    stage('Deploy functions') {
+      googleCloudBuild \
+        credentialsId: gcloudCredentialsId,
+        source: local('.'),
+        request: file('deployments/cloudbuild/deploy-functions/function1/cloudbuild.yaml'),
+        substitutions: cbSubstitutions + [
+            _FUNCTION_SOURCE_PATH: 'cmd/functions/function1',
+            _FUNCTION_NAME: 'hello-function1',
+            _FUNCTION_GO_MODULE: 'github.com/dev2choiz/hello/cmd/function/function1',
+            _ENTRYPOINT: 'Function1',
+            _TRIGGER_TOPIC: 'hello-function1',
+        ]
+    }
+}

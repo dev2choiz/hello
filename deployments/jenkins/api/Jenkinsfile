@@ -1,0 +1,60 @@
+#!groovy
+
+parameters([
+    string(name: 'VERSION', defaultValue: 'dev', description: 'branch or tag'),
+])
+
+node {
+    version = params.VERSION
+    def repoURL = 'git@github.com:dev2choiz/hello.git'
+    def helmTag = '3.2.4'
+    def projectName = 'hello-api'
+    def projectId = "samyn-project4"
+    def gcloudCredentialsId = projectId
+    def clusterZone = "europe-west1-d"
+    def clusterName = "samyn-cluster"
+    def namespace = "lazone"
+    def environment = "staging"
+    def commitShort = ""
+
+    stage("Checkout") {
+        checkout scm
+    }
+
+    echo "start building version ${version}"
+    checkout scm: [
+        $class           : 'GitSCM',
+        userRemoteConfigs: [[url: repoURL]],
+        branches         : [[name: version]]
+    ], poll: false
+    commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0, 7)
+
+    stage('Build image') {
+        googleCloudBuild  \
+        credentialsId: gcloudCredentialsId,
+            source: local('.'),
+            request: file('deployments/cloudbuild/build-image.yaml'),
+            substitutions: [
+                _APP_NAME    : projectName,
+                _COMMIT_SHORT: commitShort,
+                _PROJECT_ID  : projectId,
+            ]
+    }
+    echo "deploy docker image tag:  ${commitShort}"
+    stage('Deployment') {
+        googleCloudBuild  \
+            credentialsId: gcloudCredentialsId,
+            source: local('.'),
+            request: file('deployments/cloudbuild/deployment.yaml'),
+            substitutions: [
+                _NAMESPACE   : namespace,
+                _CLUSTER_ZONE: clusterZone,
+                _CLUSTER_NAME: clusterName,
+                _APP_NAME    : projectName,
+                _COMMIT_SHORT: commitShort,
+                //_PROJECT_ID: projectId,
+                _HELM_TAG    : helmTag,
+                _ENVIRONMENT : environment,
+            ]
+    }
+}

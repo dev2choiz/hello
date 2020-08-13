@@ -1,0 +1,99 @@
+steps:
+  - id: 'Decrypt github private key'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args:
+        - 'kms'
+        - 'decrypt'
+        - '--location=europe-west1'
+        - '--keyring=${_KMS_KEYRING_NAME}'
+        - '--key=${_KMS_KEY_NAME}'
+        - '--ciphertext-file=${_GITHUB_PRIVATE_KEY_ENCRYPTED_PATH}'
+        - '--plaintext-file=/root/.ssh/${_GITHUB_PRIVATE_KEY_DECRYPTED_FILE}'
+    volumes:
+      - name: 'ssh'
+        path: '/root/.ssh'
+
+  - id: 'Setup github private key'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        chmod 400 /root/.ssh/${_GITHUB_PRIVATE_KEY_DECRYPTED_FILE}
+        cat <<EOF >/root/.ssh/config
+        Hostname github.com
+        IdentityFile /root/.ssh/${_GITHUB_PRIVATE_KEY_DECRYPTED_FILE}
+        EOF
+        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+    volumes:
+      - name: 'ssh'
+        path: '/root/.ssh'
+
+  - id: 'Config git with ssh mode'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'git'
+    args:
+      - 'config'
+      - '--global'
+      - '--add'
+      - 'url.git@github.com:.insteadOf'
+      - 'https://github.com/'
+    volumes:
+      - name: 'ssh'
+        path: '/root/.ssh'
+
+  - id: 'Debug 2'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        ls -la /root/.ssh
+        cat /root/.ssh/config
+    volumes:
+      - name: 'ssh'
+        path: '/root/.ssh'
+
+  - id: 'go mod init'
+    name: golang:1.13
+    args: ['go', 'mod', 'init', '${_FUNCTION_GO_MODULE}']
+    dir: '${_FUNCTION_SOURCE_PATH}'
+
+  - id: 'go get github.com/dev2choiz/hello@xxxxxx'
+    name: golang:1.13
+    args: ['go', 'get', 'github.com/dev2choiz/hello@${_COMMIT_SHORT}']
+    env: ['GOPRIVATE=${_GITHUB_REPOSITORY}']
+    dir: '${_FUNCTION_SOURCE_PATH}'
+    volumes:
+      - name: "ssh"
+        path: "/root/.ssh"
+
+  - id: 'go mod tidy'
+    name: golang:1.13
+    args: ['go', 'mod', 'tidy']
+    dir: '${_FUNCTION_SOURCE_PATH}'
+    volumes:
+      - name: "ssh"
+        path: "/root/.ssh"
+
+  - id: 'go mod vendor'
+    name: golang:1.13
+    args: ['go', 'mod', 'vendor']
+    dir: '${_FUNCTION_SOURCE_PATH}'
+    volumes:
+      - name: "ssh"
+        path: "/root/.ssh"
+
+  - id: 'Deploy cloud function'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: ['functions', 'deploy', '${_FUNCTION_NAME}',
+       '--source', '.',
+       '--runtime', 'go113',
+       '--region', '${_GCP_REGION}',
+       '--entry-point', '${_ENTRYPOINT}',
+       '--trigger-topic', '${_TRIGGER_TOPIC}',
+       '--timeout', '30s',
+       '--service-account', '${_SERVICE_ACCOUNT}'
+       #'--clear-vpc-connector'
+       ]
+    dir: '${_FUNCTION_SOURCE_PATH}'

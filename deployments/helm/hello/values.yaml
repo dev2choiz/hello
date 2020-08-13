@@ -1,0 +1,33 @@
+
+environment: staging
+
+# GCP
+gcp:
+  projectId: samyn-project4
+  region: europe-west1-d
+  namespace: lazone
+
+app:
+  # deployment
+  deployment:
+    name: "hello-api-deploy"
+    port:
+      http: 8080
+      https: 8083
+    image:
+    pullPolicy: Always
+    hpa:
+      name: 'hello-api-deploy-hpa'
+      minReplicaCount: 1
+      maxReplicaCount: 1
+      targetCPUUtilizationPercentage: 80
+
+  # service
+  service:
+    name: 'hello-api-lb'
+    type: LoadBalancer
+    port:
+      http: 80
+      https: 443
+    loadBalancerIP: '35.205.118.175'
+    clusterIP: '10.4.6.109'

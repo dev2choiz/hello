@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  hello:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      target: hello_api_dev
+    command: bash -c "
+      go mod vendor
+      && go run main.go"
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: '/volumes/secrets/sa/credentials.json'
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+      - ./volumes/empty-dir/:/volumes/empty-dir/
+      - ./volumes/config-map/:/volumes/config-map/
+      - ./volumes/secrets/:/volumes/secrets/fake-credentials/
+      - ./../../install/files/sa-hello-api-private-key.json:/volumes/secrets/sa/credentials.json
+      - ./volumes/go:/go
