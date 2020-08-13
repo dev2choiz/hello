@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-files
+  namespace: {{ .Values.gcp.namespace }}
+data:
+  configmap1.properties: |
+    contenu de configmap1.properties
+  configmap2.properties: |
+    contenu de configmap2.properties
+    ligne 2
+---
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-env
+  namespace: {{ .Values.gcp.namespace }}
+data:
+  ENV_VAR_1: "11"
+  ENV_VAR_2: "22"
+  ENV_VAR_3: "33"

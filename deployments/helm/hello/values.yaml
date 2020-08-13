@@ -1,0 +1,33 @@
+
+environment: development
+
+# GCP
+gcp:
+  projectId: project-samyn
+  region: europe-west1-d
+  namespace: lazone
+
+app:
+  # deployment
+  deployment:
+    name: "hello-deploy"
+    port:
+      http: 8080
+      https: 8083
+    image:
+    pullPolicy: Always
+    hpa:
+      name: 'hello-deploy-hpa'
+      minReplicaCount: 2
+      maxReplicaCount: 2
+      targetCPUUtilizationPercentage: 80
+
+  # service
+  service:
+    name: 'hello-lb'
+    type: LoadBalancer
+    port:
+      http: 80
+      https: 443
+    loadBalancerIP: '35.205.118.175'
+    clusterIP: '10.4.6.109'

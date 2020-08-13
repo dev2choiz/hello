@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ .Values.app.deployment.name }}'
+  labels:
+    app: '{{ .Chart.Name }}'
+spec:
+  replicas: {{ .Values.app.deployment.hpa.minReplicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: '{{ .Values.app.deployment.name }}'
+      namespace: {{ .Values.gcp.namespace }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.app.deployment.image }}
+          imagePullPolicy: {{ .Values.app.deployment.pullPolicy }}
+          command: ['/app/app']
+          ports:
+          - containerPort: {{ .Values.app.deployment.port.http }}
+            name: http
+            #protocol: TCP
+          env:
+            - name: PORT
+              value: "8080"
+            - name: OTHER_VARR
+              value: "test"
+          envFrom:
+            - configMapRef:
+                name: configmap-env
+          volumeMounts:
+            - mountPath: /volumes/empty-dir
+              name: volume-empty-dir
+            - mountPath: /volumes/config-map
+              name: volume-configmap-file
+            - mountPath: /volumes/secrets
+              name: volume-secrets
+
+      volumes:
+        - name: volume-empty-dir
+          emptyDir: {}
+        - name: volume-configmap-file
+          configMap:
+            name: configmap-files
+        - name: volume-secrets
+          secret:
+            secretName: {{ .Chart.Name }}-credentials

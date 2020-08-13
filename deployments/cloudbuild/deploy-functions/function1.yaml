@@ -1,0 +1,13 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    id: ImageBuildAndTag
+    args: [
+      'build',
+      '-f', './docker/prod/Dockerfile',
+      '--target', 'hello_api_release',
+      '-t', 'gcr.io/${_PROJECT_ID}/${_APP_NAME}:${_IMAGE_TAG}',
+      '.']
+
+  - name: gcr.io/cloud-builders/docker
+    id: ImagePushTAG
+    args: ['push', 'gcr.io/${_PROJECT_ID}/${_APP_NAME}:${_IMAGE_TAG}']
