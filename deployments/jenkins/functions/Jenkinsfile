@@ -5,7 +5,7 @@ parameters([
 ])
 
 node {
-    version = params.VERSION
+    dev version = params.VERSION
     def repoURL = 'git@github.com:dev2choiz/hello.git'
     def helmTag = '3.2.4'
     def projectName = 'hello'

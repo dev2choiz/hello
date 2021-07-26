@@ -29,3 +29,7 @@ variable "disk_size" {
 variable "namespace" {
   description = "cluster namespace"
 }
+
+variable "domain" {
+  description = "domain"
+}

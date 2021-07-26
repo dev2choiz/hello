@@ -1,9 +1,3 @@
-provider "google" {
-  project = var.project_id
-  region  = var.region
-  zone    = var.zone
-}
-
 # VPC
 resource "google_compute_network" "vpc" {
   // todo: use var.cluster_name

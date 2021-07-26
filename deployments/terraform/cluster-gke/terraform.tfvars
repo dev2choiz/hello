@@ -6,3 +6,4 @@ gke_num_nodes = 1
 machine_type  = "e2-medium"
 disk_size     = 25
 namespace     = "lazone"
+domain        = "dev2choiz.com"

@@ -35,6 +35,14 @@ variable "namespace" {
   description = "cluster namespace"
 }
 
+variable "environment" {
+  description = "environment"
+}
+
+variable "domain" {
+  description = "domain"
+}
+
 variable "kms_key_ring_hello" {
   description = "Hello Kms keyring"
 }

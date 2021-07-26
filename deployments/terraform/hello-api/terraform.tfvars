@@ -6,5 +6,7 @@ gke_num_nodes = 1
 machine_type  = "e2-medium"
 disk_size     = 25
 namespace     = "lazone"
+environment   = "staging"
 kms_key_ring_hello = "kr-hello"
 kms_key_hello      = "key-default-hello"
+domain             = "dev2choiz.com"

@@ -1,3 +1,22 @@
+provider "google" {
+  project = var.project_id
+  region  = var.region
+  zone    = var.zone
+}
+
+provider "google-beta" {
+  project = var.project_id
+  region  = var.region
+  zone    = var.zone
+}
+
+data "google_client_config" "provider" {}
+
+provider "kubernetes" {
+  host  = "https://${google_container_cluster.primary.endpoint}"
+  token = data.google_client_config.provider.access_token
+  cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
+}
 
 # Enable Gcp services
 resource "google_project_service" "project-enable-container" {
@@ -29,6 +48,16 @@ resource "google_project_service" "project-enable-cloudbuild" {
   project = var.project_id
   disable_on_destroy = false
   service = "cloudbuild.googleapis.com"
+}
+resource "google_project_service" "project-enable-dns" {
+  project = var.project_id
+  disable_on_destroy = false
+  service = "dns.googleapis.com"
+}
+resource "google_project_service" "project-enable-domains" {
+  project = var.project_id
+  disable_on_destroy = false
+  service = "domains.googleapis.com"
 }
 
 resource "google_service_account" "cluster_nodes" {
@@ -84,16 +113,22 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-data "google_client_config" "provider" {}
-
-provider "kubernetes" {
-  host  = "https://${google_container_cluster.primary.endpoint}"
-  token = data.google_client_config.provider.access_token
-  cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
-}
-
 resource "kubernetes_namespace" "cluster_namespace" {
   metadata {
     name = var.namespace
+  }
+}
+
+# DNS
+resource "google_dns_managed_zone" "main-zone" {
+  provider    = google-beta
+  name        = "main-zone"
+  dns_name    = "${var.domain}."
+  description = "Main DNS zone"
+  labels = {}
+  visibility = "public"
+
+  dnssec_config {
+    state = "off"
   }
 }

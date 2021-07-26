@@ -28,7 +28,7 @@ func main()  {
 	http.HandleFunc("/ready", f)
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {})
 
-	fmt.Println("helloapi listen port 8080")
+	fmt.Println("listen port :8080")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		panic(err)
