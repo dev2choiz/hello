@@ -1,14 +1,14 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: '{{ .Values.app.deployment.hpa.name }}'
+  name: '{{ .Values.api.deployment.hpa.name }}'
   labels:
     app: '{{ .Chart.Name }}'
-    component: '{{ .Values.app.deployment.hpa.name }}'
+    component: '{{ .Values.api.deployment.hpa.name }}'
 spec:
-  minReplicas: {{ .Values.app.deployment.hpa.minReplicaCount }}
-  maxReplicas: {{ .Values.app.deployment.hpa.maxReplicaCount }}
+  minReplicas: {{ .Values.api.deployment.hpa.minReplicaCount }}
+  maxReplicas: {{ .Values.api.deployment.hpa.maxReplicaCount }}
   scaleTargetRef:
     kind: Deployment
-    name: '{{ .Values.app.deployment.name }}'
-  targetCPUUtilizationPercentage: {{ .Values.app.deployment.hpa.targetCPUUtilizationPercentage }}
+    name: '{{ .Values.api.deployment.name }}'
+  targetCPUUtilizationPercentage: {{ .Values.api.deployment.hpa.targetCPUUtilizationPercentage }}

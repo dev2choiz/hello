@@ -1,16 +1,20 @@
 steps:
-  - name: 'gcr.io/$PROJECT_ID/helm:${_HELM_TAG}'
-    id: HelmUpgrade
+  - id: HelmUpgrade
+    name: 'gcr.io/$PROJECT_ID/helm:${_HELM_TAG}'
     args: ['upgrade', '${_APP_NAME}', 'deployments/helm/hello',
       '--install', '--force', '--reset-values',
       '--history-max', '5',
       '--namespace', '$_NAMESPACE',
       '-f', './deployments/helm/hello/values.yaml',
       '-f', './deployments/helm/hello/values-${_ENVIRONMENT}.yaml',
-      '--set-string', 'app.deployment.image=gcr.io/${PROJECT_ID}/${_APP_NAME}:${_COMMIT_SHORT}']
+      '--set-string', 'api.deployment.image=gcr.io/${PROJECT_ID}/${_APP_NAME}:${_COMMIT_SHORT}']
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
       - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
       - 'HELM_REPO_NAME=stable'
       # for helm3, do not set the repo
       #- 'HELM_REPO_URL=https://kubernetes-charts.storage.googleapis.com'
+
+  - id: DeployCloudEndpoint
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: ['endpoints', 'services', 'deploy', './deployments/open-api/swagger.yaml']

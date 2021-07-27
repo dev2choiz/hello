@@ -23,3 +23,9 @@ resource "google_project_iam_member" "default-cb-kms-cry-decry" {
   member = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
   depends_on = [google_project_service.project-enable-cloudbuild]
 }
+
+resource "google_project_iam_member" "default-cb-svcman-adm" {
+  role    = "roles/servicemanagement.admin"
+  member = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
+  depends_on = [google_project_service.project-enable-cloudbuild]
+}

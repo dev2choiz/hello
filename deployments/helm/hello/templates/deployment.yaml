@@ -1,29 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: '{{ .Values.app.deployment.name }}'
+  name: '{{ .Values.api.deployment.name }}'
   labels:
     app: '{{ .Chart.Name }}'
-    component: '{{ .Values.app.deployment.name }}'
+    component: '{{ .Values.api.deployment.name }}'
 spec:
-  replicas: {{ .Values.app.deployment.hpa.minReplicaCount }}
+  replicas: {{ .Values.api.deployment.hpa.minReplicaCount }}
   selector:
     matchLabels:
       app: '{{ .Chart.Name }}'
-      component: '{{ .Values.app.deployment.name }}'
+      component: '{{ .Values.api.deployment.name }}'
   template:
     metadata:
       labels:
         app: '{{ .Chart.Name }}'
-        component: '{{ .Values.app.deployment.name }}'
+        component: '{{ .Values.api.deployment.name }}'
       namespace: {{ .Values.gcp.namespace }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: {{ .Values.app.deployment.image }}
-          imagePullPolicy: {{ .Values.app.deployment.pullPolicy }}
+        # ESP
+        - name: esp
+          image: gcr.io/endpoints-release/endpoints-runtime:2.29.1
+          args: [
+              '--listener_port', '{{.Values.api.esp.port}}',
+              '--backend', '127.0.0.1:{{ .Values.api.deployment.port.http }}',
+              '--service', '{{.Values.api.esp.host}}',
+              '--rollout_strategy', 'managed',
+              '--service_account_key', '/etc/nginx/creds/credentials.json'
+          ]
           ports:
-          - containerPort: {{ .Values.app.deployment.port.http }}
+            - containerPort: {{.Values.api.esp.port}}
+          volumeMounts:
+            - name: volume-secrets-sa
+              mountPath: /etc/nginx/creds
+        #END ESP
+
+        # API
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.api.deployment.image }}
+          imagePullPolicy: {{ .Values.api.deployment.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.api.deployment.port.http }}
             name: http
             #protocol: TCP
           env:
@@ -50,7 +68,7 @@ spec:
               mountPath: /volumes/secrets/fake-credentials
             - name: volume-secrets-sa
               mountPath: /volumes/secrets/sa
-
+        # END API
       volumes:
         - name: volume-empty-dir
           emptyDir: {}

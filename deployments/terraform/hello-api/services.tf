@@ -44,7 +44,7 @@ resource "kubernetes_service" "hello-api-lb" {
     load_balancer_ip = google_compute_address.hello-api.address
     port {
       port = 80
-      target_port = 8080
+      target_port = 9000
     }
   }
 }

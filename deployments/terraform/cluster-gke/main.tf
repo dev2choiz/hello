@@ -59,6 +59,11 @@ resource "google_project_service" "project-enable-domains" {
   disable_on_destroy = false
   service = "domains.googleapis.com"
 }
+resource "google_project_service" "project-enable-endpoints" {
+  project = var.project_id
+  disable_on_destroy = false
+  service = "endpoints.googleapis.com"
+}
 
 resource "google_service_account" "cluster_nodes" {
   account_id   = "sa-cluster-nodes"

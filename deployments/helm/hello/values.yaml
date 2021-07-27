@@ -7,7 +7,7 @@ gcp:
   region: europe-west1-d
   namespace: lazone
 
-app:
+api:
   # deployment
   deployment:
     name: "hello-api-deploy"
@@ -31,3 +31,7 @@ app:
       https: 443
     loadBalancerIP: '35.205.118.175'
     clusterIP: '10.4.6.109'
+
+  esp:
+    host: "hello-api.endpoints.samyn-project4.cloud.goog"
+    port: 9000
