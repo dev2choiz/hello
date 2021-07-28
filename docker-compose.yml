@@ -20,7 +20,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - ./../../install/files/sa-hello-api-credentials.json:/etc/nginx/creds/credentials.json
+      - ./local/files/sa-hello-api-credentials.json:/etc/nginx/creds/credentials.json
 
   hello:
     build:
@@ -39,5 +39,5 @@ services:
       - ./volumes/empty-dir/:/volumes/empty-dir/
       - ./volumes/config-map/:/volumes/config-map/
       - ./volumes/secrets/:/volumes/secrets/fake-credentials/
-      - ./../../install/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json
+      - ./local/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json
       - ./volumes/go:/go

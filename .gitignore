@@ -4,5 +4,7 @@ volumes
 bin
 .env
 
+local
+
 ## debug
 __debug_bin

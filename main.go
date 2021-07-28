@@ -12,7 +12,7 @@ func main()  {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		data := helloworld.Say()
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
+		w.WriteHeader(http.StatusOK)
 		_ = json.NewEncoder(w).Encode(data)
 	})
 
