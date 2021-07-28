@@ -28,7 +28,7 @@ spec:
               '--service', '{{.Values.api.esp.host}}',
               '--rollout_strategy', 'managed',
               '--service_account_key', '/etc/nginx/creds/credentials.json',
-              '--ssl_server_cert_path', '/etc/nginx/ssl'
+              '--ssl_server_cert_path', '/etc/esp/ssl'
           ]
           ports:
             - containerPort: {{.Values.api.esp.port}}
@@ -37,7 +37,7 @@ spec:
               mountPath: /etc/nginx/creds
               readOnly: true
             - name: hello-tls-secret
-              mountPath: /etc/nginx/ssl
+              mountPath: /etc/esp/ssl
               readOnly: true
         #END ESP
 
