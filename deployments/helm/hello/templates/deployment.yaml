@@ -27,13 +27,18 @@ spec:
               '--backend', '127.0.0.1:{{ .Values.api.deployment.port.http }}',
               '--service', '{{.Values.api.esp.host}}',
               '--rollout_strategy', 'managed',
-              '--service_account_key', '/etc/nginx/creds/credentials.json'
+              '--service_account_key', '/etc/nginx/creds/credentials.json',
+              '--ssl_server_cert_path', '/etc/nginx/ssl'
           ]
           ports:
             - containerPort: {{.Values.api.esp.port}}
           volumeMounts:
-            - name: volume-secrets-sa
+            - name: hello-sa-secret
               mountPath: /etc/nginx/creds
+              readOnly: true
+            - name: hello-tls-secret
+              mountPath: /etc/nginx/ssl
+              readOnly: true
         #END ESP
 
         # API
@@ -66,7 +71,7 @@ spec:
               mountPath: /volumes/config-map
             - name: volume-secrets-fake-credentials
               mountPath: /volumes/secrets/fake-credentials
-            - name: volume-secrets-sa
+            - name: hello-sa-secret
               mountPath: /volumes/secrets/sa
         # END API
       volumes:
@@ -78,6 +83,14 @@ spec:
         - name: volume-secrets-fake-credentials
           secret:
             secretName: {{ .Chart.Name }}-fake-credentials
-        - name: volume-secrets-sa
+        - name: hello-sa-secret
           secret:
             secretName: sa-hello-api-credentials
+        - name: hello-tls-secret
+          secret:
+            secretName: hello-tls-credentials
+            items:
+              - key: tls.key
+                path: server.key
+              - key: tls.crt
+                path: server.crt
