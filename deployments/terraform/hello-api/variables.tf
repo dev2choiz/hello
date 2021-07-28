@@ -43,15 +43,20 @@ variable "domain" {
   description = "domain"
 }
 
+variable "certPrivateKeyPath" {
+  description = "private key path"
+  type = string
+}
+
+variable "certCrtPath" {
+  description = "crt path"
+  type = string
+}
+
 variable "kms_key_ring_hello" {
   description = "Hello Kms keyring"
 }
 
 variable "kms_key_hello" {
   description = "Hello kms key"
-}
-
-variable "private_key_path" {
-  description = "path to dump jenkins key"
-  default = "/var/www/gcp/install/files"
 }

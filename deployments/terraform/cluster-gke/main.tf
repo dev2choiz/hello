@@ -123,17 +123,3 @@ resource "kubernetes_namespace" "cluster_namespace" {
     name = var.namespace
   }
 }
-
-# DNS
-resource "google_dns_managed_zone" "main-zone" {
-  provider    = google-beta
-  name        = "main-zone"
-  dns_name    = "${var.domain}."
-  description = "Main DNS zone"
-  labels = {}
-  visibility = "public"
-
-  dnssec_config {
-    state = "off"
-  }
-}
