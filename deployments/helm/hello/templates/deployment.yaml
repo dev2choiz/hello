@@ -21,15 +21,26 @@ spec:
       containers:
         # ESP
         - name: esp
-          image: gcr.io/endpoints-release/endpoints-runtime:2.29.1
+          ## using v2
+          #image: gcr.io/endpoints-release/endpoints-runtime:2.29.1
+          #args: [
+          #    '--listener_port', '{{.Values.api.esp.port}}',
+          #    '--backend', '127.0.0.1:{{ .Values.api.deployment.port.http }}',
+          #    '--service', '{{.Values.api.esp.host}}',
+          #    '--rollout_strategy', 'managed',
+          #    '--service_account_key', '/etc/nginx/creds/credentials.json',
+          #    '--ssl_server_cert_path', '/etc/esp/ssl',
+          #    '--enable_debug'
+          #]
+          ## using v1
+          image: gcr.io/endpoints-release/endpoints-runtime:1
           args: [
-              '--listener_port', '{{.Values.api.esp.port}}',
+              '--http_port', '9001',
+              '--ssl_port', '{{.Values.api.esp.port}}',
               '--backend', '127.0.0.1:{{ .Values.api.deployment.port.http }}',
               '--service', '{{.Values.api.esp.host}}',
               '--rollout_strategy', 'managed',
               '--service_account_key', '/etc/nginx/creds/credentials.json',
-              '--ssl_server_cert_path', '/etc/esp/ssl',
-              '--enable_debug'
           ]
           ports:
             - containerPort: {{.Values.api.esp.port}}
@@ -38,7 +49,8 @@ spec:
               mountPath: /etc/nginx/creds
               readOnly: true
             - name: hello-tls-secret
-              mountPath: /etc/esp/ssl
+              mountPath: /etc/nginx/ssl # espv1
+              #  mountPath: /etc/esp/ssl # espv2
               readOnly: true
         #END ESP
 
@@ -92,6 +104,8 @@ spec:
             secretName: hello-tls-credentials
             items:
               - key: tls.key
-                path: server.key
+                #path: server.key # espv2
+                path: nginx.key # espv1
               - key: tls.crt
-                path: server.crt
+                #path: server.crt # espv2
+                path: nginx.crt # espv1
