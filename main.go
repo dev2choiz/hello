@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	err := app.ExecuteGin()
+	err := app.Execute()
 	if err != nil {
 		panic(err)
 	}

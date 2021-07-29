@@ -7,16 +7,16 @@ host: hello-api.endpoints.samyn-project4.cloud.goog
 x-google-endpoints:
   - name: "hello-api.endpoints.samyn-project4.cloud.goog"
 paths:
-#  /:
-#    get:
-#      summary: Version Page
-#      operationId: VersionPage
-#      produces:
-#        - application/json
-#      parameters: [ ]
-#      responses:
-#        200:
-#          description: ''
+  /:
+    get:
+      summary: Version Page
+      operationId: VersionPage
+      produces:
+        - application/json
+      parameters: [ ]
+      responses:
+        200:
+          description: ''
   /healthz:
     get:
       summary: Health Page
