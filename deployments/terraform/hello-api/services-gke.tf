@@ -13,6 +13,10 @@ resource "google_compute_global_address" "hello-api" {
   }
 }
 
+output "hello-api-address" {
+  value = google_compute_global_address.hello-api.address
+}
+
 # load balancer
 /*resource "kubernetes_service" "hello-api-lb" {
   metadata {
@@ -71,10 +75,12 @@ resource "kubernetes_ingress" "hello-api-ingress" {
     annotations = {
       // Not work with regional static ip
       "kubernetes.io/ingress.global-static-ip-name": google_compute_global_address.hello-api.name
-      //"kubernetes.io/ingress.regional-static-ip-name": google_compute_address.hello-api.name
     }
   }
   spec {
+    tls {
+      secret_name = kubernetes_secret.hello-tls-credentials.metadata[0].name
+    }
     backend {
       service_name = kubernetes_service.hello-api-node-port.metadata[0].name
       service_port = kubernetes_service.hello-api-node-port.spec[0].port[0].port

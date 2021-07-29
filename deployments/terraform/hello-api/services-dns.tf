@@ -48,6 +48,7 @@ resource "kubernetes_secret" "hello-tls-credentials" {
     name      = "hello-tls-credentials"
     namespace = var.namespace
   }
+  type = "kubernetes.io/tls"
   data = {
     "tls.crt" = file(var.certCrtPath)
     "tls.key" = file(var.certPrivateKeyPath)
