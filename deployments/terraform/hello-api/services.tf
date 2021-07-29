@@ -83,7 +83,7 @@ resource "kubernetes_secret" "hello-tls-credentials" {
     namespace = var.namespace
   }
   data = {
-    "tls.crt" = google_compute_ssl_certificate.default.certificate
-    "tls.key" = google_compute_ssl_certificate.default.private_key
+    "tls.crt" = file(var.certCrtPath)
+    "tls.key" = file(var.certPrivateKeyPath)
   }
 }

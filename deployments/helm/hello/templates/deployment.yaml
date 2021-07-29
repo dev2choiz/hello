@@ -28,7 +28,8 @@ spec:
               '--service', '{{.Values.api.esp.host}}',
               '--rollout_strategy', 'managed',
               '--service_account_key', '/etc/nginx/creds/credentials.json',
-              '--ssl_server_cert_path', '/etc/esp/ssl'
+              '--ssl_server_cert_path', '/etc/esp/ssl',
+              '--enable_debug'
           ]
           ports:
             - containerPort: {{.Values.api.esp.port}}

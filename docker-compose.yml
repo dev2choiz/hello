@@ -17,10 +17,13 @@ services:
         - "--cors_allow_origin=http://localhost:8080"
         - "--non_gcp"
         - "--enable_debug"
+        - "--ssl_server_cert_path=/etc/esp/ssl"
     ports:
       - 9000:9000
     volumes:
       - ./local/files/sa-hello-api-credentials.json:/etc/nginx/creds/credentials.json
+      - ./local/files/cert/dev/certificate.crt:/etc/esp/ssl/server.crt
+      - ./local/files/cert/dev/private.key:/etc/esp/ssl/server.key
 
   hello:
     build:
