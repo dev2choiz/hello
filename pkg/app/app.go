@@ -19,6 +19,7 @@ func Execute() error {
 	http.HandleFunc("/notify/function1", handlers.PubSubNotify)
 
 	f := func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
 		_, err := w.Write([]byte("ok"))
 		if err != nil {
 			panic(err)

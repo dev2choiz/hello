@@ -28,11 +28,12 @@ spec:
               '--service', '{{.Values.api.esp.host}}',
               '--rollout_strategy', 'managed',
               '--service_account_key', '/etc/nginx/creds/credentials.json',
-              '--ssl_server_cert_path', '/etc/esp/ssl', #
+              '--ssl_server_cert_path', '/etc/esp/ssl',
               '--enable_debug'
           ]
           ports:
-            - containerPort: {{.Values.api.esp.port}}
+            - name: port-esp
+              containerPort: {{.Values.api.esp.port}}
           volumeMounts:
             - name: hello-sa-secret
               mountPath: /etc/nginx/creds
@@ -40,21 +41,19 @@ spec:
             - name: hello-tls-secret
               mountPath: /etc/esp/ssl
               readOnly: true
-
           livenessProbe:
             httpGet:
               path: /healthz
-              port: {{.Values.api.esp.port}}
-              scheme: HTTP
-            initialDelaySeconds: 15
+              port: {{ .Values.api.esp.port }}
+              scheme: HTTPS
+            initialDelaySeconds: 20
             periodSeconds: 5
-
           readinessProbe:
             httpGet:
               path: /healthz
-              port: {{.Values.api.esp.port}}
-              scheme: HTTP
-            initialDelaySeconds: 15
+              port: {{ .Values.api.esp.port }}
+              scheme: HTTPS
+            initialDelaySeconds: 20
             periodSeconds: 5
         #END ESP
 
@@ -90,6 +89,20 @@ spec:
               mountPath: /volumes/secrets/fake-credentials
             - name: hello-sa-secret
               mountPath: /volumes/secrets/sa
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{.Values.api.deployment.port.http}}
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: {{.Values.api.deployment.port.http}}
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 5
         # END API
       volumes:
         - name: volume-empty-dir
