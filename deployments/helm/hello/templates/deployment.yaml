@@ -29,7 +29,7 @@ spec:
               '--rollout_strategy', 'managed',
               '--service_account_key', '/etc/nginx/creds/credentials.json',
               '--ssl_server_cert_path', '/etc/esp/ssl',
-              '--enable_debug'
+              #'--enable_debug'
           ]
           ports:
             - name: port-esp
@@ -89,20 +89,20 @@ spec:
               mountPath: /volumes/secrets/fake-credentials
             - name: hello-sa-secret
               mountPath: /volumes/secrets/sa
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: {{.Values.api.deployment.port.http}}
-              scheme: HTTP
-            initialDelaySeconds: 15
-            periodSeconds: 5
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: {{.Values.api.deployment.port.http}}
-              scheme: HTTP
-            initialDelaySeconds: 15
-            periodSeconds: 5
+          #livenessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: {{.Values.api.deployment.port.http}}
+          #    scheme: HTTP
+          #  initialDelaySeconds: 15
+          #  periodSeconds: 5
+          #readinessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: {{.Values.api.deployment.port.http}}
+          #    scheme: HTTP
+          #  initialDelaySeconds: 15
+          #  periodSeconds: 5
         # END API
       volumes:
         - name: volume-empty-dir
