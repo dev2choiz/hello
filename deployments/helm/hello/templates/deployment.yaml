@@ -23,15 +23,17 @@ spec:
         - name: esp
           image: gcr.io/endpoints-release/endpoints-runtime:2.29.1
           args: [
-              '--listener_port', '{{.Values.api.esp.port}}',
-              '--backend', '127.0.0.1:{{ .Values.api.deployment.port.http }}',
-              '--service', '{{.Values.api.esp.host}}',
-              '--rollout_strategy', 'managed',
-              '--service_account_key', '/etc/esp/creds/credentials.json',
-              {{ if .Values.api.esp.useHttps }}
-              '--ssl_server_cert_path', '/etc/esp/ssl',
-              {{ end }}
-              #'--enable_debug'
+            '--listener_port', '{{.Values.api.esp.port}}',
+            '--backend', '127.0.0.1:{{ .Values.api.deployment.port.http }}',
+            '--service', '{{.Values.api.esp.host}}',
+            '--rollout_strategy', 'managed',
+            '--service_account_key', '/etc/esp/creds/credentials.json',
+            {{- if .Values.api.esp.useHttps }}
+            '--ssl_server_cert_path', '/etc/esp/ssl',
+            {{- end }}
+            {{- if .Values.api.esp.debug }}
+            '--enable_debug'
+            {{- end }}
           ]
           ports:
             - name: port-esp

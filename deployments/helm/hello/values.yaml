@@ -34,5 +34,6 @@ api:
 
   esp:
     useHttps: false
+    debug: false
     host: "hello-api.endpoints.samyn-project4.cloud.goog"
     port: 9000
