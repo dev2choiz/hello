@@ -33,5 +33,6 @@ api:
     clusterIP: '10.4.6.109'
 
   esp:
+    useHttps: true
     host: "hello-api.endpoints.samyn-project4.cloud.goog"
     port: 9000

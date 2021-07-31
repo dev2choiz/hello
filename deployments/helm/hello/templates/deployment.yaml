@@ -27,8 +27,10 @@ spec:
               '--backend', '127.0.0.1:{{ .Values.api.deployment.port.http }}',
               '--service', '{{.Values.api.esp.host}}',
               '--rollout_strategy', 'managed',
-              '--service_account_key', '/etc/nginx/creds/credentials.json',
-              #'--ssl_server_cert_path', '/etc/esp/ssl',
+              '--service_account_key', '/etc/esp/creds/credentials.json',
+              {{ if .Values.api.esp.useHttps }}
+              '--ssl_server_cert_path', '/etc/esp/ssl',
+              {{ end }}
               #'--enable_debug'
           ]
           ports:
@@ -36,7 +38,7 @@ spec:
               containerPort: {{.Values.api.esp.port}}
           volumeMounts:
             - name: hello-sa-secret
-              mountPath: /etc/nginx/creds
+              mountPath: /etc/esp/creds
               readOnly: true
             - name: hello-tls-secret
               mountPath: /etc/esp/ssl
@@ -45,14 +47,14 @@ spec:
             httpGet:
               path: /healthz
               port: {{ .Values.api.esp.port }}
-              scheme: HTTP
+              scheme: {{ if .Values.api.esp.useHttps }}HTTPS{{ else }}HTTP{{ end }}
             initialDelaySeconds: 20
             periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /healthz
               port: {{ .Values.api.esp.port }}
-              scheme: HTTP
+              scheme: {{ if .Values.api.esp.useHttps }}HTTPS{{ else }}HTTP{{ end }}
             initialDelaySeconds: 20
             periodSeconds: 5
         #END ESP
