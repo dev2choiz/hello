@@ -41,7 +41,33 @@ output "hello-api-address" {
   }
 }*/
 
-# nodePort + ingress
+# BackendConfig + nodePort + ingress
+resource "kubernetes_manifest" "hello-api-backend-config" {
+  provider = kubernetes-alpha
+  manifest = {
+    apiVersion = "cloud.google.com/v1"
+    kind = "BackendConfig"
+    metadata = {
+      name      = "${var.app_name}-backend-config"
+      namespace = var.namespace
+    }
+    spec = {
+      healthCheck = {
+        checkIntervalSec = 5
+        timeoutSec = 2
+        healthyThreshold = 1
+        unhealthyThreshold = 10
+        //type = "HTTPS"
+        type = "HTTP"
+        requestPath = "/healthz"
+        port = "9000" // the pod containerPort / svc targetPort
+        //port = "9001" // the svc port
+        //port = kubernetes_service.hello-api-node-port.spec.0.port.0.node_port // service nodePort
+      }
+    }
+  }
+}
+
 resource "kubernetes_service" "hello-api-node-port" {
   metadata {
     name      = "${var.app_name}-nodeport"
@@ -49,6 +75,10 @@ resource "kubernetes_service" "hello-api-node-port" {
     labels = {
       app       = var.app_name
       component = "${var.app_name}-nodeport"
+    }
+    annotations = {
+      "cloud.google.com/backend-config": "{\"default\":\"${kubernetes_manifest.hello-api-backend-config.manifest.metadata.name}\"}"
+      //"cloud.google.com/backend-config": "{\"default\":\"${var.app_name}-backend-config\"}"
     }
   }
   spec {
@@ -58,12 +88,14 @@ resource "kubernetes_service" "hello-api-node-port" {
       component = "${var.app_name}-deploy"
     }
     port {
-      port = 9000
       protocol = "TCP"
-      target_port = 9000
+      port = 9001
+      target_port = 9000 # esp
+      //target_port = 8080 # api
     }
   }
 }
+
 resource "kubernetes_ingress" "hello-api-ingress" {
   metadata {
     name = "${var.app_name}-ingress"
@@ -75,6 +107,7 @@ resource "kubernetes_ingress" "hello-api-ingress" {
     annotations = {
       // Not work with regional static ip
       "kubernetes.io/ingress.global-static-ip-name": google_compute_global_address.hello-api.name
+      //"kubernetes.io/ingress.allow-http": "false"
     }
   }
   spec {
