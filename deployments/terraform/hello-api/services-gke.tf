@@ -41,7 +41,7 @@ output "hello-api-address" {
   }
 }*/
 
-# BackendConfig + nodePort + ingress
+# BackendConfig + FrontConfig + nodePort + ingress
 resource "kubernetes_manifest" "hello-api-backend-config" {
   provider = kubernetes-alpha
   manifest = {
@@ -57,12 +57,26 @@ resource "kubernetes_manifest" "hello-api-backend-config" {
         timeoutSec = 2
         healthyThreshold = 1
         unhealthyThreshold = 10
-        //type = "HTTPS"
         type = "HTTP"
         requestPath = "/healthz"
-        port = "9000" // the pod containerPort / svc targetPort
-        //port = "9001" // the svc port
-        //port = kubernetes_service.hello-api-node-port.spec.0.port.0.node_port // service nodePort
+        port = kubernetes_service.hello-api-node-port.spec.0.port.0.node_port
+      }
+    }
+  }
+}
+
+resource "kubernetes_manifest" "hello-api-frontend-config" {
+  provider = kubernetes-alpha
+  manifest = {
+    apiVersion = "networking.gke.io/v1beta1"
+    kind = "FrontendConfig"
+    metadata = {
+      name      = "${var.app_name}-frontend-config"
+      namespace = var.namespace
+    }
+    spec = {
+      redirectToHttps = {
+        enabled = true
       }
     }
   }
@@ -77,8 +91,7 @@ resource "kubernetes_service" "hello-api-node-port" {
       component = "${var.app_name}-nodeport"
     }
     annotations = {
-      "cloud.google.com/backend-config": "{\"default\":\"${kubernetes_manifest.hello-api-backend-config.manifest.metadata.name}\"}"
-      //"cloud.google.com/backend-config": "{\"default\":\"${var.app_name}-backend-config\"}"
+      "cloud.google.com/backend-config": "{\"default\":\"${var.app_name}-backend-config\"}"
     }
   }
   spec {
@@ -107,6 +120,7 @@ resource "kubernetes_ingress" "hello-api-ingress" {
     annotations = {
       // Not work with regional static ip
       "kubernetes.io/ingress.global-static-ip-name": google_compute_global_address.hello-api.name
+      "networking.gke.io/v1beta1.FrontendConfig": "${var.app_name}-frontend-config"
       //"kubernetes.io/ingress.allow-http": "false"
     }
   }
