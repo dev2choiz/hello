@@ -28,7 +28,7 @@ spec:
               '--service', '{{.Values.api.esp.host}}',
               '--rollout_strategy', 'managed',
               '--service_account_key', '/etc/nginx/creds/credentials.json',
-              '--ssl_server_cert_path', '/etc/esp/ssl',
+              #'--ssl_server_cert_path', '/etc/esp/ssl',
               #'--enable_debug'
           ]
           ports:
@@ -45,14 +45,14 @@ spec:
             httpGet:
               path: /healthz
               port: {{ .Values.api.esp.port }}
-              scheme: HTTPS
+              scheme: HTTP
             initialDelaySeconds: 20
             periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /healthz
               port: {{ .Values.api.esp.port }}
-              scheme: HTTPS
+              scheme: HTTP
             initialDelaySeconds: 20
             periodSeconds: 5
         #END ESP
