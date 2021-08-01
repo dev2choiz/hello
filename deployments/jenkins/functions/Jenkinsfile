@@ -12,7 +12,6 @@ node {
     def projectId = "samyn-project4"
     def gcloudCredentialsId = projectId
     def gcpRegion = "europe-west1"
-    def gcpZone = "europe-west1-d"
     def commitShort = ""
     sh "echo version=${version}"
 

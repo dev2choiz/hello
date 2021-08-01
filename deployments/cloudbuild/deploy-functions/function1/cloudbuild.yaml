@@ -4,7 +4,7 @@ steps:
     args:
         - 'kms'
         - 'decrypt'
-        - '--location=europe-west1'
+        - '--location=${_GCP_REGION}'
         - '--keyring=${_KMS_KEYRING_NAME}'
         - '--key=${_KMS_KEY_NAME}'
         - '--ciphertext-file=${_GITHUB_PRIVATE_KEY_ENCRYPTED_PATH}'

@@ -1,6 +1,5 @@
 variable "app_name" {
   description = "application name"
-  default = "hello-api"
 }
 
 variable "project_id" {
