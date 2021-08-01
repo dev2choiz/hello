@@ -121,7 +121,6 @@ resource "kubernetes_ingress" "hello-api-ingress" {
       // Not work with regional static ip
       "kubernetes.io/ingress.global-static-ip-name": google_compute_global_address.hello-api.name
       "networking.gke.io/v1beta1.FrontendConfig": "${var.app_name}-frontend-config"
-      //"kubernetes.io/ingress.allow-http": "false"
     }
   }
   spec {

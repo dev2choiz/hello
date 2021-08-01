@@ -6,6 +6,8 @@ info:
 host: hello-api.endpoints.samyn-project4.cloud.goog
 x-google-endpoints:
   - name: "hello-api.endpoints.samyn-project4.cloud.goog"
+security:
+  - api_key: []
 paths:
   /:
     get:
@@ -17,6 +19,7 @@ paths:
       responses:
         200:
           description: ''
+      security: []
   /healthz:
     get:
       summary: Health Page
@@ -27,3 +30,19 @@ paths:
       responses:
         200:
           description: ''
+      security: []
+  /secured:
+    get:
+      summary: Secured Page
+      operationId: SecuredPage
+      produces:
+        - application/text
+      parameters: [ ]
+      responses:
+        200:
+          description: ''
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
