@@ -39,8 +39,5 @@ services:
       - 8080:8080
     volumes:
       - .:/app
-      - ./volumes/empty-dir/:/volumes/empty-dir/
-      - ./volumes/config-map/:/volumes/config-map/
-      - ./volumes/secrets/:/volumes/secrets/fake-credentials/
       - ./local/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json
       - ./volumes/go:/go

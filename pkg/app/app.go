@@ -28,7 +28,6 @@ func Execute() error {
 	http.HandleFunc("/healthz", f)
 	http.HandleFunc("/ready", f)
 	http.HandleFunc("/secured", f)
-	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {})
 
 	fmt.Println("listen port :8080")
 	return http.ListenAndServe(":8080", nil)

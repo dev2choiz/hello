@@ -74,25 +74,9 @@ spec:
           env:
             - name: PORT
               value: "8080"
-            - name: OTHER_VARR
-              value: "test"
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/volumes/secrets/sa/credentials.json"
-            - name: COPY_ENV_VAR_1
-              valueFrom:
-                configMapKeyRef:
-                  key: ENV_VAR_1
-                  name: configmap-env
-          envFrom:
-            - configMapRef:
-                name: configmap-env
           volumeMounts:
-            - name: volume-empty-dir
-              mountPath: /volumes/empty-dir
-            - name: volume-configmap-file
-              mountPath: /volumes/config-map
-            - name: volume-secrets-fake-credentials
-              mountPath: /volumes/secrets/fake-credentials
             - name: hello-sa-secret
               mountPath: /volumes/secrets/sa
           livenessProbe:
@@ -111,14 +95,6 @@ spec:
             periodSeconds: 5
         # END API
       volumes:
-        - name: volume-empty-dir
-          emptyDir: {}
-        - name: volume-configmap-file
-          configMap:
-            name: configmap-files
-        - name: volume-secrets-fake-credentials
-          secret:
-            secretName: {{ .Chart.Name }}-fake-credentials
         - name: hello-sa-secret
           secret:
             secretName: sa-hello-api-credentials
