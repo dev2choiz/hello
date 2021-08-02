@@ -6,8 +6,21 @@ steps:
       '-f', './docker/prod/Dockerfile',
       '--target', 'hello_api_release',
       '-t', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}',
+      '-t', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:latest',
       '.']
+
+  - name: gcr.io/cloud-builders/gcloud
+    id: DeleteTAG
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud container images delete gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG} --force-delete-tags --quiet || exit 0
 
   - name: gcr.io/cloud-builders/docker
     id: ImagePushTAG
     args: ['push', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}']
+
+  - name: gcr.io/cloud-builders/docker
+    id: ImagePushLatestTAG
+    args: ['push', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:latest']

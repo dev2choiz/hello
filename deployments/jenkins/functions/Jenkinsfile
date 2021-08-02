@@ -24,7 +24,6 @@ node {
     echo "git commit: ${commitShort}"
 
     def cbSubstitutions = [
-        //_COMMIT_SHORT: commitShort,
         _APP_TAG: appTag,
         _GCP_REGION: gcpRegion,
         _KMS_KEYRING_NAME: "kr-hello",
