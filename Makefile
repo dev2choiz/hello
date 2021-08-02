@@ -21,3 +21,6 @@ sh:
 
 build-app:
 	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o bin/app
+
+tag: ## example: TAG=v1.0.1 make tag
+	scripts/git-tag.sh $(TAG)
