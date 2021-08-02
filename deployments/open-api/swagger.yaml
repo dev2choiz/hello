@@ -41,6 +41,16 @@ paths:
       responses:
         200:
           description: ''
+  /notify/function1:
+    post:
+      summary: Notify Function1
+      operationId: NotifyFunction1
+      produces:
+        - application/text
+      parameters: [ ]
+      responses:
+        200:
+          description: ''
 securityDefinitions:
   api_key:
     type: "apiKey"
