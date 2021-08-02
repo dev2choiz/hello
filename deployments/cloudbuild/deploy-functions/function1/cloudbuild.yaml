@@ -61,7 +61,7 @@ steps:
 
   - id: 'go get github.com/dev2choiz/hello@xxxxxx'
     name: golang:1.13
-    args: ['go', 'get', 'github.com/dev2choiz/hello@${_COMMIT_SHORT}']
+    args: ['go', 'get', 'github.com/dev2choiz/hello@${_APP_TAG}']
     env: ['GOPRIVATE=${_GITHUB_REPOSITORY}']
     dir: '${_FUNCTION_SOURCE_PATH}'
     volumes:

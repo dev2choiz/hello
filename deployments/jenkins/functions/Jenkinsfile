@@ -1,31 +1,31 @@
 #!groovy
 
 parameters([
-    string(name: 'VERSION', defaultValue: 'dev', description: 'branch or tag'),
+    string(name: 'VERSION', defaultValue: 'dev', description: 'branch or tag', trim: true),
 ])
 
 node {
-    dev version = params.VERSION
-    def repoURL = 'git@github.com:dev2choiz/hello.git'
-    def helmTag = '3.2.4'
-    def projectName = 'hello'
-    def projectId = "samyn-project4"
+    def repoURL             = 'git@github.com:dev2choiz/hello.git'
+    def helmTag             = '3.2.4'
+    def projectName         = 'hello'
+    def projectId           = "samyn-project4"
     def gcloudCredentialsId = projectId
-    def gcpRegion = "europe-west1"
-    def commitShort = ""
-    sh "echo version=${version}"
+    def gcpRegion           = "europe-west1"
+    def appTag              = params.VERSION
+    def commitShort         = ""
 
-    echo "start building version ${version}"
+    echo "start building tag/branch '${appTag}'"
     checkout scm: [
         $class: 'GitSCM',
         userRemoteConfigs: [[url: repoURL]],
-        branches: [[name: version]]
+        branches: [[name: appTag]]
     ], poll: false
     commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0,7)
-    sh "ls -la ${pwd()}"
+    echo "git commit: ${commitShort}"
 
     def cbSubstitutions = [
-        _COMMIT_SHORT: commitShort,
+        //_COMMIT_SHORT: commitShort,
+        _APP_TAG: appTag,
         _GCP_REGION: gcpRegion,
         _KMS_KEYRING_NAME: "kr-hello",
         _KMS_KEY_NAME: "key-default-hello",

@@ -5,9 +5,9 @@ steps:
       'build',
       '-f', './docker/prod/Dockerfile',
       '--target', 'hello_api_release',
-      '-t', 'gcr.io/${_PROJECT_ID}/${_APP_NAME}:${_COMMIT_SHORT}',
+      '-t', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}',
       '.']
 
   - name: gcr.io/cloud-builders/docker
     id: ImagePushTAG
-    args: ['push', 'gcr.io/${_PROJECT_ID}/${_APP_NAME}:${_COMMIT_SHORT}']
+    args: ['push', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}']
