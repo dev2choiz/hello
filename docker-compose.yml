@@ -44,7 +44,7 @@ services:
       - ./local/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json
       - ./volumes/hello-api/go:/go
 
-  svc1:
+  hello-svc1:
     build:
       context: .
       dockerfile: ./docker/dev/Dockerfile
@@ -58,7 +58,7 @@ services:
       - .:/app
       - ./volumes/hello-svc1/go:/go
 
-  svc2:
+  hello-svc2:
     build:
       context: .
       dockerfile: ./docker/dev/Dockerfile

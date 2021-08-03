@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  primary:
+  hello-api:
     command: bash -c "
       go get github.com/go-delve/delve/cmd/dlv
       && cd cmd/apps/hello-api

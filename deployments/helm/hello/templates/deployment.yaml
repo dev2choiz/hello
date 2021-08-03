@@ -79,6 +79,7 @@ spec:
           volumeMounts:
             - name: hello-sa-secret
               mountPath: /volumes/secrets/sa
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /healthz

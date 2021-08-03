@@ -19,15 +19,11 @@ func main() {
 		res, err := getSvcData(os.Getenv("SVC1_BASE_URL"))
 		if err == nil {
 			data["svc1"] = res
-		} else {
-			log.Println(err)
 		}
 		res, err = getSvcData(os.Getenv("SVC2_BASE_URL"))
 		if err == nil {
 			log.Println(err)
 			data["svc2"] = res
-		} else {
-			log.Println(err)
 		}
 
 		log.Println(data)
@@ -56,22 +52,26 @@ func main() {
 func getSvcData(url string) (string, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
+		log.Println(err)
 		return "", err
 	}
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
+		log.Println(err)
 		return "", err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
+		log.Println(err)
 		return "", err
 	}
-	log.Println(body)
+
 	var data map[string]string
 	if err = json.Unmarshal(body, &data); err != nil {
+		log.Println(err)
 		return "", err
 	}
-	log.Println(data)
+
 	return data["response"], nil
 }
