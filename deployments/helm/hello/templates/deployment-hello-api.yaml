@@ -71,6 +71,7 @@ spec:
           - containerPort: {{ .Values.api.deployment.port }}
             name: http
             #protocol: TCP
+          command: ['/hello-api']
           env:
             - name: PORT
               value: "8080"

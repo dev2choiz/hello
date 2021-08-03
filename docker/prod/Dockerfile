@@ -6,17 +6,19 @@ COPY . /source
 RUN go mod vendor
 
 FROM stage_dependencies as stage_builder
-ARG APP_NAME
 COPY . /source
 RUN go mod vendor
-WORKDIR "/source/cmd/apps/$APP_NAME"
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/app"
-#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o "/source/bin/$APP_NAME"
+## Build hello-api
+WORKDIR "/source/cmd/apps/hello-api"
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/hello-api"
+## Build hello-svc1
+WORKDIR "/source/cmd/apps/hello-svc1"
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/hello-svc1"
+
 WORKDIR /source
 
 FROM gcr.io/distroless/base as release
 
 WORKDIR /
-COPY --from=stage_builder "/source/bin/app" .
-
-CMD ["/app"]
+COPY --from=stage_builder "/source/bin/hello-api" .
+COPY --from=stage_builder "/source/bin/hello-svc1" .

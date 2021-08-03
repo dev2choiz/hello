@@ -25,6 +25,7 @@ spec:
           ports:
           - containerPort: {{ .Values.svc1.deployment.port }}
             name: http
+          command: ['/hello-svc1']
           livenessProbe:
             httpGet:
               path: /healthz

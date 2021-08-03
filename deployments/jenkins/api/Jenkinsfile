@@ -50,20 +50,18 @@ node {
             ]
     }
 
-    stage("Deploy services") {
-        stage("Deploy ${appTag}") {
-            googleCloudBuild  \
-                credentialsId: gcloudCredentialsId,
-                source: local('.'),
-                request: file('deployments/cloudbuild/deployment.yaml'),
-                substitutions: commonSubst + [
-                    _APP_NAME: "hello-api",
-                    _NAMESPACE   : namespace,
-                    _CLUSTER_ZONE: clusterZone,
-                    _CLUSTER_NAME: clusterName,
-                    _HELM_TAG    : helmTag,
-                    _ENVIRONMENT : environment,
-                ]
-        }
+    stage("Deploy ${appTag}") {
+        googleCloudBuild  \
+            credentialsId: gcloudCredentialsId,
+            source: local('.'),
+            request: file('deployments/cloudbuild/deployment.yaml'),
+            substitutions: commonSubst + [
+                _APP_NAME: "hello-api",
+                _NAMESPACE   : namespace,
+                _CLUSTER_ZONE: clusterZone,
+                _CLUSTER_NAME: clusterName,
+                _HELM_TAG    : helmTag,
+                _ENVIRONMENT : environment,
+            ]
     }
 }
