@@ -52,7 +52,7 @@ paths:
         200:
           description: ''
   /check:
-    post:
+    get:
       summary: Check Services
       operationId: CheckServices
       produces:
