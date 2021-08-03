@@ -4,7 +4,8 @@ steps:
     args: [
       'build',
       '-f', './docker/prod/Dockerfile',
-      '--target', 'hello_api_release',
+      '--build-arg', 'APP_NAME=${_APP_NAME}',
+      '--target', 'release',
       '-t', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}',
       '-t', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:latest',
       '.']

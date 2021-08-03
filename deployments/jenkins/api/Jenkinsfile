@@ -27,30 +27,49 @@ node {
     echo "git commit: ${commitShort}"
 
     def cbSubstitutions = [
-        _APP_NAME:     projectName,
-        _APP_TAG:      appTag,
+        _APP_TAG: appTag,
     ]
 
-    echo "build docker image tag: ${appTag}"
-    stage('Build image') {
-        googleCloudBuild  \
-        credentialsId: gcloudCredentialsId,
-            source: local('.'),
-            request: file('deployments/cloudbuild/build-image.yaml'),
-            substitutions: cbSubstitutions + []
-    }
-    echo "deploy docker image tag: ${appTag}"
-    stage('Deployment') {
-        googleCloudBuild  \
-            credentialsId: gcloudCredentialsId,
-            source: local('.'),
-            request: file('deployments/cloudbuild/deployment.yaml'),
-            substitutions: cbSubstitutions + [
-                _NAMESPACE   : namespace,
-                _CLUSTER_ZONE: clusterZone,
-                _CLUSTER_NAME: clusterName,
-                _HELM_TAG    : helmTag,
-                _ENVIRONMENT : environment,
-            ]
+    def time = 6
+    stage("Deploy services") {
+        parallel (
+            "hello-api": {
+                echo "build docker image tag: ${appTag}"
+                stage("Build image hello-api ${appTag}") {
+                    googleCloudBuild  \
+                    credentialsId: gcloudCredentialsId,
+                        source: local('.'),
+                        request: file('deployments/cloudbuild/build-image.yaml'),
+                        substitutions: cbSubstitutions + [
+                            _APP_NAME: "hello-api",
+                        ]
+                }
+                echo "deploy docker image tag: ${appTag}"
+                stage("Deploy hello-api ${appTag}") {
+                    googleCloudBuild  \
+                        credentialsId: gcloudCredentialsId,
+                        source: local('.'),
+                        request: file('deployments/cloudbuild/deployment.yaml'),
+                        substitutions: cbSubstitutions + [
+                            _APP_NAME:    "hello-api",
+                            _NAMESPACE   : namespace,
+                            _CLUSTER_ZONE: clusterZone,
+                            _CLUSTER_NAME: clusterName,
+                            _HELM_TAG    : helmTag,
+                            _ENVIRONMENT : environment,
+                        ]
+                }
+            },
+            "hello-svc1": {
+                stage("todo") {
+                     echo "todo"
+                 }
+            },
+            "hello-svc2": {
+                 stage("todo") {
+                     echo "todo"
+                 }
+            }
+        )
     }
 }

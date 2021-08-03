@@ -4,7 +4,7 @@ services:
   esp:
     image: "gcr.io/endpoints-release/endpoints-runtime:2.29.1"
     depends_on:
-      - hello
+      - hello-api
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/etc/nginx/creds/credentials.json
     command:
@@ -25,19 +25,49 @@ services:
       - ./local/files/cert/dev/certificate.crt:/etc/esp/ssl/server.crt
       - ./local/files/cert/dev/private.key:/etc/esp/ssl/server.key
 
-  hello:
+  hello-api:
     build:
       context: .
       dockerfile: ./docker/dev/Dockerfile
-      target: hello_api_dev
+      target: stage_dev
     command: bash -c "
-      go mod vendor
+      cd cmd/apps/hello-api
       && go run main.go"
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: '/volumes/secrets/sa/credentials.json'
+      SVC1_BASE_URL: 'http://svc1:8081'
+      SVC2_BASE_URL: 'http://svc2:8082'
     ports:
-      - 8080:8080
+      - '8080:8080'
     volumes:
       - .:/app
       - ./local/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json
-      - ./volumes/go:/go
+      - ./volumes/hello-api/go:/go
+
+  svc1:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      target: stage_dev
+    command: bash -c "
+      cd cmd/apps/hello-svc1
+      && go run main.go"
+    ports:
+      - '8081:8081'
+    volumes:
+      - .:/app
+      - ./volumes/hello-svc1/go:/go
+
+  svc2:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      target: stage_dev
+    command: bash -c "
+      cd cmd/apps/svc2
+      && go run main.go"
+    ports:
+      - '8082:8082'
+    volumes:
+      - .:/app
+      - ./volumes/hello-svc2/go:/go

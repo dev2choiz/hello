@@ -5,6 +5,7 @@ bin
 .env
 
 local
+test.sh
 
 ## debug
 __debug_bin

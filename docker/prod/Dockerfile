@@ -1,14 +1,22 @@
-FROM golang:1.16-alpine as hello_api_base
+FROM golang:1.16-alpine as stage_base
 WORKDIR /source
 
-FROM hello_api_base as hello_api_builder
+FROM stage_base as stage_dependencies
 COPY . /source
 RUN go mod vendor
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o ./bin/app
-#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o ./bin/app
 
-FROM gcr.io/distroless/base as hello_api_release
+FROM stage_dependencies as stage_builder
+ARG APP_NAME
+COPY . /source
+RUN go mod vendor
+WORKDIR "/source/cmd/apps/$APP_NAME"
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/$APP_NAME"
+#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o "/source/bin/$APP_NAME"
+WORKDIR /source
+
+FROM gcr.io/distroless/base as release
+ARG APP_NAME
 WORKDIR /
-COPY --from=hello_api_builder /source/bin/app .
+COPY --from=stage_builder "/source/bin/$APP_NAME" .
 
-CMD ["/app"]
+CMD ["/$APP_NAME"]

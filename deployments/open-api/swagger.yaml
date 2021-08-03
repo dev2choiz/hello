@@ -51,6 +51,16 @@ paths:
       responses:
         200:
           description: ''
+  /check:
+    post:
+      summary: Check Services
+      operationId: CheckServices
+      produces:
+        - application/json
+      parameters: [ ]
+      responses:
+        200:
+          description: ''
 securityDefinitions:
   api_key:
     type: "apiKey"

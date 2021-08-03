@@ -1,6 +1,6 @@
-FROM golang:1.16 as hello_api_base
+FROM golang:1.16 as stage_base
 WORKDIR /app
 
-FROM hello_api_base as hello_api_dev
+FROM stage_base as stage_dev
 #RUN go get github.com/t-yuki/gocover-cobertura
 #RUN go get github.com/stretchr/testify
