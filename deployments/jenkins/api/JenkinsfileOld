@@ -26,33 +26,66 @@ node {
     commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0, 7)
     echo "git commit: ${commitShort}"
 
-    def cbSubstitutions = [
+    def commonSubst = [
         _APP_TAG: appTag,
     ]
+    def commonSubstBuild = []
+    def commonSubstDeploy = [
+        _NAMESPACE   : namespace,
+        _CLUSTER_ZONE: clusterZone,
+        _CLUSTER_NAME: clusterName,
+        _HELM_TAG    : helmTag,
+        _ENVIRONMENT : environment,
+    ]
 
-    echo "build docker image tag: ${appTag}"
-    stage("Build image ${appTag}") {
-        googleCloudBuild  \
-        credentialsId: gcloudCredentialsId,
-            source: local('.'),
-            request: file('deployments/cloudbuild/build-image.yaml'),
-            substitutions: cbSubstitutions + [
-                _APP_NAME: "hello-api",
-            ]
-    }
-    echo "deploy docker image tag: ${appTag}"
-    stage('Deployment') {
-        googleCloudBuild  \
-            credentialsId: gcloudCredentialsId,
-            source: local('.'),
-            request: file('deployments/cloudbuild/deployment.yaml'),
-            substitutions: cbSubstitutions + [
-                _APP_NAME: "hello-api",
-                _NAMESPACE   : namespace,
-                _CLUSTER_ZONE: clusterZone,
-                _CLUSTER_NAME: clusterName,
-                _HELM_TAG    : helmTag,
-                _ENVIRONMENT : environment,
-            ]
+    def time = 6
+    stage("Deploy services") {
+        parallel (
+            "hello-api": {
+                stage("Build image hello-api ${appTag}") {
+                    googleCloudBuild  \
+                    credentialsId: gcloudCredentialsId,
+                        source: local('.'),
+                        request: file('deployments/cloudbuild/build-image.yaml'),
+                        substitutions: commonSubst + commonSubstBuild + [
+                            _APP_NAME: "hello-api",
+                        ]
+                }
+                stage("Deploy hello-api ${appTag}") {
+                    googleCloudBuild  \
+                        credentialsId: gcloudCredentialsId,
+                        source: local('.'),
+                        request: file('deployments/cloudbuild/deployment.yaml'),
+                        substitutions: commonSubst + commonSubstDeploy + [
+                            _APP_NAME: "hello-api",
+                        ]
+                }
+            },
+            "hello-svc1": {
+                stage("Build image hello-svc1 ${appTag}") {
+                    googleCloudBuild  \
+                    credentialsId: gcloudCredentialsId,
+                        source: local('.'),
+                        request: file('deployments/cloudbuild/build-image.yaml'),
+                        substitutions: commonSubst + commonSubstBuild + [
+                            _APP_NAME: "hello-svc1",
+                        ]
+                }
+                stage("Deploy hello-svc1 ${appTag}") {
+                    googleCloudBuild  \
+                        credentialsId: gcloudCredentialsId,
+                        source: local('.'),
+                        request: file('deployments/cloudbuild/deployment-svc.yaml'),
+                        substitutions: commonSubst + commonSubstDeploy + [
+                            _APP_NAME: "hello-svc1",
+                        ]
+                }
+            },
+            "hello-svc2": {
+                 stage("todo") {
+                     echo "todo"
+                 }
+            }
+        )
     }
 }

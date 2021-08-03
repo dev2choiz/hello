@@ -3,18 +3,18 @@ kind: Deployment
 metadata:
   name: '{{ .Values.api.deployment.name }}'
   labels:
-    app: '{{ .Chart.Name }}'
+    app: '{{ .Values.api.name }}'
     component: '{{ .Values.api.deployment.name }}'
 spec:
   replicas: {{ .Values.api.deployment.hpa.minReplicaCount }}
   selector:
     matchLabels:
-      app: '{{ .Chart.Name }}'
+      app: '{{ .Values.api.name }}'
       component: '{{ .Values.api.deployment.name }}'
   template:
     metadata:
       labels:
-        app: '{{ .Chart.Name }}'
+        app: '{{ .Values.api.name }}'
         component: '{{ .Values.api.deployment.name }}'
       namespace: {{ .Values.gcp.namespace }}
     spec:
@@ -24,7 +24,7 @@ spec:
           image: gcr.io/endpoints-release/endpoints-runtime:2.29.1
           args: [
             '--listener_port', '{{.Values.api.esp.port}}',
-            '--backend', '127.0.0.1:{{ .Values.api.deployment.port.http }}',
+            '--backend', '127.0.0.1:{{ .Values.api.deployment.port }}',
             '--service', '{{.Values.api.esp.host}}',
             '--rollout_strategy', 'managed',
             '--service_account_key', '/etc/esp/creds/credentials.json',
@@ -64,11 +64,11 @@ spec:
         #END ESP
 
         # API
-        - name: {{ .Chart.Name }}
+        - name: {{ .Values.api.name }}
           image: {{ .Values.api.deployment.image }}
           imagePullPolicy: {{ .Values.api.deployment.pullPolicy }}
           ports:
-          - containerPort: {{ .Values.api.deployment.port.http }}
+          - containerPort: {{ .Values.api.deployment.port }}
             name: http
             #protocol: TCP
           env:
@@ -83,14 +83,14 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: {{.Values.api.deployment.port.http}}
+              port: {{ .Values.api.deployment.port }}
               scheme: HTTP
             initialDelaySeconds: 15
             periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /healthz
-              port: {{.Values.api.deployment.port.http}}
+              port: {{ .Values.api.deployment.port }}
               scheme: HTTP
             initialDelaySeconds: 15
             periodSeconds: 5

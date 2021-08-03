@@ -7,12 +7,11 @@ gcp:
   namespace: lazone
 
 api:
+  name: hello-api
   # deployment
   deployment:
     name: "hello-api-deploy"
-    port:
-      http: 8080
-      https: 8083
+    port: 8080
     image:
     pullPolicy: Always
     hpa:
@@ -21,18 +20,16 @@ api:
       maxReplicaCount: 1
       targetCPUUtilizationPercentage: 80
 
-  # service
-  service:
-    name: 'hello-api-lb'
-    type: LoadBalancer
-    port:
-      http: 80
-      https: 443
-    loadBalancerIP: '35.205.118.175'
-    clusterIP: '10.4.6.109'
-
   esp:
     useHttps: false
     debug: false
     host: "hello-api.endpoints.samyn-project4.cloud.goog"
     port: 9000
+
+svc1:
+  name: hello-svc1
+  deployment:
+    name: "hello-svc1-deploy"
+    port: 8081
+    image:
+    pullPolicy: Always

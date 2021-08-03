@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ .Values.svc1.deployment.name }}'
+  labels:
+    app: '{{ .Values.svc1.name }}'
+    component: '{{ .Values.svc1.deployment.name }}'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: '{{ .Values.svc1.name }}'
+      component: '{{ .Values.svc1.deployment.name }}'
+  template:
+    metadata:
+      labels:
+        app: '{{ .Values.svc1.name }}'
+        component: '{{ .Values.svc1.deployment.name }}'
+      namespace: {{ .Values.gcp.namespace }}
+    spec:
+      containers:
+        - name: {{ .Values.svc1.name }}
+          image: {{ .Values.svc1.deployment.image }}
+          imagePullPolicy: {{ .Values.svc1.deployment.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.svc1.deployment.port }}
+            name: http
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.svc1.deployment.port }}
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.svc1.deployment.port }}
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 5
