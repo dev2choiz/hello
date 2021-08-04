@@ -77,6 +77,10 @@ spec:
               value: "8080"
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/volumes/secrets/sa/credentials.json"
+            - name: SVC1_BASE_URL
+              value: "http://hello-svc1-cluster-ip"
+            - name: SVC2_BASE_URL
+              value: "http://hello-svc2-cluster-ip"
           volumeMounts:
             - name: hello-sa-secret
               mountPath: /volumes/secrets/sa
