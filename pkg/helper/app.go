@@ -12,6 +12,5 @@ func Json(w http.ResponseWriter, cod int, data map[string]interface{}) {
 }
 
 func OkHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
 	Json(w, http.StatusOK, map[string]interface{}{"status": "ok"})
 }
