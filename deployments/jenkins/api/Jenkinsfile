@@ -18,13 +18,15 @@ node {
     def commitShort = ""
 
     echo "start building tag/branch '${appTag}'"
-    checkout scm: [
-        $class           : 'GitSCM',
-        userRemoteConfigs: [[url: repoURL]],
-        branches         : [[name: appTag]]
-    ], poll: false
-    commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0, 7)
-    echo "git commit: ${commitShort}"
+    stage("Checkout ${appTag}") {
+        checkout scm: [
+            $class           : 'GitSCM',
+            userRemoteConfigs: [[url: repoURL]],
+            branches         : [[name: appTag]]
+        ], poll: false
+        commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0, 7)
+        echo "git commit: ${commitShort}"
+    }
 
     def commonSubst = [
         _APP_TAG: appTag,
@@ -37,16 +39,6 @@ node {
             request: file('deployments/cloudbuild/build-image.yaml'),
             substitutions: commonSubst + [
                 _APP_NAME: "hello-api",
-            ]
-    }
-
-    stage("Build image hello-svc1 ${appTag}") {
-        googleCloudBuild  \
-            credentialsId: gcloudCredentialsId,
-            source: local('.'),
-            request: file('deployments/cloudbuild/build-image.yaml'),
-            substitutions: commonSubst + [
-                _APP_NAME: "hello-svc1",
             ]
     }
 
