@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: '{{ .Values.svc1.service.name }}'
+  labels:
+    app: '{{ .Values.svc1.name }}'
+    component: '{{ .Values.svc1.service.name }}'
+spec:
+  ports:
+    - name: http
+      port: {{ .Values.svc1.service.port }}
+      targetPort: {{ .Values.svc1.deployment.port }}
+  selector:
+    app: '{{ .Values.svc1.name }}'
+    component: '{{ .Values.svc1.service.name }}'
+  type: ClusterIP
