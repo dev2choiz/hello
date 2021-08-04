@@ -1,4 +1,5 @@
 
+### Start hello-api
 //resource "google_compute_address" "hello-api" {
 resource "google_compute_global_address" "hello-api" {
   provider     = google-beta
@@ -8,8 +9,8 @@ resource "google_compute_global_address" "hello-api" {
 
   address_type = "EXTERNAL"
   labels = {
-    app       = var.app_name
-    component = "${var.app_name}-address"
+    app       = "${var.app_name}-api"
+    component = "${var.app_name}-api-address"
   }
 }
 
@@ -20,18 +21,18 @@ output "hello-api-address" {
 # load balancer
 /*resource "kubernetes_service" "hello-api-lb" {
   metadata {
-    name      = "${var.app_name}-lb"
+    name      = "${var.app_name}-api-lb"
     namespace = var.namespace
     labels = {
-      app       = var.app_name
-      component = "${var.app_name}-lb"
+      app       = "${var.app_name}-api"
+      component = "${var.app_name}-api-lb"
     }
   }
   spec {
     type = "LoadBalancer"
     selector = {
-      app       = var.app_name
-      component = "${var.app_name}-deploy"
+      app       = "${var.app_name}-api"
+      component = "${var.app_name}-api-deploy"
     }
     load_balancer_ip = google_compute_address.hello-api.address
     port {
@@ -48,7 +49,7 @@ resource "kubernetes_manifest" "hello-api-backend-config" {
     apiVersion = "cloud.google.com/v1"
     kind = "BackendConfig"
     metadata = {
-      name      = "${var.app_name}-backend-config"
+      name      = "${var.app_name}-api-backend-config"
       namespace = var.namespace
     }
     spec = {
@@ -71,7 +72,7 @@ resource "kubernetes_manifest" "hello-api-frontend-config" {
     apiVersion = "networking.gke.io/v1beta1"
     kind = "FrontendConfig"
     metadata = {
-      name      = "${var.app_name}-frontend-config"
+      name      = "${var.app_name}-api-frontend-config"
       namespace = var.namespace
     }
     spec = {
@@ -84,21 +85,21 @@ resource "kubernetes_manifest" "hello-api-frontend-config" {
 
 resource "kubernetes_service" "hello-api-node-port" {
   metadata {
-    name      = "${var.app_name}-nodeport"
+    name      = "${var.app_name}-api-nodeport"
     namespace = var.namespace
     labels = {
-      app       = var.app_name
-      component = "${var.app_name}-nodeport"
+      app       = "${var.app_name}-api"
+      component = "${var.app_name}-api-nodeport"
     }
     annotations = {
-      "cloud.google.com/backend-config": "{\"default\":\"${var.app_name}-backend-config\"}"
+      "cloud.google.com/backend-config": "{\"default\":\"${var.app_name}-api-backend-config\"}"
     }
   }
   spec {
     type = "NodePort"
     selector = {
-      app       = var.app_name
-      component = "${var.app_name}-deploy"
+      app       = "${var.app_name}-api"
+      component = "${var.app_name}-api-deploy"
     }
     port {
       protocol = "TCP"
@@ -111,16 +112,16 @@ resource "kubernetes_service" "hello-api-node-port" {
 
 resource "kubernetes_ingress" "hello-api-ingress" {
   metadata {
-    name = "${var.app_name}-ingress"
+    name = "${var.app_name}-api-ingress"
     namespace = var.namespace
     labels = {
-      app       = var.app_name
-      component = "${var.app_name}-ingress"
+      app       = "${var.app_name}-api"
+      component = "${var.app_name}-api-ingress"
     }
     annotations = {
       // Not work with regional static ip
       "kubernetes.io/ingress.global-static-ip-name": google_compute_global_address.hello-api.name
-      "networking.gke.io/v1beta1.FrontendConfig": "${var.app_name}-frontend-config"
+      "networking.gke.io/v1beta1.FrontendConfig": "${var.app_name}-api-frontend-config"
     }
   }
   spec {
@@ -133,3 +134,29 @@ resource "kubernetes_ingress" "hello-api-ingress" {
     }
   }
 }
+### END hello-api
+
+### Start hello-svc1
+resource "kubernetes_service" "hello-svc1-cluster-ip" {
+  metadata {
+    name      = "${var.app_name}-svc1-cluster-ip"
+    namespace = var.namespace
+    labels = {
+      app       = "${var.app_name}-svc1"
+      component = "hello-svc1-cluster-ip"
+    }
+  }
+  spec {
+    type = "ClusterIP"
+    selector = {
+      app       = "${var.app_name}-svc1"
+      component = "${var.app_name}-svc1-deploy"
+    }
+    port {
+      protocol = "TCP"
+      port = 80
+      target_port = 8081
+    }
+  }
+}
+### End hello-svc1
