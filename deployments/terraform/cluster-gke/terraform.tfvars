@@ -2,8 +2,14 @@ project_id    = "samyn-project4"
 cluster_name  = "samyn-cluster"
 region        = "europe-west1"
 zone          = "europe-west1-d"
-gke_num_nodes = 1
-machine_type  = "e2-medium"
-disk_size     = 25
 namespace     = "lazone"
 domain        = "dev2choiz.com"
+# standard
+#gke_num_nodes = 1
+#machine_type  = "e2-medium"
+#disk_size     = 25
+# anthos
+gke_num_nodes = 2
+machine_type  = "e2-standard-4"
+disk_size     = 50
+membership_id = "samyn-cluster-mi"

@@ -33,3 +33,7 @@ variable "namespace" {
 variable "domain" {
   description = "domain"
 }
+
+variable "membership_id" {
+  description = "membership_id"
+}

@@ -19,50 +19,22 @@ provider "kubernetes" {
 }
 
 # Enable Gcp services
-resource "google_project_service" "project-enable-container" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "container.googleapis.com"
-}
-resource "google_project_service" "project-enable-containeranalysis" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "containeranalysis.googleapis.com"
-}
-resource "google_project_service" "project-enable-cloudfunctions" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "cloudfunctions.googleapis.com"
-}
-resource "google_project_service" "project-enable-pubsub" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "pubsub.googleapis.com"
-}
-resource "google_project_service" "project-enable-cloudkms" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "cloudkms.googleapis.com"
-}
-resource "google_project_service" "project-enable-cloudbuild" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "cloudbuild.googleapis.com"
-}
-resource "google_project_service" "project-enable-dns" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "dns.googleapis.com"
-}
-resource "google_project_service" "project-enable-domains" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "domains.googleapis.com"
-}
-resource "google_project_service" "project-enable-endpoints" {
-  project = var.project_id
-  disable_on_destroy = false
-  service = "endpoints.googleapis.com"
+module "project-services" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+
+  project_id  = data.google_client_config.provider.project
+  disable_services_on_destroy = false
+  activate_apis = [
+    "container.googleapis.com",
+    "containeranalysis.googleapis.com",
+    "cloudfunctions.googleapis.com",
+    "pubsub.googleapis.com",
+    "cloudkms.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "dns.googleapis.com",
+    "domains.googleapis.com",
+    "endpoints.googleapis.com",
+  ]
 }
 
 resource "google_service_account" "cluster_nodes" {
@@ -74,8 +46,11 @@ resource "google_project_iam_member" "sa-jenkins-cb-builder" {
   member = "serviceAccount:${google_service_account.cluster_nodes.email}"
 }
 
+data "google_project" "project" {}
+
 # GKE cluster
 resource "google_container_cluster" "primary" {
+  provider = google-beta
   name     = var.cluster_name
   location = var.zone
 
@@ -87,7 +62,19 @@ resource "google_container_cluster" "primary" {
 
   network    = google_compute_network.vpc.name
   subnetwork = google_compute_subnetwork.subnet.name
-  depends_on = [google_project_service.project-enable-container]
+
+  depends_on = [module.project-services]
+
+  # anthos
+
+  resource_labels = {
+    mesh_id = "proj-${data.google_project.project.number}"
+  }
+  /*workload_identity_config {
+    identity_namespace = "${var.project_id}.svc.id.goog"
+  }
+  monitoring_service = "monitoring.googleapis.com/kubernetes"
+  logging_service = "logging.googleapis.com/kubernetes"*/
 }
 
 # Separately Managed Node Pool
