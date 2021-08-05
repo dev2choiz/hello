@@ -3,3 +3,4 @@
 terraform.tfstate
 terraform.tfstate.backup
 asm-dir-samyn-cluster
+install_asm_*

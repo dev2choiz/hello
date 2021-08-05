@@ -103,6 +103,7 @@ resource "kubernetes_service" "hello-api-node-port" {
     }
     port {
       protocol = "TCP"
+      name = "http"
       port = 9001
       target_port = 9000 # esp
       //target_port = 8080 # api
@@ -154,6 +155,7 @@ resource "kubernetes_service" "hello-svc1-cluster-ip" {
     }
     port {
       protocol = "TCP"
+      name = "http"
       port = 80
       target_port = 8081
     }

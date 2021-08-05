@@ -17,8 +17,8 @@ module "project-services-anthos" {
     "gkehub.googleapis.com",
     "monitoring.googleapis.com",
     "logging.googleapis.com",
+    "stackdriver.googleapis.com",
     //"anthos.googleapis.com",
-    // "stackdriver.googleapis.com"
   ]
 }
 
@@ -35,12 +35,14 @@ module "hub-primary" {
 
 module "asm-primary" {
   source           = "terraform-google-modules/kubernetes-engine/google//modules/asm"
-  version          = "13.0.0"
+  version          = "16.0.1"
   project_id       = data.google_client_config.provider.project
   cluster_name     = google_container_cluster.primary.name
   location         = google_container_cluster.primary.location
   cluster_endpoint = google_container_cluster.primary.endpoint
+  enable_cluster_roles  = true
+  enable_gcp_apis       = false
 
-  asm_dir          = "asm-dir-${google_container_cluster.primary.name}"
-
+  outdir           = "asm-dir-${google_container_cluster.primary.name}"
+  depends_on = [module.project-services-anthos]
 }
