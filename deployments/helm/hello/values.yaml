@@ -6,6 +6,8 @@ gcp:
   projectId: samyn-project4
   namespace: lazone
 
+useSvcMesh: true
+
 api:
   name: hello-api
   # deployment
@@ -34,7 +36,7 @@ svc1:
     port: 8081
     image:
     pullPolicy: Always
-    injectAsmSideCar: 'false'
+    injectAsmSideCar: 'true'
 
   service:
     name: "hello-svc1-service"

@@ -5,7 +5,6 @@ metadata:
   labels:
     app: '{{ .Values.api.name }}'
     component: '{{ .Values.api.deployment.name }}'
-    sidecar.istio.io/inject: '{{ .Values.api.deployment.injectAsmSideCar }}'
 spec:
   replicas: {{ .Values.api.deployment.hpa.minReplicaCount }}
   selector:
@@ -14,10 +13,13 @@ spec:
       component: '{{ .Values.api.deployment.name }}'
   template:
     metadata:
+      {{- if .Values.useSvcMesh }}
+      annotations:
+        sidecar.istio.io/inject: '{{ .Values.api.deployment.injectAsmSideCar }}'
+      {{- end }}
       labels:
         app: '{{ .Values.api.name }}'
         component: '{{ .Values.api.deployment.name }}'
-        sidecar.istio.io/inject: '{{ .Values.api.deployment.injectAsmSideCar }}'
       namespace: {{ .Values.gcp.namespace }}
     spec:
       containers:
@@ -54,14 +56,14 @@ spec:
               path: /healthz
               port: {{ .Values.api.esp.port }}
               scheme: {{ if .Values.api.esp.useHttps }}HTTPS{{ else }}HTTP{{ end }}
-            initialDelaySeconds: 20
+            initialDelaySeconds: 50
             periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /healthz
               port: {{ .Values.api.esp.port }}
               scheme: {{ if .Values.api.esp.useHttps }}HTTPS{{ else }}HTTP{{ end }}
-            initialDelaySeconds: 20
+            initialDelaySeconds: 50
             periodSeconds: 5
         #END ESP
 

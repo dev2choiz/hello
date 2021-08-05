@@ -5,7 +5,6 @@ metadata:
   labels:
     app: '{{ .Values.svc1.name }}'
     component: '{{ .Values.svc1.deployment.name }}'
-    #sidecar.istio.io/inject: '{{ .Values.svc1.deployment.injectAsmSideCar }}'
 spec:
   replicas: 1
   selector:
@@ -14,10 +13,13 @@ spec:
       component: '{{ .Values.svc1.deployment.name }}'
   template:
     metadata:
+      {{- if .Values.useSvcMesh }}
+      annotations:
+        sidecar.istio.io/inject: '{{ .Values.svc1.deployment.injectAsmSideCar }}'
+      {{- end }}
       labels:
         app: '{{ .Values.svc1.name }}'
         component: '{{ .Values.svc1.deployment.name }}'
-        sidecar.istio.io/inject: '{{ .Values.svc1.deployment.injectAsmSideCar }}'
       namespace: {{ .Values.gcp.namespace }}
     spec:
       containers:
