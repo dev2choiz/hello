@@ -108,5 +108,10 @@ resource "google_container_node_pool" "primary_nodes" {
 resource "kubernetes_namespace" "cluster_namespace" {
   metadata {
     name = var.namespace
+    labels = {
+      // anthos
+      "istio.io/rev" = "196-2"
+      istio-injection = "enabled"
+    }
   }
 }

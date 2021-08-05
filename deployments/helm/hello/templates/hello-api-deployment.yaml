@@ -5,6 +5,7 @@ metadata:
   labels:
     app: '{{ .Values.api.name }}'
     component: '{{ .Values.api.deployment.name }}'
+    sidecar.istio.io/inject: '{{ .Values.api.deployment.injectAsmSideCar }}'
 spec:
   replicas: {{ .Values.api.deployment.hpa.minReplicaCount }}
   selector:
@@ -16,6 +17,7 @@ spec:
       labels:
         app: '{{ .Values.api.name }}'
         component: '{{ .Values.api.deployment.name }}'
+        sidecar.istio.io/inject: '{{ .Values.api.deployment.injectAsmSideCar }}'
       namespace: {{ .Values.gcp.namespace }}
     spec:
       containers:
