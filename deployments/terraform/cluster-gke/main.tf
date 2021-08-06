@@ -66,7 +66,6 @@ resource "google_container_cluster" "primary" {
   depends_on = [module.project-services]
 
   # anthos
-
   resource_labels = {
     mesh_id = "proj-${data.google_project.project.number}"
   }

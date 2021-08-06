@@ -24,6 +24,7 @@ spec:
     spec:
       containers:
         # ESP
+        {{- if .Values.api.esp.useEsp }}
         - name: esp
           image: gcr.io/endpoints-release/endpoints-runtime:2.29.1
           args: [
@@ -65,6 +66,7 @@ spec:
               scheme: {{ if .Values.api.esp.useHttps }}HTTPS{{ else }}HTTP{{ end }}
             initialDelaySeconds: 50
             periodSeconds: 5
+        {{- end }}
         #END ESP
 
         # API

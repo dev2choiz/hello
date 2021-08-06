@@ -24,6 +24,7 @@ api:
       targetCPUUtilizationPercentage: 80
 
   esp:
+    useEsp: true
     useHttps: false
     debug: false
     host: "hello-api.endpoints.samyn-project4.cloud.goog"
