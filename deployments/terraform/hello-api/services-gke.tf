@@ -162,3 +162,29 @@ resource "kubernetes_service" "hello-svc1-cluster-ip" {
   }
 }
 ### End hello-svc1
+
+### Start hello-svc2
+resource "kubernetes_service" "hello-svc2-cluster-ip" {
+  metadata {
+    name      = "${var.app_name}-svc2-cluster-ip"
+    namespace = var.namespace
+    labels = {
+      app       = "${var.app_name}-svc2"
+      component = "hello-svc2-cluster-ip"
+    }
+  }
+  spec {
+    type = "ClusterIP"
+    selector = {
+      app       = "${var.app_name}-svc2"
+      component = "${var.app_name}-svc2-deploy"
+    }
+    port {
+      protocol = "TCP"
+      name = "http"
+      port = 80
+      target_port = 8081
+    }
+  }
+}
+### End hello-svc2

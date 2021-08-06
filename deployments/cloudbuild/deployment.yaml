@@ -8,7 +8,9 @@ steps:
       '-f', './deployments/helm/hello/values.yaml',
       '-f', './deployments/helm/hello/values-${_ENVIRONMENT}.yaml',
       '--set-string', 'api.deployment.image=gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}',
-      '--set-string', 'svc1.deployment.image=gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}']
+      '--set-string', 'svc1.deployment.image=gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}',
+      '--set-string', 'svc2.deployment.image=gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}'
+    ]
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
       - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'

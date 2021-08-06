@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ .Values.svc2.deployment.name }}'
+  labels:
+    app: '{{ .Values.svc2.name }}'
+    component: '{{ .Values.svc2.deployment.name }}'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: '{{ .Values.svc2.name }}'
+      component: '{{ .Values.svc2.deployment.name }}'
+  template:
+    metadata:
+      {{- if .Values.useSvcMesh }}
+      annotations:
+        sidecar.istio.io/inject: '{{ .Values.svc2.deployment.injectAsmSideCar }}'
+      {{- end }}
+      labels:
+        app: '{{ .Values.svc2.name }}'
+        component: '{{ .Values.svc2.deployment.name }}'
+      namespace: {{ .Values.gcp.namespace }}
+    spec:
+      containers:
+        - name: {{ .Values.svc2.name }}
+          image: {{ .Values.svc2.deployment.image }}
+          imagePullPolicy: {{ .Values.svc2.deployment.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.svc2.deployment.port }}
+            name: http
+          command: ['/hello-svc2']
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.svc2.deployment.port }}
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.svc2.deployment.port }}
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 5

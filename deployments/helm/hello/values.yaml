@@ -37,8 +37,20 @@ svc1:
     image:
     pullPolicy: Always
     injectAsmSideCar: 'true'
-
   service:
     name: "hello-svc1-service"
     port: 80
     targetPort: 8081
+
+svc2:
+  name: hello-svc2
+  deployment:
+    name: "hello-svc2-deploy"
+    port: 8082
+    image:
+    pullPolicy: Always
+    injectAsmSideCar: 'true'
+  service:
+    name: "hello-svc2-service"
+    port: 80
+    targetPort: 8082
