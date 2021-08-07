@@ -11,7 +11,7 @@ import (
 
 func ExecuteSvcGrpc(conf *Config) {
 	grpcServer := grpc.NewServer()
-	pingpb.RegisterPingSvcServer(grpcServer, &grpc_handlers.PingSvcServer{ SvcName: conf.Name })
+	pingpb.RegisterPingServer(grpcServer, &grpc_handlers.PingServer{ SvcName: conf.Name })
 
 	lis, err :=net.Listen("tcp", fmt.Sprintf(":%s", conf.GrpcPort))
 	if err != nil {

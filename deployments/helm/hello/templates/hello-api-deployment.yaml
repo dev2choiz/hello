@@ -29,9 +29,10 @@ spec:
           image: gcr.io/endpoints-release/endpoints-runtime:2.29.1
           args: [
             '--listener_port', '{{.Values.api.esp.port}}',
-            '--backend', '127.0.0.1:{{ .Values.api.deployment.port }}',
+            '--backend', '127.0.0.1:{{ .Values.api.deployment.grpcPort }}',
             '--service', '{{.Values.api.esp.host}}',
             '--rollout_strategy', 'managed',
+            '--healthz', '/healthz',
             '--service_account_key', '/etc/esp/creds/credentials.json',
             {{- if .Values.api.esp.useHttps }}
             '--ssl_server_cert_path', '/etc/esp/ssl',
@@ -74,13 +75,11 @@ spec:
           image: {{ .Values.api.deployment.image }}
           imagePullPolicy: {{ .Values.api.deployment.pullPolicy }}
           ports:
-          - containerPort: {{ .Values.api.deployment.port }}
+          - containerPort: {{ .Values.api.deployment.grpcPort }}
             name: http
             #protocol: TCP
-          command: ['/hello-api']
+          command: ['/hello-api', '-mode=grpc', '-grpc-port={{ .Values.api.deployment.grpcPort }}', '-http-port={{ .Values.api.deployment.port }}']
           env:
-            - name: PORT
-              value: "8080"
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/volumes/secrets/sa/credentials.json"
             - name: SVC1_BASE_URL
@@ -91,20 +90,20 @@ spec:
             - name: hello-sa-secret
               mountPath: /volumes/secrets/sa
               readOnly: true
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: {{ .Values.api.deployment.port }}
-              scheme: HTTP
-            initialDelaySeconds: 15
-            periodSeconds: 5
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: {{ .Values.api.deployment.port }}
-              scheme: HTTP
-            initialDelaySeconds: 15
-            periodSeconds: 5
+          #livenessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: {{ .Values.api.deployment.port }}
+          #    scheme: HTTP
+          #  initialDelaySeconds: 15
+          #  periodSeconds: 5
+          #readinessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: {{ .Values.api.deployment.port }}
+          #    scheme: HTTP
+          #  initialDelaySeconds: 15
+          #  periodSeconds: 5
         # END API
       volumes:
         - name: hello-sa-secret

@@ -7,11 +7,11 @@ import (
 	"github.com/dev2choiz/hello/pkg/protobuf/notifypb"
 )
 
-type NotifySvcServer struct {
-	notifypb.UnimplementedNotifySvcServer
+type NotifyServer struct {
+	notifypb.UnimplementedNotifyServer
 }
 
-func (n NotifySvcServer) Status(ctx context.Context, req *notifypb.Function1Request) (*notifypb.Function1Response, error) {
+func (n NotifyServer) Status(ctx context.Context, req *notifypb.Function1Request) (*notifypb.Function1Response, error) {
 	res := &notifypb.Function1Response{}
 
 	client, err := pubsub.NewClient(ctx, "samyn-project4")

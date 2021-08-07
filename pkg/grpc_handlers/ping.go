@@ -5,11 +5,11 @@ import (
 	"github.com/dev2choiz/hello/pkg/protobuf/pingpb"
 )
 
-type PingSvcServer struct {
+type PingServer struct {
 	SvcName string
-	pingpb.UnimplementedPingSvcServer
+	pingpb.UnimplementedPingServer
 }
 
-func (p PingSvcServer) Ping(ctx context.Context, request *pingpb.PingRequest) (*pingpb.PingResponse, error) {
+func (p PingServer) Ping(ctx context.Context, request *pingpb.PingRequest) (*pingpb.PingResponse, error) {
 	return &pingpb.PingResponse{Response: p.SvcName + " ok" }, nil
 }

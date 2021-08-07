@@ -10,15 +10,15 @@ import (
 	"os"
 )
 
-type HealthSvcServer struct {
-	healthpb.UnimplementedHealthSvcServer
+type HealthServer struct {
+	healthpb.UnimplementedHealthServer
 }
 
-func (h HealthSvcServer) Status(ctx context.Context, request *healthpb.StatusRequest) (*healthpb.StatusResponse, error) {
+func (h HealthServer) Status(ctx context.Context, request *healthpb.StatusRequest) (*healthpb.StatusResponse, error) {
 	return &healthpb.StatusResponse{ Status: "ok" }, nil
 }
 
-func (h HealthSvcServer) Check(ctx context.Context, request *healthpb.CheckServicesRequest) (*healthpb.CheckServicesResponse, error) {
+func (h HealthServer) Check(ctx context.Context, request *healthpb.CheckServicesRequest) (*healthpb.CheckServicesResponse, error) {
 	res := &healthpb.CheckServicesResponse{}
 
 	data := map[string]string{}
@@ -39,7 +39,7 @@ func addSvcData(ctx context.Context, data map[string]string, name, url string) {
 		return
 	}
 	defer conn.Close()
-	client := pingpb.NewPingSvcClient(conn)
+	client := pingpb.NewPingClient(conn)
 
 	req := &pingpb.PingRequest{}
 	res, err := client.Ping(ctx, req)

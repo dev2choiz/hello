@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package healthsvc;
+package hello.endpoints.health;
 option go_package="pkg/protobuf/healthpb";
 
 message StatusRequest{}
@@ -17,7 +17,7 @@ message CheckServicesResponse{
     map<string, string> data = 3;
 }
 
-service HealthSvc {
+service Health {
     rpc Status(StatusRequest) returns (StatusResponse) {}
     rpc Check(CheckServicesRequest) returns (CheckServicesResponse) {}
 }

@@ -13,6 +13,7 @@ api:
   # deployment
   deployment:
     name: "hello-api-deploy"
+    grpcPort: 7080
     port: 8080
     image:
     pullPolicy: Always
@@ -34,24 +35,18 @@ svc1:
   name: hello-svc1
   deployment:
     name: "hello-svc1-deploy"
+    grpcPort: 7081
     port: 8081
     image:
     pullPolicy: Always
     injectAsmSideCar: 'true'
-  service:
-    name: "hello-svc1-service"
-    port: 80
-    targetPort: 8081
 
 svc2:
   name: hello-svc2
   deployment:
     name: "hello-svc2-deploy"
+    grpcPort: 7082
     port: 8082
     image:
     pullPolicy: Always
     injectAsmSideCar: 'true'
-  service:
-    name: "hello-svc2-service"
-    port: 80
-    targetPort: 8082

@@ -11,12 +11,9 @@ RUN go mod vendor
 ## Build hello-api
 WORKDIR "/source/cmd/apps/hello-api"
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/hello-api"
-## Build hello-svc1
-WORKDIR "/source/cmd/apps/hello-svc1"
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/hello-svc1"
-## Build hello-svc2
-WORKDIR "/source/cmd/apps/hello-svc2"
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/hello-svc2"
+## Build hello-svc
+WORKDIR "/source/cmd/apps/hello-svc"
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/hello-svc"
 
 WORKDIR /source
 
@@ -24,5 +21,4 @@ FROM gcr.io/distroless/base as release
 
 WORKDIR /
 COPY --from=stage_builder "/source/bin/hello-api" .
-COPY --from=stage_builder "/source/bin/hello-svc1" .
-COPY --from=stage_builder "/source/bin/hello-svc2" .
+COPY --from=stage_builder "/source/bin/hello-svc" .

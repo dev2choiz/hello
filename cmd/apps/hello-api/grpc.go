@@ -13,8 +13,8 @@ import (
 
 func executeApiGrpc(conf *server.Config) {
 	grpcServer := grpc.NewServer()
-	healthpb.RegisterHealthSvcServer(grpcServer, &grpc_handlers.HealthSvcServer{})
-	notifypb.RegisterNotifySvcServer(grpcServer, &grpc_handlers.NotifySvcServer{})
+	healthpb.RegisterHealthServer(grpcServer, &grpc_handlers.HealthServer{})
+	notifypb.RegisterNotifyServer(grpcServer, &grpc_handlers.NotifyServer{})
 
 	lis, err :=net.Listen("tcp", fmt.Sprintf(":%s", conf.GrpcPort))
 	if err != nil {

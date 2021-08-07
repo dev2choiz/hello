@@ -10,3 +10,4 @@ test.sh
 ## debug
 __debug_bin
 pkg/protobuf
+api/config/api_descriptor.pb

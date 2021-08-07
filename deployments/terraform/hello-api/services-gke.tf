@@ -58,9 +58,10 @@ resource "kubernetes_manifest" "hello-api-backend-config" {
         timeoutSec = 2
         healthyThreshold = 1
         unhealthyThreshold = 10
-        type = "HTTP"
+        type = "HTTP2"
         requestPath = "/healthz"
-        port = kubernetes_service.hello-api-node-port.spec.0.port.0.node_port
+        //port = kubernetes_service.hello-api-node-port.spec.0.port.0.node_port
+        port = kubernetes_service.hello-api-node-port.spec.0.port.0.target_port
       }
     }
   }
@@ -121,6 +122,8 @@ resource "kubernetes_ingress" "hello-api-ingress" {
     }
     annotations = {
       // Not work with regional static ip
+      "kubernetes.io/ingress.class": "gce"
+      //"kubernetes.io/ingress.allow-http": "false"
       "kubernetes.io/ingress.global-static-ip-name": google_compute_global_address.hello-api.name
       "networking.gke.io/v1beta1.FrontendConfig": "${var.app_name}-api-frontend-config"
     }

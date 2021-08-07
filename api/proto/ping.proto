@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package pingpb;
+package hello.endpoints.ping;
 option go_package="pkg/protobuf/pingpb";
 
 message PingRequest{}
@@ -9,6 +9,6 @@ message PingResponse{
     string response = 1;
 }
 
-service PingSvc {
+service Ping {
     rpc Ping(PingRequest) returns (PingResponse) {}
 }

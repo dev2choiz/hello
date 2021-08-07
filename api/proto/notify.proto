@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package notifypb;
+package hello.endpoints.notify;
 option go_package="pkg/protobuf/notifypb";
 
 //import "google/api/annotations.proto";
@@ -13,6 +13,6 @@ message Function1Response{
     string ps_id = 1;
 }
 
-service NotifySvc {
+service Notify {
     rpc Status(Function1Request) returns (Function1Response) {}
 }

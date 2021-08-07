@@ -1,0 +1,18 @@
+type: google.api.Service
+config_version: 3
+
+name: hello-api.endpoints.samyn-project4.cloud.goog
+
+title: Hello gRPC API
+apis:
+  - name: hello.endpoints.health.Health
+  - name: hello.endpoints.notify.Notify
+  #- name: hello.endpoints.health.Ping
+
+usage:
+  rules:
+    # ListShelves methods can be called without an API Key.
+    - selector: hello.endpoints.health.Health.Status
+      allow_unregistered_calls: true
+    - selector: hello.endpoints.health.Health.Check
+      allow_unregistered_calls: true

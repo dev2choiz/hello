@@ -1,6 +1,11 @@
 steps:
-  - name: gcr.io/cloud-builders/docker
-    id: ImageBuildAndTag
+  - id: GenerateProtobuf
+    name: 'gcr.io/$PROJECT_ID/protoc:latest'
+    entrypoint: 'bash'
+    args: [ './scripts/generate_proto.sh' ]
+
+  - id: ImageBuildAndTag
+    name: gcr.io/cloud-builders/docker
     args: [
       'build',
       '-f', './docker/prod/Dockerfile',
@@ -9,18 +14,18 @@ steps:
       '-t', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:latest',
       '.']
 
-  - name: gcr.io/cloud-builders/gcloud
-    id: DeleteTAG
+  - id: DeleteTAG
+    name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         gcloud container images delete gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG} --force-delete-tags --quiet || exit 0
 
-  - name: gcr.io/cloud-builders/docker
-    id: ImagePushTAG
+  - id: ImagePushTAG
+    name: gcr.io/cloud-builders/docker
     args: ['push', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:${_APP_TAG}']
 
-  - name: gcr.io/cloud-builders/docker
-    id: ImagePushLatestTAG
+  - id: ImagePushLatestTAG
+    name: gcr.io/cloud-builders/docker
     args: ['push', 'gcr.io/${PROJECT_ID}/${_APP_NAME}:latest']

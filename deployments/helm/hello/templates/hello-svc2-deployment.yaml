@@ -27,20 +27,20 @@ spec:
           image: {{ .Values.svc2.deployment.image }}
           imagePullPolicy: {{ .Values.svc2.deployment.pullPolicy }}
           ports:
-          - containerPort: {{ .Values.svc2.deployment.port }}
-            name: http
-          command: ['/hello-svc2']
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: {{ .Values.svc2.deployment.port }}
-              scheme: HTTP
-            initialDelaySeconds: 15
-            periodSeconds: 5
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: {{ .Values.svc2.deployment.port }}
-              scheme: HTTP
-            initialDelaySeconds: 15
-            periodSeconds: 5
+          - containerPort: {{ .Values.svc2.deployment.grpcPort }}
+            name: grpc-port
+          command: ['/hello-svc', '-name=svc2', '-mode=grpc', '-grpc-port={{ .Values.svc2.deployment.grpcPort }}', '-http-port={{ .Values.svc2.deployment.port }}']
+          #livenessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: {{ .Values.svc2.deployment.port }}
+          #    scheme: HTTP
+          #  initialDelaySeconds: 15
+          #  periodSeconds: 5
+          #readinessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: {{ .Values.svc2.deployment.port }}
+          #    scheme: HTTP
+          #  initialDelaySeconds: 15
+          #  periodSeconds: 5
