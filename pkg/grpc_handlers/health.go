@@ -1,0 +1,54 @@
+package grpc_handlers
+
+import (
+	"context"
+	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
+	"github.com/dev2choiz/hello/pkg/protobuf/pingpb"
+	"github.com/dev2choiz/hello/pkg/version"
+	"google.golang.org/grpc"
+	"log"
+	"os"
+)
+
+type HealthSvcServer struct {
+	healthpb.UnimplementedHealthSvcServer
+}
+
+func (h HealthSvcServer) Status(ctx context.Context, request *healthpb.StatusRequest) (*healthpb.StatusResponse, error) {
+	return &healthpb.StatusResponse{ Status: "ok" }, nil
+}
+
+func (h HealthSvcServer) Check(ctx context.Context, request *healthpb.CheckServicesRequest) (*healthpb.CheckServicesResponse, error) {
+	res := &healthpb.CheckServicesResponse{}
+
+	data := map[string]string{}
+	addSvcData(ctx, data, "svc1", os.Getenv("SVC1_GRPC_BASE_URL"))
+	addSvcData(ctx, data, "svc2", os.Getenv("SVC2_GRPC_BASE_URL"))
+
+	res.Status = "ok"
+	res.Version = version.Get()
+	res.Data = data
+
+	return res, nil
+}
+
+func addSvcData(ctx context.Context, data map[string]string, name, url string) {
+	conn, err := grpc.Dial(url, grpc.WithInsecure())
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer conn.Close()
+	client := pingpb.NewPingSvcClient(conn)
+
+	req := &pingpb.PingRequest{}
+	res, err := client.Ping(ctx, req)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	data[name] = res.Response
+
+	return
+}

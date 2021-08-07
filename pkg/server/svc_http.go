@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -6,18 +6,17 @@ import (
 	"net/http"
 )
 
-func main() {
+func ExecuteSvcHttp(conf *Config) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		helper.Json(w, http.StatusOK, map[string]interface{}{
-			"response": "svc2 ok",
+			"response": conf.Name + " ok",
 		})
 	})
 
 	http.HandleFunc("/healthz", helper.OkHandler)
 
-	p := "8082"
-	fmt.Println("listen :", p)
-	err := http.ListenAndServe(fmt.Sprintf(":%s", p), nil)
+	fmt.Println("listen :", conf.HttpPort)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", conf.HttpPort), nil)
 	if err != nil {
 		panic(err)
 	}

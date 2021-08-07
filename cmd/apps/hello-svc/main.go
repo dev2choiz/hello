@@ -7,8 +7,8 @@ import (
 func main() {
 	conf := server.GetConfig()
 	if conf.Mode == "http" {
-		executeApiHttp(conf)
+		server.ExecuteSvcHttp(conf)
 	} else {
-		executeApiGrpc(conf)
+		server.ExecuteSvcGrpc(conf)
 	}
 }

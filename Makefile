@@ -8,12 +8,16 @@ up:
 start: down vendor up
 
 debug:
-	docker-compose -f docker-compose.yml -f docker-compose.debug.yml stop primary
-	docker-compose -f docker-compose.yml -f docker-compose.debug.yml up -d --build primary
-	docker-compose -f docker-compose.yml -f docker-compose.debug.yml logs -f primary
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml stop hello-api
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml up -d --build hello-api
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml logs -f hello-api
 
 logs:
-	docker-compose -f docker-compose.yml logs -f primary
+	docker-compose -f docker-compose.yml logs -f hello-api
+logs1:
+	docker-compose -f docker-compose.yml logs -f hello-svc1
+logs2:
+	docker-compose -f docker-compose.yml logs -f hello-svc2
 
 test:
 	go test -v ./...

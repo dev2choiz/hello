@@ -3,8 +3,10 @@ version: '3.7'
 services:
   hello-api:
     command: bash -c "
-      go get github.com/go-delve/delve/cmd/dlv
+      cd
+      && go get github.com/go-delve/delve/cmd/dlv
+      && cd -
       && cd cmd/apps/hello-api
-      && dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug main.go"
+      && dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug ."
     ports:
       - 2345:2345

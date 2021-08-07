@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package healthsvc;
+option go_package="pkg/protobuf/healthpb";
+
+message StatusRequest{}
+
+message StatusResponse{
+    string status = 1;
+}
+
+message CheckServicesRequest{}
+
+message CheckServicesResponse{
+    string status = 1;
+    string version = 2;
+    map<string, string> data = 3;
+}
+
+service HealthSvc {
+    rpc Status(StatusRequest) returns (StatusResponse) {}
+    rpc Check(CheckServicesRequest) returns (CheckServicesResponse) {}
+}

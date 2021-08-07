@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Generate protobuf"
+rm -rf pkg/protobuf/*
 
 #protoc --proto_path=api/proto \
 #  --proto_path=third_party \
@@ -20,4 +21,4 @@ protoc --proto_path=api/proto \
   --go_out=. \
   --go-grpc_out=. \
   --grpc-gateway_out=. \
-  check_svc.proto
+  health.proto notify.proto ping.proto

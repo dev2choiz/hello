@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pingpb;
+option go_package="pkg/protobuf/pingpb";
+
+message PingRequest{}
+
+message PingResponse{
+    string response = 1;
+}
+
+service PingSvc {
+    rpc Ping(PingRequest) returns (PingResponse) {}
+}

@@ -32,13 +32,16 @@ services:
       target: stage_dev
     command: bash -c "
       cd cmd/apps/hello-api
-      && go run main.go"
+      && go run . -mode=grpc -grpc-port=7080 -http-port=8080"
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: '/volumes/secrets/sa/credentials.json'
-      SVC1_BASE_URL: 'http://svc1:8081'
-      SVC2_BASE_URL: 'http://svc2:8082'
+      SVC1_GRPC_BASE_URL: 'hello-svc1:7081'
+      SVC2_GRPC_BASE_URL: 'hello-svc2:7082'
+      SVC1_BASE_URL: 'http://hello-svc1:8081'
+      SVC2_BASE_URL: 'http://hello-svc2:8082'
     ports:
       - '8080:8080'
+      - '7080:7080'
     volumes:
       - .:/app
       - ./local/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json
@@ -50,10 +53,11 @@ services:
       dockerfile: ./docker/dev/Dockerfile
       target: stage_dev
     command: bash -c "
-      cd cmd/apps/hello-svc1
-      && go run main.go"
+      cd cmd/apps/hello-svc
+      && go run . -name=svc1 -mode=grpc -grpc-port=7081 -http-port=8081"
     ports:
       - '8081:8081'
+      - '7081:7081'
     volumes:
       - .:/app
       - ./volumes/hello-svc1/go:/go
@@ -64,10 +68,11 @@ services:
       dockerfile: ./docker/dev/Dockerfile
       target: stage_dev
     command: bash -c "
-      cd cmd/apps/hello-svc2
-      && go run main.go"
+      cd cmd/apps/hello-svc
+      && go run . -name=svc2 -mode=grpc -grpc-port=7082 -http-port=8082"
     ports:
       - '8082:8082'
+      - '7082:7082'
     volumes:
       - .:/app
       - ./volumes/hello-svc2/go:/go

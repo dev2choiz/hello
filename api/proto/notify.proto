@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package notifypb;
+option go_package="pkg/protobuf/notifypb";
+
+//import "google/api/annotations.proto";
+
+message Function1Request{
+    string name = 1;
+}
+
+message Function1Response{
+    string ps_id = 1;
+}
+
+service NotifySvc {
+    rpc Status(Function1Request) returns (Function1Response) {}
+}
