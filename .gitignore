@@ -9,3 +9,4 @@ test.sh
 
 ## debug
 __debug_bin
+pkg/protobuf

@@ -19,7 +19,9 @@ test:
 	go test -v ./...
 
 sh:
-	docker-compose exec primary bash
+	docker-compose exec hello-api bash
+sh-proto:
+	docker-compose exec protoc bash
 
 vendor:
 	docker run -v `pwd`:`pwd` -w `pwd` golang:1.16 go mod tidy
@@ -27,3 +29,6 @@ vendor:
 
 tag: ## example: TAG=v1.0.1 make tag
 	scripts/git-tag.sh $(TAG)
+
+gen-proto:
+	docker-compose exec -w /app protoc ./scripts/generate_proto.sh

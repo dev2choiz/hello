@@ -64,10 +64,20 @@ services:
       dockerfile: ./docker/dev/Dockerfile
       target: stage_dev
     command: bash -c "
-      cd cmd/apps/svc2
+      cd cmd/apps/hello-svc2
       && go run main.go"
     ports:
       - '8082:8082'
     volumes:
       - .:/app
       - ./volumes/hello-svc2/go:/go
+
+  protoc:
+    build:
+      context: .
+      dockerfile: ./docker/protoc/Dockerfile
+      target: release
+    entrypoint: ["tail"]
+    command: ["-f", "/dev/null"]
+    volumes:
+      - .:/app

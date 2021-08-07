@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package checksvc;
+option go_package="pkg/protobuf/check_svc_pb";
+
+//import "google/api/annotations.proto";
+
+message CheckRequest{}
+
+message CheckResponse{
+    string status = 1;
+    string service = 2;
+}
+
+service CheckSvc {
+    rpc Check(CheckRequest) returns (CheckResponse) {}
+}
