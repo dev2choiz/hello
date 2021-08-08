@@ -113,9 +113,9 @@ spec:
         - name: hello-tls-secret
           secret:
             secretName: hello-tls-credentials
-            items:
-              - key: tls.key
-                path: server.key
-              - key: tls.crt
-                path: server.crt
+            #items:
+            #  - key: tls.key
+            #    path: server.key
+            #  - key: tls.crt
+            #    path: server.crt
         {{- end }}
