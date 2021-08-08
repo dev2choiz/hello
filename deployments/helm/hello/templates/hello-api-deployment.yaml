@@ -26,10 +26,10 @@ spec:
         # ESP
         {{- if .Values.api.esp.useEsp }}
         - name: esp
-          image: gcr.io/endpoints-release/endpoints-runtime:2.29.1
+          image: gcr.io/endpoints-release/endpoints-runtime:2
           args: [
             '--listener_port', '{{.Values.api.esp.port}}',
-            '--backend', '127.0.0.1:{{ .Values.api.deployment.grpcPort }}',
+            '--backend', 'grpc://127.0.0.1:{{ .Values.api.deployment.grpcPort }}',
             '--service', '{{.Values.api.esp.host}}',
             '--rollout_strategy', 'managed',
             '--healthz', '/healthz',

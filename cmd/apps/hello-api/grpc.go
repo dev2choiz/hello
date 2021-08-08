@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/dev2choiz/hello/pkg/grpc_handlers"
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
@@ -12,7 +13,14 @@ import (
 )
 
 func executeApiGrpc(conf *server.Config) {
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+		log.Println(info.FullMethod)
+		h, err := handler(ctx, req)
+		if err != nil {
+			log.Println(err)
+		}
+		return h, err
+	}))
 	healthpb.RegisterHealthServer(grpcServer, &grpc_handlers.HealthServer{})
 	notifypb.RegisterNotifyServer(grpcServer, &grpc_handlers.NotifyServer{})
 

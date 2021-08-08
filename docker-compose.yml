@@ -2,28 +2,29 @@ version: '3.7'
 
 services:
   esp:
-    image: "gcr.io/endpoints-release/endpoints-runtime:2.29.1"
+    image: "gcr.io/endpoints-release/endpoints-runtime:2"
     depends_on:
       - hello-api
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/etc/nginx/creds/credentials.json
     command:
         - "--listener_port=9000"
-        - "--backend=hello:8080"
+        - "--backend=grpc://hello-api:7080"
         - "--service=hello-api.endpoints.samyn-project4.cloud.goog"
         - "--rollout_strategy=managed"
+        - "--healthz=/healthz"
         - "--service_account_key=/etc/nginx/creds/credentials.json"
         - "--cors_preset=basic"
-        - "--cors_allow_origin=http://localhost:8080"
+        - "--cors_allow_origin=http://localhost:7080"
         - "--non_gcp"
-        - "--enable_debug"
+        #- "--enable_debug"
         - "--ssl_server_cert_path=/etc/esp/ssl"
     ports:
       - 9000:9000
     volumes:
       - ./local/files/sa-hello-api-credentials.json:/etc/nginx/creds/credentials.json
-      - ./local/files/cert/dev/certificate.crt:/etc/esp/ssl/server.crt
-      - ./local/files/cert/dev/private.key:/etc/esp/ssl/server.key
+      - ./local/files/cert/dev/server.crt:/etc/esp/ssl/server.crt
+      - ./local/files/cert/dev/server.key:/etc/esp/ssl/server.key
 
   hello-api:
     build:

@@ -18,6 +18,8 @@ logs1:
 	docker-compose -f docker-compose.yml logs -f hello-svc1
 logs2:
 	docker-compose -f docker-compose.yml logs -f hello-svc2
+logs-esp:
+	docker-compose -f docker-compose.yml logs -f esp
 
 test:
 	go test -v ./...
