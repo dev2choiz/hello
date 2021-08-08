@@ -17,7 +17,7 @@ api:
     port: 8080
     image:
     pullPolicy: Always
-    injectAsmSideCar: 'true'
+    injectAsmSideCar: 'false'
     hpa:
       name: 'hello-api-deploy-hpa'
       minReplicaCount: 1
@@ -39,7 +39,7 @@ svc1:
     port: 8081
     image:
     pullPolicy: Always
-    injectAsmSideCar: 'true'
+    injectAsmSideCar: 'false'
 
 svc2:
   name: hello-svc2
@@ -49,4 +49,4 @@ svc2:
     port: 8082
     image:
     pullPolicy: Always
-    injectAsmSideCar: 'true'
+    injectAsmSideCar: 'false'
