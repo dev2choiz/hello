@@ -17,8 +17,8 @@ services:
         - "--cors_preset=basic"
         - "--cors_allow_origin=http://localhost:7080"
         - "--non_gcp"
-        #- "--enable_debug"
-        - "--ssl_server_cert_path=/etc/esp/ssl"
+        - "--enable_debug"
+        #- "--ssl_server_cert_path=/etc/esp/ssl"
     ports:
       - 9000:9000
     volumes:
