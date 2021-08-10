@@ -83,9 +83,9 @@ spec:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/volumes/secrets/sa/credentials.json"
             - name: SVC1_GRPC_BASE_URL
-              value: "hello-svc1-cluster-ip"
+              value: "hello-svc1-cluster-ip:80"
             - name: SVC2_GRPC_BASE_URL
-              value: "hello-svc1-cluster-ip"
+              value: "hello-svc1-cluster-ip:80"
             - name: SVC1_BASE_URL
               value: "http://hello-svc1-cluster-ip"
             - name: SVC2_BASE_URL
