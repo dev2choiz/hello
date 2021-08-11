@@ -11,8 +11,9 @@ apis:
 
 usage:
   rules:
-    # ListShelves methods can be called without an API Key.
-    - selector: hello.endpoints.health.Health.Status
+    - selector: hello.endpoints.health.Health.*
       allow_unregistered_calls: true
-    - selector: hello.endpoints.health.Health.Check
-      allow_unregistered_calls: true
+#    - selector: hello.endpoints.health.Health.Check
+#      allow_unregistered_calls: true
+#    - selector: hello.endpoints.health.Health.Healthz
+#      allow_unregistered_calls: true

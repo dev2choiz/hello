@@ -6,8 +6,12 @@ option go_package="pkg/protobuf/healthpb";
 import "google/api/annotations.proto";
 
 message StatusRequest{}
-
 message StatusResponse{
+    string status = 1;
+}
+
+message HealthzRequest{}
+message HealthzResponse{
     string status = 1;
 }
 
@@ -23,6 +27,11 @@ service Health {
     rpc Status(StatusRequest) returns (StatusResponse) {
         option (google.api.http) = { get: "/" };
     }
+
+    rpc Healthz(HealthzRequest) returns (HealthzResponse) {
+        option (google.api.http) = { get: "/healthz" };
+    }
+
     rpc Check(CheckServicesRequest) returns (CheckServicesResponse) {
         option (google.api.http) = { get: "/check" };
     }

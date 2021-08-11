@@ -38,3 +38,10 @@ tag: ## example: TAG=v1.0.1 make tag
 
 gen-proto:
 	docker-compose exec -w /app protoc ./scripts/generate_proto.sh
+
+deploy-endpoint: gen-proto
+	gcloud endpoints services deploy api/config/api_descriptor.pb ./api/config/api_config.yaml
+
+restart-esp:
+	docker-compose stop esp
+	docker-compose up -d --build esp

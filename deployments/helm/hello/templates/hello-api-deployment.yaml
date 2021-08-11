@@ -32,7 +32,7 @@ spec:
             '--backend', 'grpc://127.0.0.1:{{ .Values.api.app.grpcPort }}',
             '--service', '{{ .Values.api.esp.host }}',
             '--rollout_strategy', 'managed',
-            '--healthz', '/healthz',
+            #'--healthz', '/healthz',
             '--service_account_key', '/etc/esp/creds/credentials.json',
             {{- if .Values.api.esp.useHttps }}
             '--ssl_server_cert_path', '/etc/esp/ssl',

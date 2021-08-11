@@ -38,4 +38,3 @@ func executeApiGrpc(conf *server.Config) {
 		panic(err)
 	}
 }
-

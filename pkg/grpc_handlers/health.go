@@ -14,6 +14,10 @@ type HealthServer struct {
 	healthpb.UnimplementedHealthServer
 }
 
+func (h HealthServer) Healthz(ctx context.Context, request *healthpb.HealthzRequest) (*healthpb.HealthzResponse, error) {
+	return &healthpb.HealthzResponse{ Status: "ok" }, nil
+}
+
 func (h HealthServer) Status(ctx context.Context, request *healthpb.StatusRequest) (*healthpb.StatusResponse, error) {
 	return &healthpb.StatusResponse{ Status: "ok" }, nil
 }

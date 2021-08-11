@@ -12,7 +12,7 @@ services:
         - "--backend=grpc://hello-api:7080"
         - "--service=hello-api.endpoints.samyn-project4.cloud.goog"
         - "--rollout_strategy=managed"
-        - "--healthz=/healthz"
+        #- "--healthz=/healthz"
         - "--service_account_key=/etc/nginx/creds/credentials.json"
         - "--cors_preset=basic"
         - "--cors_allow_origin=http://localhost:7080"
