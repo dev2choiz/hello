@@ -3,6 +3,8 @@ syntax = "proto3";
 package hello.endpoints.health;
 option go_package="pkg/protobuf/healthpb";
 
+import "google/api/annotations.proto";
+
 message StatusRequest{}
 
 message StatusResponse{
@@ -18,6 +20,10 @@ message CheckServicesResponse{
 }
 
 service Health {
-    rpc Status(StatusRequest) returns (StatusResponse) {}
-    rpc Check(CheckServicesRequest) returns (CheckServicesResponse) {}
+    rpc Status(StatusRequest) returns (StatusResponse) {
+        option (google.api.http) = { get: "/" };
+    }
+    rpc Check(CheckServicesRequest) returns (CheckServicesResponse) {
+        option (google.api.http) = { get: "/check" };
+    }
 }

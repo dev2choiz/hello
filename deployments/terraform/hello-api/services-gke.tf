@@ -53,6 +53,12 @@ resource "kubernetes_manifest" "hello-api-backend-config" {
       namespace = var.namespace
     }
     spec = {
+      logging = {
+        enable = true
+      }
+
+      timeoutSec = 40
+
       healthCheck = {
         checkIntervalSec = 5
         timeoutSec = 2
@@ -60,8 +66,8 @@ resource "kubernetes_manifest" "hello-api-backend-config" {
         unhealthyThreshold = 10
         type = "HTTP2"
         requestPath = "/healthz"
-        //port = kubernetes_service.hello-api-node-port.spec.0.port.0.node_port
-        port = kubernetes_service.hello-api-node-port.spec.0.port.0.target_port
+        port = kubernetes_service.hello-api-node-port.spec.0.port.0.node_port
+        //port = kubernetes_service.hello-api-node-port.spec.0.port.0.target_port
       }
     }
   }
@@ -93,7 +99,9 @@ resource "kubernetes_service" "hello-api-node-port" {
       component = "${var.app_name}-api-nodeport"
     }
     annotations = {
-      "cloud.google.com/backend-config": "{\"default\":\"${var.app_name}-api-backend-config\"}"
+      //"cloud.google.com/backend-config": "{\"default\":\"${var.app_name}-api-backend-config\"}"
+      "cloud.google.com/backend-config": "{\"ports\": {\"443\":\"${var.app_name}-api-backend-config\"}}"
+      "cloud.google.com/app-protocols": "{\"https\":\"HTTP2\"}"
     }
   }
   spec {
@@ -104,8 +112,9 @@ resource "kubernetes_service" "hello-api-node-port" {
     }
     port {
       protocol = "TCP"
-      name = "http"
-      port = 9001
+      name = "https"
+      port = 443
+      //port = 9001
       target_port = 9000 # esp
       //target_port = 8080 # api
     }
@@ -123,7 +132,7 @@ resource "kubernetes_ingress" "hello-api-ingress" {
     annotations = {
       // Not work with regional static ip
       "kubernetes.io/ingress.class": "gce"
-      //"kubernetes.io/ingress.allow-http": "false"
+      "kubernetes.io/ingress.allow-http": "false"
       "kubernetes.io/ingress.global-static-ip-name": google_compute_global_address.hello-api.name
       "networking.gke.io/v1beta1.FrontendConfig": "${var.app_name}-api-frontend-config"
     }
