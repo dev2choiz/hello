@@ -1,7 +1,6 @@
 
 environment: staging
 
-# GCP
 gcp:
   projectId: samyn-project4
   namespace: lazone
@@ -10,19 +9,27 @@ useSvcMesh: true
 
 api:
   name: hello-api
-  # deployment
   deployment:
     name: "hello-api-deploy"
+    injectAsmSideCar: 'false'
+
+  app:
     grpcPort: 7080
     port: 8080
     image:
     pullPolicy: Always
-    injectAsmSideCar: 'false'
-    hpa:
-      name: 'hello-api-deploy-hpa'
-      minReplicaCount: 1
-      maxReplicaCount: 1
-      targetCPUUtilizationPercentage: 80
+    cpu:
+      min: 50m
+      max: 100m
+    memory:
+      min: 64Mi
+      max: 100Mi
+
+  hpa:
+    name: 'hello-api-deploy-hpa'
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
 
   esp:
     useEsp: true
@@ -30,23 +37,31 @@ api:
     debug: false
     host: "hello-api.endpoints.samyn-project4.cloud.goog"
     port: 9000
+    cpu:
+      min: 80m
+      max: 160m
+    memory:
+      min: 64Mi
+      max: 100Mi
 
 svc1:
   name: hello-svc1
   deployment:
     name: "hello-svc1-deploy"
+    injectAsmSideCar: 'false'
+  app:
     grpcPort: 7081
     port: 8081
     image:
     pullPolicy: Always
-    injectAsmSideCar: 'false'
 
 svc2:
   name: hello-svc2
   deployment:
     name: "hello-svc2-deploy"
+    injectAsmSideCar: 'false'
+  app:
     grpcPort: 7082
     port: 8082
     image:
     pullPolicy: Always
-    injectAsmSideCar: 'false'

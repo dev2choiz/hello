@@ -6,7 +6,7 @@ metadata:
     app: '{{ .Values.api.name }}'
     component: '{{ .Values.api.deployment.name }}'
 spec:
-  replicas: {{ .Values.api.deployment.hpa.minReplicaCount }}
+  replicas: {{ .Values.api.hpa.minReplicas }}
   selector:
     matchLabels:
       app: '{{ .Values.api.name }}'
@@ -29,7 +29,7 @@ spec:
           image: gcr.io/endpoints-release/endpoints-runtime:2
           args: [
             '--listener_port', '{{.Values.api.esp.port}}',
-            '--backend', 'grpc://127.0.0.1:{{ .Values.api.deployment.grpcPort }}',
+            '--backend', 'grpc://127.0.0.1:{{ .Values.api.app.grpcPort }}',
             '--service', '{{.Values.api.esp.host}}',
             '--rollout_strategy', 'managed',
             '--healthz', '/healthz',
@@ -67,18 +67,25 @@ spec:
               scheme: {{ if .Values.api.esp.useHttps }}HTTPS{{ else }}HTTP{{ end }}
             initialDelaySeconds: 50
             periodSeconds: 5
+          resources:
+            requests:
+              cpu: {{ .Values.api.esp.cpu.min }}
+              memory: {{ .Values.api.esp.memory.min }}
+            limits:
+              cpu: {{ .Values.api.esp.cpu.max }}
+              memory: {{ .Values.api.esp.memory.max }}
         {{- end }}
         #END ESP
 
         # API
         - name: {{ .Values.api.name }}
-          image: {{ .Values.api.deployment.image }}
-          imagePullPolicy: {{ .Values.api.deployment.pullPolicy }}
+          image: {{ .Values.api.app.image }}
+          imagePullPolicy: {{ .Values.api.app.pullPolicy }}
           ports:
-          - containerPort: {{ .Values.api.deployment.grpcPort }}
+          - containerPort: {{ .Values.api.app.grpcPort }}
             name: http
             #protocol: TCP
-          command: ['/hello-api', '-mode=grpc', '-grpc-port={{ .Values.api.deployment.grpcPort }}', '-http-port={{ .Values.api.deployment.port }}']
+          command: ['/hello-api', '-mode=grpc', '-grpc-port={{ .Values.api.app.grpcPort }}', '-http-port={{ .Values.api.app.port }}']
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/volumes/secrets/sa/credentials.json"
@@ -94,17 +101,24 @@ spec:
             - name: hello-sa-secret
               mountPath: /volumes/secrets/sa
               readOnly: true
+          resources:
+            requests:
+              cpu: {{ .Values.api.app.cpu.min }}
+              memory: {{ .Values.api.app.memory.min }}
+            limits:
+              cpu: {{ .Values.api.app.cpu.max }}
+              memory: {{ .Values.api.app.memory.max }}
           #livenessProbe:
           #  httpGet:
           #    path: /healthz
-          #    port: {{ .Values.api.deployment.port }}
+          #    port: {{ .Values.api.app.port }}
           #    scheme: HTTP
           #  initialDelaySeconds: 15
           #  periodSeconds: 5
           #readinessProbe:
           #  httpGet:
           #    path: /healthz
-          #    port: {{ .Values.api.deployment.port }}
+          #    port: {{ .Values.api.app.port }}
           #    scheme: HTTP
           #  initialDelaySeconds: 15
           #  periodSeconds: 5
