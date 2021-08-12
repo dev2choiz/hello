@@ -8,7 +8,6 @@ import (
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
 	"github.com/dev2choiz/hello/pkg/protobuf/notifypb"
 	"github.com/dev2choiz/hello/pkg/server"
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"net"
 	"os"
@@ -44,7 +43,7 @@ func executeApiGrpc(conf *server.Config) {
 	signal.Notify(stopChan, syscall.SIGTERM, syscall.SIGINT)
 
 	go func() {
-		logger.Info("starting gRPC server...", zap.String("port", conf.Port))
+		logger.Infof("starting gRPC server on :%s", conf.Port)
 		if err = grpcServer.Serve(lis); err != nil {
 			errChan <- err
 		}

@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
@@ -54,6 +55,10 @@ func configureForStackDriver(conf *zap.Config) {
 
 func Info(msg string, fields ...zap.Field) {
 	inst.Info(msg, fields...)
+}
+
+func Infof(msg string, args ...interface{}) {
+	inst.Info(fmt.Sprintf(msg, args...))
 }
 
 func Warn(msg string, fields ...zap.Field) {
