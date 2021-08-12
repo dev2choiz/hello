@@ -93,7 +93,8 @@ steps:
        '--entry-point', '${_ENTRYPOINT}',
        '--trigger-topic', '${_TRIGGER_TOPIC}',
        '--timeout', '30s',
-       '--service-account', '${_SERVICE_ACCOUNT}'
+       '--service-account', '${_SERVICE_ACCOUNT}',
+       '--set-env-vars', 'APP_ENV=${_APP_ENV}',
        #'--clear-vpc-connector'
        ]
     dir: '${_FUNCTION_SOURCE_PATH}'

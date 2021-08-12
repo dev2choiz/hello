@@ -13,7 +13,3 @@ usage:
   rules:
     - selector: hello.endpoints.health.Health.*
       allow_unregistered_calls: true
-#    - selector: hello.endpoints.health.Health.Check
-#      allow_unregistered_calls: true
-#    - selector: hello.endpoints.health.Health.Healthz
-#      allow_unregistered_calls: true

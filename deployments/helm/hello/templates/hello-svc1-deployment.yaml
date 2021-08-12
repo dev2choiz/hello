@@ -30,6 +30,9 @@ spec:
           - containerPort: {{ .Values.svc1.app.grpcPort }}
             name: grpc-port
           command: ['/hello-svc', '-name=svc1', '-mode=grpc', '-grpc-port={{ .Values.svc1.app.grpcPort }}', '-http-port={{ .Values.svc1.app.port }}']
+          env:
+            - name: APP_ENV
+              value: "{{ .Values.environment }}"
           #livenessProbe:
           #  httpGet:
           #    path: /healthz

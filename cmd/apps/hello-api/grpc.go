@@ -3,21 +3,23 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/dev2choiz/hello/internal/logger"
 	"github.com/dev2choiz/hello/pkg/grpc_handlers"
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
 	"github.com/dev2choiz/hello/pkg/protobuf/notifypb"
 	"github.com/dev2choiz/hello/pkg/server"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
-	"log"
 	"net"
 )
 
 func executeApiGrpc(conf *server.Config) {
 	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
-		log.Println(info.FullMethod)
+		logger.Info(info.FullMethod)
+		logger.RInfo(info.FullMethod)
 		h, err := handler(ctx, req)
 		if err != nil {
-			log.Println(err)
+			logger.Error(err)
 		}
 		return h, err
 	}))
@@ -26,13 +28,16 @@ func executeApiGrpc(conf *server.Config) {
 
 	lis, err :=net.Listen("tcp", fmt.Sprintf(":%s", conf.GrpcPort))
 	if err != nil {
-		log.Fatalf("Failed to listen: %v", err)
+		logger.Fatalf("Failed to listen: %v", err)
 	}
 	defer lis.Close()
 
 	// start gRPC server
-	log.Println("starting gRPC server...")
-	log.Println(fmt.Sprintf(":%s", conf.GrpcPort))
+	logger.Info("starting gRPC server...")
+	logger.Infof(":%s", conf.GrpcPort)
+
+	logger.RInfo("starting gRPC server...")
+	logger.RInfo(":%s", zap.String("port", conf.GrpcPort))
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		panic(err)

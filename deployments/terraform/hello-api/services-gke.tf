@@ -60,7 +60,7 @@ resource "kubernetes_manifest" "hello-api-backend-config" {
       timeoutSec = 40
 
       healthCheck = {
-        checkIntervalSec = 5
+        checkIntervalSec = 30
         timeoutSec = 2
         healthyThreshold = 1
         unhealthyThreshold = 10

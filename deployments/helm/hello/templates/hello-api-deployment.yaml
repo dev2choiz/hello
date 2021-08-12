@@ -87,6 +87,8 @@ spec:
             #protocol: TCP
           command: ['/hello-api', '-mode=grpc', '-grpc-port={{ .Values.api.app.grpcPort }}', '-http-port={{ .Values.api.app.port }}']
           env:
+            - name: APP_ENV
+              value: "{{ .Values.environment }}"
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/volumes/secrets/sa/credentials.json"
             - name: SVC1_GRPC_BASE_URL
