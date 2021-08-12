@@ -85,7 +85,7 @@ spec:
           - containerPort: {{ .Values.api.app.grpcPort }}
             name: http
             #protocol: TCP
-          command: ['/hello-api', '-mode=grpc', '-grpc-port={{ .Values.api.app.grpcPort }}', '-http-port={{ .Values.api.app.port }}']
+          command: ['/hello-api', '-port={{ .Values.api.app.grpcPort }}']
           env:
             - name: APP_ENV
               value: "{{ .Values.environment }}"
