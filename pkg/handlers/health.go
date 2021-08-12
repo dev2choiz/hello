@@ -1,12 +1,12 @@
-package grpc_handlers
+package handlers
 
 import (
 	"context"
+	"github.com/dev2choiz/hello/internal/logger"
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
 	"github.com/dev2choiz/hello/pkg/protobuf/pingpb"
 	"github.com/dev2choiz/hello/pkg/version"
 	"google.golang.org/grpc"
-	"log"
 	"os"
 )
 
@@ -39,7 +39,7 @@ func (h HealthServer) Check(ctx context.Context, request *healthpb.CheckServices
 func addSvcData(ctx context.Context, data map[string]string, name, url string) {
 	conn, err := grpc.Dial(url, grpc.WithInsecure())
 	if err != nil {
-		log.Println(err)
+		logger.Info(err.Error())
 		return
 	}
 	defer conn.Close()
@@ -48,7 +48,7 @@ func addSvcData(ctx context.Context, data map[string]string, name, url string) {
 	req := &pingpb.PingRequest{}
 	res, err := client.Ping(ctx, req)
 	if err != nil {
-		log.Println(err)
+		logger.Info(err.Error())
 		return
 	}
 

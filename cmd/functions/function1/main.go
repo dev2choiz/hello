@@ -3,8 +3,9 @@ package function1
 import (
 	"cloud.google.com/go/pubsub"
 	"context"
-	"fmt"
+	"github.com/dev2choiz/hello/internal/logger"
 	f1 "github.com/dev2choiz/hello/pkg/function1"
+	"go.uber.org/zap"
 )
 
 type PubSubMessage struct {
@@ -12,8 +13,7 @@ type PubSubMessage struct {
 }
 
 func Function1(ctx context.Context, m pubsub.Message) error {
-	fmt.Println("received msg:")
-	fmt.Println("Data", m.Data)
+	logger.Info("received msg:", zap.String("data", string(m.Data)))
 	name := string(m.Data)
 	if name == "" {
 		name = "World"

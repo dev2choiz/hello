@@ -20,7 +20,7 @@ func init() {
 
 	logger.Info("config",
 		zap.String("name", RunConfig.Name),
-		zap.String("grpc-port", RunConfig.Port))
+		zap.String("port", RunConfig.Port))
 }
 
 func GetConfig() *Config {

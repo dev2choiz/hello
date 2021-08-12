@@ -1,16 +1,17 @@
 package function1
 
 import (
-	"fmt"
+	"github.com/dev2choiz/hello/internal/logger"
 	"github.com/dev2choiz/hello/pkg/version"
+	"go.uber.org/zap"
 	"time"
 )
 
 func DoFunction1(name string) error {
 	sec := 20
-	fmt.Println("Hello ", name, ".\nVersion = ", version.Get())
+	logger.Info("hello " + name, zap.String("version", version.Get()))
 	<-time.After(time.Duration(sec) * time.Second)
-	fmt.Println("Log after waiting ", sec, " seconds")
+	logger.Info("bye " + name)
 
 	return nil
 }

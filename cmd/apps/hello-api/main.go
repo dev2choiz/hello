@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/dev2choiz/hello/internal/logger"
-	"github.com/dev2choiz/hello/pkg/grpc_handlers"
+	"github.com/dev2choiz/hello/pkg/handlers"
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
 	"github.com/dev2choiz/hello/pkg/protobuf/notifypb"
 	"github.com/dev2choiz/hello/pkg/server"
@@ -27,8 +27,8 @@ func executeApiGrpc(conf *server.Config) {
 		}
 		return h, err
 	}))
-	healthpb.RegisterHealthServer(grpcServer, &grpc_handlers.HealthServer{})
-	notifypb.RegisterNotifyServer(grpcServer, &grpc_handlers.NotifyServer{})
+	healthpb.RegisterHealthServer(grpcServer, &handlers.HealthServer{})
+	notifypb.RegisterNotifyServer(grpcServer, &handlers.NotifyServer{})
 
 	lis, err :=net.Listen("tcp", fmt.Sprintf(":%s", conf.Port))
 	if err != nil {
