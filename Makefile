@@ -42,6 +42,10 @@ gen-proto:
 deploy-endpoint: gen-proto
 	gcloud endpoints services deploy api/config/api_descriptor.pb ./api/config/api_config.yaml
 
+restart-api:
+	docker-compose stop hello-api
+	docker-compose up -d --build hello-api
+
 restart-esp:
 	docker-compose stop esp
 	docker-compose up -d --build esp

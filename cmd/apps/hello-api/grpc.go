@@ -16,10 +16,9 @@ import (
 func executeApiGrpc(conf *server.Config) {
 	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 		logger.Info(info.FullMethod)
-		logger.RInfo(info.FullMethod)
 		h, err := handler(ctx, req)
 		if err != nil {
-			logger.Error(err)
+			logger.Error(err.Error())
 		}
 		return h, err
 	}))
@@ -28,16 +27,12 @@ func executeApiGrpc(conf *server.Config) {
 
 	lis, err :=net.Listen("tcp", fmt.Sprintf(":%s", conf.GrpcPort))
 	if err != nil {
-		logger.Fatalf("Failed to listen: %v", err)
+		logger.Fatal("Failed to listen: " + err.Error())
 	}
 	defer lis.Close()
 
 	// start gRPC server
-	logger.Info("starting gRPC server...")
-	logger.Infof(":%s", conf.GrpcPort)
-
-	logger.RInfo("starting gRPC server...")
-	logger.RInfo(":%s", zap.String("port", conf.GrpcPort))
+	logger.Info("starting gRPC server...", zap.String("port", conf.GrpcPort))
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		panic(err)
