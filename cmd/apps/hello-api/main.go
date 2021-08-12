@@ -11,6 +11,9 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -36,10 +39,24 @@ func executeApiGrpc(conf *server.Config) {
 	}
 	defer lis.Close()
 
-	// start gRPC server
-	logger.Info("starting gRPC server...", zap.String("port", conf.Port))
-	err = grpcServer.Serve(lis)
-	if err != nil {
-		panic(err)
+	errChan := make(chan error)
+	stopChan := make(chan os.Signal)
+	signal.Notify(stopChan, syscall.SIGTERM, syscall.SIGINT)
+
+	go func() {
+		logger.Info("starting gRPC server...", zap.String("port", conf.Port))
+		if err = grpcServer.Serve(lis); err != nil {
+			errChan <- err
+		}
+	}()
+	defer func() {
+		logger.Warn("Terminating...")
+		grpcServer.GracefulStop()
+	}()
+
+	select {
+		case err := <-errChan:
+			logger.Error("Fatal error: " + err.Error())
+		case <-stopChan:
 	}
 }

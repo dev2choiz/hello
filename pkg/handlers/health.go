@@ -39,7 +39,7 @@ func (h HealthServer) Check(ctx context.Context, request *healthpb.CheckServices
 func addSvcData(ctx context.Context, data map[string]string, name, url string) {
 	conn, err := grpc.Dial(url, grpc.WithInsecure())
 	if err != nil {
-		logger.Info(err.Error())
+		logger.Error(err.Error())
 		return
 	}
 	defer conn.Close()
@@ -48,7 +48,7 @@ func addSvcData(ctx context.Context, data map[string]string, name, url string) {
 	req := &pingpb.PingRequest{}
 	res, err := client.Ping(ctx, req)
 	if err != nil {
-		logger.Info(err.Error())
+		logger.Error(err.Error())
 		return
 	}
 
