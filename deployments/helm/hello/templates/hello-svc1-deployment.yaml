@@ -13,8 +13,9 @@ spec:
       component: '{{ .Values.svc1.deployment.name }}'
   template:
     metadata:
-      {{- if .Values.useSvcMesh }}
       annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+      {{- if .Values.useSvcMesh }}
         sidecar.istio.io/inject: '{{ .Values.svc1.deployment.injectAsmSideCar }}'
       {{- end }}
       labels:
