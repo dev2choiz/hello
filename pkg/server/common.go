@@ -3,7 +3,6 @@ package server
 import (
 	"flag"
 	"github.com/dev2choiz/hello/internal/logger"
-	"go.uber.org/zap"
 )
 
 type Config struct {
@@ -18,9 +17,7 @@ func init() {
 	flag.StringVar(&RunConfig.Port, "port", "", "grpc port")
 	flag.Parse()
 
-	logger.Info("config",
-		zap.String("name", RunConfig.Name),
-		zap.String("port", RunConfig.Port))
+	logger.Infof("config name=%s port=%s", RunConfig.Name, RunConfig.Port)
 }
 
 func GetConfig() *Config {

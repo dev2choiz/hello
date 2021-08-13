@@ -44,6 +44,7 @@ func executeApiGrpc(conf *server.Config) {
 
 	go func() {
 		logger.Infof("starting gRPC server on :%s", conf.Port)
+		logger.Warnf("starting gRPC server on :%s", conf.Port)
 		if err = grpcServer.Serve(lis); err != nil {
 			errChan <- err
 		}

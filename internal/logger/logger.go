@@ -58,52 +58,61 @@ func zapLvlToString(l zapcore.Level) string {
 }
 
 func Debug(msg string, fields ...zap.Field) {
-	zapLog(zap.InfoLevel, msg, fields...)
+	doLog(zap.InfoLevel, msg, fields...)
 }
 
 func Info(msg string, fields ...zap.Field) {
-	zapLog(zap.InfoLevel, msg, fields...)
+	doLog(zap.InfoLevel, msg, fields...)
 }
 
 func Warn(msg string, fields ...zap.Field) {
-	zapLog(zap.WarnLevel, msg, fields...)
+	doLog(zap.WarnLevel, msg, fields...)
 }
 
 func Error(msg string, fields ...zap.Field) {
-	zapLog(zap.ErrorLevel, msg, fields...)
+	doLog(zap.ErrorLevel, msg, fields...)
 }
 
 func Fatal(msg string, fields ...zap.Field) {
-	zapLog(zap.FatalLevel, msg, fields...)
+	doLog(zap.FatalLevel, msg, fields...)
 }
 
 func Debugf(msg string, args ...interface{}) {
-	zapLog(zap.DebugLevel, fmt.Sprintf(msg, args...))
+	doLog(zap.DebugLevel, fmt.Sprintf(msg, args...))
 }
 
 func Infof(msg string, args ...interface{}) {
-	zapLog(zap.InfoLevel, fmt.Sprintf(msg, args...))
+	doLog(zap.InfoLevel, fmt.Sprintf(msg, args...))
 }
 
 func Warnf(msg string, args ...interface{}) {
-	zapLog(zap.WarnLevel, fmt.Sprintf(msg, args...))
+	doLog(zap.WarnLevel, fmt.Sprintf(msg, args...))
 }
 
 func Errorf(msg string, args ...interface{}) {
-	zapLog(zap.ErrorLevel, fmt.Sprintf(msg, args...))
+	doLog(zap.ErrorLevel, fmt.Sprintf(msg, args...))
 }
 
 func Fatalf(msg string, args ...interface{}) {
-	zapLog(zap.FatalLevel, fmt.Sprintf(msg, args...))
+	doLog(zap.FatalLevel, fmt.Sprintf(msg, args...))
 }
 
-func zapLog(l zapcore.Level, msg string, fields ...zap.Field) {
+var strOutLogger = log.New(os.Stderr, "", log.LstdFlags)
+var strErrLogger = log.New(os.Stdout, "", log.LstdFlags)
+
+func doLog(l zapcore.Level, msg string, fields ...zap.Field) {
 	/*if ce := inst.Check(l, msg); ce != nil {
 		ce.Write(fields...)
 		return
 	}*/
 
-	log.Printf("[%s] %s", zapLvlToString(l), msg)
+	var logger *log.Logger
+	if l >= zap.WarnLevel {
+		logger = strOutLogger
+	} else {
+		logger = strErrLogger
+	}
+	_ = logger.Output(2, fmt.Sprintf("[%s] %s", zapLvlToString(l), msg))
 	switch l {
 	case zap.FatalLevel, zap.PanicLevel, zap.DPanicLevel :
 		os.Exit(1)
