@@ -42,6 +42,10 @@ resource "google_project_iam_member" "sa-hello-api-cl-ag" {
   role    = "roles/cloudtrace.agent"
   member = "serviceAccount:${google_service_account.sa-hello-api.email}"
 }
+resource "google_project_iam_member" "sa-hello-api-log-lw" {
+  role    = "roles/logging.logWriter"
+  member = "serviceAccount:${google_service_account.sa-hello-api.email}"
+}
 resource "google_service_account_key" "sa-hello-key" {
   service_account_id = google_service_account.sa-hello-api.name
 }
