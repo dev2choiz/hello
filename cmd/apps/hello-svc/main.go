@@ -7,7 +7,6 @@ import (
 	"github.com/dev2choiz/hello/pkg/handlers"
 	"github.com/dev2choiz/hello/pkg/protobuf/pingpb"
 	"github.com/dev2choiz/hello/pkg/server"
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"net"
 )
@@ -31,7 +30,7 @@ func main() {
 	defer lis.Close()
 
 	// start gRPC server
-	logger.Info("starting gRPC server...", zap.String("port", conf.Port))
+	logger.Infof("starting gRPC server on :%s", conf.Port)
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		panic(err)

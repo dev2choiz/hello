@@ -9,7 +9,8 @@ import (
 )
 
 var inst *zap.Logger
-var sugarInst *zap.SugaredLogger
+var strOutLogger = log.New(os.Stdout, "", log.LstdFlags)
+var strErrLogger = log.New(os.Stderr, "", log.LstdFlags)
 
 var lvlMap = map[zapcore.Level]string{
 	zapcore.DebugLevel: "DEBUG",
@@ -36,7 +37,6 @@ func init() {
 	defer inst.Sync() // flushes buffer, if any
 	inst = inst.WithOptions(zap.AddCallerSkip(2))
 	inst = inst.With(zap.Namespace("more"))
-	sugarInst = inst.Sugar()
 }
 
 func configureForStackDriver(conf *zap.Config) {
@@ -97,20 +97,17 @@ func Fatalf(msg string, args ...interface{}) {
 	doLog(zap.FatalLevel, fmt.Sprintf(msg, args...))
 }
 
-var strOutLogger = log.New(os.Stderr, "", log.LstdFlags)
-var strErrLogger = log.New(os.Stdout, "", log.LstdFlags)
-
 func doLog(l zapcore.Level, msg string, fields ...zap.Field) {
-	/*if ce := inst.Check(l, msg); ce != nil {
+	if ce := inst.Check(l, msg); ce != nil {
 		ce.Write(fields...)
 		return
-	}*/
+	}
 
 	var logger *log.Logger
 	if l >= zap.WarnLevel {
-		logger = strOutLogger
-	} else {
 		logger = strErrLogger
+	} else {
+		logger = strOutLogger
 	}
 	_ = logger.Output(2, fmt.Sprintf("[%s] %s", zapLvlToString(l), msg))
 	switch l {
