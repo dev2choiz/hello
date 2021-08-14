@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	"go.uber.org/zap"
+	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/zapcore"
 	"log"
 	"os"
@@ -24,39 +25,15 @@ var lvlMap = map[zapcore.Level]string{
 }
 
 func init() {
-	var config zap.Config
-	if false && "dev" == os.Getenv("APP_ENV") {
-		config = zap.NewDevelopmentConfig()
-		config.DisableStacktrace = false
-	} else {
-		config = zap.NewProductionConfig()
-	}
-	config.Level.SetLevel(zap.InfoLevel)
-	configureForStackDriver(&config)
-	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	inst, _ = config.Build()
-	defer inst.Sync() // flushes buffer, if any
-	inst = inst.WithOptions(zap.AddCallerSkip(2))
-	inst = inst.With(zap.Namespace("more"))
-}
+	encoder := newGcpEncoder()
+	inst = zap.New(
+		zapcore.NewCore(encoder, zapcore.Lock(os.Stdout), zap.NewAtomicLevelAt(zap.InfoLevel)),
+		zap.AddCaller(),
+		zap.AddCallerSkip(2),
+	)
 
-func configureForStackDriver(conf *zap.Config) {
-	conf.EncoderConfig.LevelKey = "severity"
-	conf.EncoderConfig.MessageKey = "message"
-	conf.EncoderConfig.TimeKey = "time"
-	conf.EncoderConfig.CallerKey = "logging.googleapis.com/sourceLocation"
-	conf.EncoderConfig.EncodeCaller = func(c zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
-		trimed := c.TrimmedPath()
-		file := c.File
-		idx := strings.LastIndexByte(trimed, ':')
-		if idx != -1 {
-			file = trimed[:idx]
-		}
-		enc.AppendString(fmt.Sprintf(`{"file":"%s","line":"%d","function":"%s"}`, file, c.Line, c.Function))
-	}
-	conf.EncoderConfig.EncodeLevel = func(l zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
-		enc.AppendString(zapLvlToString(l))
-	}
+	defer inst.Sync() // flushes buffer, if any
+	inst = inst.With(zap.Namespace("more"))
 }
 
 // zapLvlToString Turn zap level to string according to stackdriver
@@ -124,4 +101,51 @@ func doLog(l zapcore.Level, msg string, fields ...zap.Field) {
 	case zap.FatalLevel, zap.PanicLevel, zap.DPanicLevel :
 		os.Exit(1)
 	}
+}
+
+type gcpEncoder struct {
+	zapcore.Encoder
+}
+
+func newGcpEncoder() zapcore.Encoder {
+	conf := zap.NewProductionEncoderConfig()
+		conf.LevelKey = "severity"
+		conf.MessageKey = "message"
+		conf.EncodeTime = zapcore.ISO8601TimeEncoder
+		conf.TimeKey = "time"
+		conf.CallerKey = ""
+		conf.EncodeLevel = func(l zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
+		enc.AppendString(zapLvlToString(l))
+	}
+
+	return gcpEncoder{
+		Encoder: zapcore.NewJSONEncoder(conf),
+	}
+}
+
+func (enc gcpEncoder) Clone() zapcore.Encoder {
+	return gcpEncoder{
+		Encoder: enc.Encoder.Clone(),
+	}
+}
+
+func (enc gcpEncoder) EncodeEntry(ent zapcore.Entry, fields []zapcore.Field) (*buffer.Buffer, error) {
+	file := ent.Caller.TrimmedPath()
+	idx := strings.LastIndexByte(file, ':')
+	if idx != -1 {
+		file = file[:idx]
+	}
+	chunk := []byte(fmt.Sprintf(
+		",\"logging.googleapis.com/sourceLocation\":{\"file\":\"%s\",\"line\":\"%d\"}",
+		file, ent.Caller.Line))
+
+	buf, err := enc.Encoder.EncodeEntry(ent, fields)
+	cop := buf.Bytes()
+	final := []byte{}
+	final = append(final, cop[:len(cop) - 2]...)
+	final = append(final, chunk...)
+	final = append(final, cop[len(cop) - 2:]...)
+	buf.Reset()
+	buf.Write(final)
+	return buf, err
 }
