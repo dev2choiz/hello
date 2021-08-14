@@ -43,15 +43,15 @@ func RunGrpcServer(grpcServer * grpc.Server, conf *Config) {
 	signal.Notify(stopChan, syscall.SIGTERM, syscall.SIGINT)
 
 	go func() {
-		logger.Infof("starting gRPC server on :%s", conf.Port)
+		logger.Infof("starting %s gRPC server on :%s", conf.Name, conf.Port)
 		if err = grpcServer.Serve(lis); err != nil {
 			errChan <- err
 		}
 	}()
 	defer func() {
-		logger.Warn("will stop grpc server gracefully...")
+		logger.Warnf("will stop %s grpc server gracefully...", conf.Name)
 		grpcServer.GracefulStop()
-		logger.Warn("grpc server stopped")
+		logger.Warnf("%s grpc server stopped", conf.Name)
 	}()
 
 	select {

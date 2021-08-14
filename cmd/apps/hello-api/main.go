@@ -10,6 +10,7 @@ import (
 
 func main() {
 	conf := server.GetConfig()
+	conf.Name = "hello-api"
 	executeApiGrpc(conf)
 }
 

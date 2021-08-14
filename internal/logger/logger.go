@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"log"
 	"os"
+	"strings"
 )
 
 var inst *zap.Logger
@@ -44,6 +45,15 @@ func configureForStackDriver(conf *zap.Config) {
 	conf.EncoderConfig.MessageKey = "message"
 	conf.EncoderConfig.TimeKey = "time"
 	conf.EncoderConfig.CallerKey = "logging.googleapis.com/sourceLocation"
+	conf.EncoderConfig.EncodeCaller = func(c zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
+		trimed := c.TrimmedPath()
+		file := c.File
+		idx := strings.LastIndexByte(trimed, ':')
+		if idx != -1 {
+			file = trimed[:idx]
+		}
+		enc.AppendString(fmt.Sprintf(`{"file":"%s","line":"%d","function":"%s"}`, file, c.Line, c.Function))
+	}
 	conf.EncoderConfig.EncodeLevel = func(l zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
 		enc.AppendString(zapLvlToString(l))
 	}
