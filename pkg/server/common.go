@@ -49,8 +49,9 @@ func RunGrpcServer(grpcServer * grpc.Server, conf *Config) {
 		}
 	}()
 	defer func() {
-		logger.Warn("Terminating...")
+		logger.Warn("will stop grpc server gracefully...")
 		grpcServer.GracefulStop()
+		logger.Warn("grpc server stopped")
 	}()
 
 	select {
