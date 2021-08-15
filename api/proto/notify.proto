@@ -3,7 +3,7 @@ syntax = "proto3";
 package hello.endpoints.notify;
 option go_package="pkg/protobuf/notifypb";
 
-//import "google/api/annotations.proto";
+import "google/api/annotations.proto";
 
 message Function1Request{
     string name = 1;
@@ -14,5 +14,7 @@ message Function1Response{
 }
 
 service Notify {
-    rpc Status(Function1Request) returns (Function1Response) {}
+    rpc Status(Function1Request) returns (Function1Response) {
+        option (google.api.http) = { get: "/notify/function1" };
+    }
 }

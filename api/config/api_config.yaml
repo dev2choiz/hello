@@ -11,5 +11,9 @@ apis:
 
 usage:
   rules:
-    - selector: hello.endpoints.health.Health.*
+    - selector: "*"
+      allow_unregistered_calls: false
+    - selector: hello.endpoints.health.Health.Status
+      allow_unregistered_calls: true
+    - selector: hello.endpoints.health.Health.Healthz
       allow_unregistered_calls: true
