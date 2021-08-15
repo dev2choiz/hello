@@ -6,8 +6,6 @@ COPY . /source
 RUN go mod vendor
 
 FROM stage_dependencies as stage_builder
-COPY . /source
-RUN go mod vendor
 ## Build hello-api
 WORKDIR "/source/cmd/apps/hello-api"
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/hello-api"
