@@ -3,8 +3,8 @@ package function1
 import (
 	"cloud.google.com/go/pubsub"
 	"context"
-	"github.com/dev2choiz/hello/internal/logger"
 	f1 "github.com/dev2choiz/hello/pkg/function1"
+	"github.com/dev2choiz/hello/pkg/logger"
 	"go.uber.org/zap"
 )
 

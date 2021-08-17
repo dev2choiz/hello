@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	"github.com/dev2choiz/hello/internal/logger"
+	"github.com/dev2choiz/hello/pkg/logger"
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
 	"github.com/dev2choiz/hello/pkg/protobuf/pingpb"
 	"github.com/dev2choiz/hello/pkg/version"

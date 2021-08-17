@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/dev2choiz/hello/pkg/handlers"
 	"github.com/dev2choiz/hello/pkg/protobuf/pingpb"
-	"github.com/dev2choiz/hello/pkg/server"
+	"github.com/dev2choiz/hello/internal/server"
 	"google.golang.org/grpc"
 )
 

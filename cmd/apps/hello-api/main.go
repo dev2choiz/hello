@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/dev2choiz/hello/internal/server"
 	"github.com/dev2choiz/hello/pkg/handlers"
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
 	"github.com/dev2choiz/hello/pkg/protobuf/notifypb"
-	"github.com/dev2choiz/hello/pkg/server"
 	"google.golang.org/grpc"
 )
 

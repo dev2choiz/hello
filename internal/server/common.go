@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/dev2choiz/hello/internal/logger"
+	"github.com/dev2choiz/hello/pkg/logger"
 	"google.golang.org/grpc"
 	"net"
 	"os"

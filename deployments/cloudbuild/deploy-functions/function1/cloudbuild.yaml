@@ -54,10 +54,29 @@ steps:
       - name: 'ssh'
         path: '/root/.ssh'
 
-  - id: 'go mod init'
+  - id: GoModInit
     name: golang:1.13
     args: ['go', 'mod', 'init', '${_FUNCTION_GO_MODULE}']
     dir: '${_FUNCTION_SOURCE_PATH}'
+
+  - id: GenerateProtobuf
+    name: 'gcr.io/$PROJECT_ID/protoc:latest'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        ./scripts/generate_proto.sh
+        cp -r ./pkg/protobuf "./${_FUNCTION_SOURCE_PATH}/"
+        echo "replace github.com/dev2choiz/hello/pkg/protobuf => ./protobuf" >> "./${_FUNCTION_SOURCE_PATH}/go.mod"
+
+  - id: 'create go.mod in ./protobuf'
+    name: golang:1.13
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cd "./${_FUNCTION_SOURCE_PATH}/protobuf"
+        go mod init github.com/dev2choiz/hello/pkg/protobuf
 
   - id: 'go get github.com/dev2choiz/hello@xxxxxx'
     name: golang:1.13
