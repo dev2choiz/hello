@@ -49,3 +49,6 @@ restart-api:
 restart-esp:
 	docker-compose stop esp
 	docker-compose up -d --build esp
+
+clean-pods:
+	kubectl get pods --all-namespaces | grep -i shutdown && kubectl get pods --all-namespaces | grep -i shutdown | awk '{print $$1, $$2}' | xargs kubectl delete pod -n

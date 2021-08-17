@@ -16,7 +16,7 @@ node {
     def appTag              = params.VERSION
     def commitShort         = ""
 
-    echo "start building tag/branch '${appTag}'"
+    echo "start building tag/branch '${appTag}'. env: ${environment}"
     checkout scm: [
         $class: 'GitSCM',
         userRemoteConfigs: [[url: repoURL]],
