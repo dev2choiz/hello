@@ -85,8 +85,8 @@ services:
   protoc:
     build:
       context: .
-      dockerfile: ./docker/protoc/Dockerfile
-      target: release
+      dockerfile: ./docker/images/protoc/Dockerfile
+      target: release_dev
     entrypoint: ["tail"]
     command: ["-f", "/dev/null"]
     volumes:

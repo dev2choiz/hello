@@ -42,6 +42,11 @@ steps:
       - name: 'ssh'
         path: '/root/.ssh'
 
+  - id: 'go mod init'
+    name: golang:1.16
+    args: ['go', 'mod', 'init', '${_FUNCTION_GO_MODULE}']
+    dir: '${_FUNCTION_SOURCE_PATH}'
+
   - id: 'Debug 2'
     name: 'gcr.io/cloud-builders/git'
     entrypoint: 'bash'
@@ -50,27 +55,27 @@ steps:
       - |
         ls -la /root/.ssh
         cat /root/.ssh/config
+        cat go.mod
     volumes:
       - name: 'ssh'
         path: '/root/.ssh'
-
-  - id: GoModInit
-    name: golang:1.13
-    args: ['go', 'mod', 'init', '${_FUNCTION_GO_MODULE}']
     dir: '${_FUNCTION_SOURCE_PATH}'
 
-  - id: GenerateProtobuf
+  - id: 'Generate Protobuf'
     name: 'gcr.io/$PROJECT_ID/protoc:latest'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
+        echo "generate protobuf in ./pkg/protobuf/"
         ./scripts/generate_proto.sh
+        echo "copy ./pkg/protobuf to ./${_FUNCTION_SOURCE_PATH}/"
         cp -r ./pkg/protobuf "./${_FUNCTION_SOURCE_PATH}/"
+        echo "add go.mod replace directive"
         echo "replace github.com/dev2choiz/hello/pkg/protobuf => ./protobuf" >> "./${_FUNCTION_SOURCE_PATH}/go.mod"
 
   - id: 'create go.mod in ./protobuf'
-    name: golang:1.13
+    name: golang:1.16
     entrypoint: 'bash'
     args:
       - '-c'
@@ -79,7 +84,7 @@ steps:
         go mod init github.com/dev2choiz/hello/pkg/protobuf
 
   - id: 'go get github.com/dev2choiz/hello@xxxxxx'
-    name: golang:1.13
+    name: golang:1.16
     args: ['go', 'get', 'github.com/dev2choiz/hello@${_APP_TAG}']
     env: ['GOPRIVATE=${_GITHUB_REPOSITORY}']
     dir: '${_FUNCTION_SOURCE_PATH}'
@@ -88,7 +93,7 @@ steps:
         path: "/root/.ssh"
 
   - id: 'go mod tidy'
-    name: golang:1.13
+    name: golang:1.16
     args: ['go', 'mod', 'tidy']
     dir: '${_FUNCTION_SOURCE_PATH}'
     volumes:
@@ -96,7 +101,7 @@ steps:
         path: "/root/.ssh"
 
   - id: 'go mod vendor'
-    name: golang:1.13
+    name: golang:1.16
     args: ['go', 'mod', 'vendor']
     dir: '${_FUNCTION_SOURCE_PATH}'
     volumes:

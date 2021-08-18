@@ -5,8 +5,8 @@ source "/var/www/gcp/local/common.sh"
 echogreen "push protoc to gcr"
 
 docker build \
-  -t "gcr.io/$PROJECT_ID/protoc:latest" \
   --target=release \
+  -t "gcr.io/$PROJECT_ID/protoc:latest" \
   --build-arg VERS=$PROTOC_TAG \
   .
 

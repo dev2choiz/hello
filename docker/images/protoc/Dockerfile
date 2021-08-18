@@ -4,15 +4,9 @@ RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 RUN go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 RUN go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 
-FROM debian:buster-slim  as release
+FROM debian:buster-slim as protoc_builder
 ARG VERS=3.17.3
 ARG ARCH=linux-x86_64
-
-COPY --from=go_dependencies "/go/bin/protoc-gen-go" /utils/bin/
-COPY --from=go_dependencies "/go/bin/protoc-gen-go-grpc" /utils/bin/
-COPY --from=go_dependencies "/go/bin/protoc-gen-grpc-gateway" /utils/bin/
-COPY --from=go_dependencies "/go/bin/protoc-gen-openapiv2" /utils/bin/
-
 RUN echo "Building protoc Cloud Builder ${VERS}-${ARCH}" && \
     apt-get update -y && apt-get upgrade -y && \
     apt-get install wget unzip -y && \
@@ -22,10 +16,17 @@ RUN echo "Building protoc Cloud Builder ${VERS}-${ARCH}" && \
     unzip "protoc-${VERS}-${ARCH}.zip" -d protoc && \
     rm "protoc-${VERS}-${ARCH}.zip"
 
-RUN useradd -ms /bin/bash nonroot
-RUN chown -R nonroot:nonroot /protoc/bin/ /utils/bin/
+FROM debian:buster-slim  as release
+COPY --from=protoc_builder /protoc /protoc
+COPY --from=go_dependencies "/go/bin/protoc-gen-go" /utils/bin/
+COPY --from=go_dependencies "/go/bin/protoc-gen-go-grpc" /utils/bin/
+COPY --from=go_dependencies "/go/bin/protoc-gen-grpc-gateway" /utils/bin/
+COPY --from=go_dependencies "/go/bin/protoc-gen-openapiv2" /utils/bin/
 ENV PATH=$PATH:/protoc/bin/:/utils/bin/
-USER nonroot
-
 ENTRYPOINT ["protoc"]
 CMD ["--help"]
+
+FROM release  as release_dev
+RUN useradd -ms /bin/bash nonroot
+RUN chown -R nonroot:nonroot /protoc/bin/ /utils/bin/
+USER nonroot
