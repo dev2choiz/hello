@@ -23,8 +23,6 @@ COPY --from=go_dependencies "/go/bin/protoc-gen-go-grpc" /utils/bin/
 COPY --from=go_dependencies "/go/bin/protoc-gen-grpc-gateway" /utils/bin/
 COPY --from=go_dependencies "/go/bin/protoc-gen-openapiv2" /utils/bin/
 ENV PATH=$PATH:/protoc/bin/:/utils/bin/
-ENTRYPOINT ["protoc"]
-CMD ["--help"]
 
 FROM release  as release_dev
 RUN useradd -ms /bin/bash nonroot
