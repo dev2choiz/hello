@@ -18,5 +18,5 @@ usage:
       allow_unregistered_calls: true
     - selector: hello.endpoints.health.Health.Healthz
       allow_unregistered_calls: true
-    - selector: hello.endpoints.sanbox.Sandbox.*
+    - selector: hello.endpoints.sandbox.Sandbox.*
       allow_unregistered_calls: true

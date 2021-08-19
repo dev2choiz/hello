@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package hello.endpoints.grpc;
+package hello.endpoints.sandbox;
 option go_package="pkg/protobuf/sandboxpb";
 
 import "google/api/annotations.proto";
