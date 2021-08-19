@@ -14,10 +14,14 @@ services:
         - "--rollout_strategy=managed"
         - "--service_account_key=/etc/nginx/creds/credentials.json"
         - "--cors_preset=basic"
-        - "--cors_allow_origin=http://localhost:7080"
+        - "--cors_allow_headers=DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,OPTIONS,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Access-Control-Request-Method,Access-Control-Request-Headers,Referer,Origin,Connection,Sec-Fetch-Dest,Sec-Fetch-Mode,Sec-Fetch-Site,Pragma,Cache-Control,TE,x-grpc-web"
+        #- "--cors_allow_origin=http://localhost:3000"
+        #- "--cors_preset=cors_with_regex"
+        #- "--cors_allow_origin_regex=*"
         - "--non_gcp"
         - "--enable_debug"
         - "--ssl_server_cert_path=/etc/esp/ssl"
+
     ports:
       - 9000:9000
     volumes:

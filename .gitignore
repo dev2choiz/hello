@@ -3,6 +3,7 @@ vendor
 volumes
 bin
 .env
+front
 
 local
 test.sh

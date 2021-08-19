@@ -7,6 +7,7 @@ title: Hello gRPC API
 apis:
   - name: hello.endpoints.health.Health
   - name: hello.endpoints.notify.Notify
+  - name: hello.endpoints.sandbox.Sandbox
   #- name: hello.endpoints.health.Ping
 
 usage:
@@ -16,4 +17,6 @@ usage:
     - selector: hello.endpoints.health.Health.Status
       allow_unregistered_calls: true
     - selector: hello.endpoints.health.Health.Healthz
+      allow_unregistered_calls: true
+    - selector: hello.endpoints.sanbox.Sandbox.*
       allow_unregistered_calls: true

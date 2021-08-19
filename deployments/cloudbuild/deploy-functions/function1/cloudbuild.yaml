@@ -47,20 +47,6 @@ steps:
     args: ['go', 'mod', 'init', '${_FUNCTION_GO_MODULE}']
     dir: '${_FUNCTION_SOURCE_PATH}'
 
-  - id: 'Debug 2'
-    name: 'gcr.io/cloud-builders/git'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        ls -la /root/.ssh
-        cat /root/.ssh/config
-        cat go.mod
-    volumes:
-      - name: 'ssh'
-        path: '/root/.ssh'
-    dir: '${_FUNCTION_SOURCE_PATH}'
-
   - id: 'Generate Protobuf'
     name: 'gcr.io/$PROJECT_ID/protoc:latest'
     entrypoint: 'bash'
@@ -82,6 +68,20 @@ steps:
       - |
         cd "./${_FUNCTION_SOURCE_PATH}/protobuf"
         go mod init github.com/dev2choiz/hello/pkg/protobuf
+
+  - id: 'Debug 2'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        ls -la /root/.ssh
+        cat /root/.ssh/config
+        cat go.mod
+    volumes:
+      - name: 'ssh'
+        path: '/root/.ssh'
+    dir: '${_FUNCTION_SOURCE_PATH}'
 
   - id: 'go get github.com/dev2choiz/hello@xxxxxx'
     name: golang:1.16
