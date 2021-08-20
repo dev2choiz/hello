@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  hello-front:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+    entrypoint: ["tail"]
+    command: ["-f", "/dev/null"]
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app/front
+
+  protoc:
+    build:
+      context: .
+      dockerfile: ./docker/protoc/Dockerfile
+      target: release_dev
+    entrypoint: ["tail"]
+    command: ["-f", "/dev/null"]
+    volumes:
+      - .:/app/front
+      - ./../api:/app/api:ro
+      - ./../third_party:/app/third_party:ro
