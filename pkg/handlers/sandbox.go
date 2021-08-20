@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/dev2choiz/hello/pkg/protobuf/sandboxpb"
+	"io"
 	"log"
+	"time"
 )
 
 type SandboxServer struct {
@@ -22,35 +24,86 @@ func (s SandboxServer) ServerStream(request *sandboxpb.UnaryRequest, server sand
 		if err != nil {
 			return err
 		}
+		<-time.After(time.Duration(1) * time.Second)
 	}
 	return nil
 }
 
 func (s SandboxServer) ClientStream(server sandboxpb.Sandbox_ClientStreamServer) error {
-	log.Println("client streaming...")
-	for i := 0; i < 60; i++ {
-		req, err := server.Recv()
-		if err != nil {
-			return err
+	for {
+		select {
+		case <-server.Context().Done():
+			return nil
+		default:
+			req, err := server.Recv()
+			if err == io.EOF {
+				log.Println("end client stream")
+				return nil
+			}
+			if err != nil {
+				return err
+			}
+			log.Println(req.Message)
 		}
-		log.Println(req.Message)
 	}
-	return nil
 }
 
 func (s SandboxServer) BidirectionalStream(server sandboxpb.Sandbox_BidirectionalStreamServer) error {
-	log.Println("bidirectional streaming...")
-	for i := 0; i < 60; i++ {
-		req, err := server.Recv()
-		if err != nil {
-			return err
+	writeErr := make(chan error)
+	readErr := make(chan error)
+	end := make(chan int)
+	_ = end
+	go func() {
+		for i := 0; i < 25; i++ {
+			res := &sandboxpb.UnaryResponse{
+				Response: fmt.Sprintf("%c", rune(65 + i)),
+			}
+			err := server.Send(res)
+			if err != nil {
+				writeErr <- err
+				return
+			}
+			<-time.After(time.Duration(1) * time.Second)
 		}
-		log.Println("client msg:", req.Message)
+		writeErr <- nil
+		return
+	}()
 
-		res := &sandboxpb.UnaryResponse{
-			Response: fmt.Sprintf("%c", rune(65 + i)),
+	go func() {
+		for {
+			select {
+			case <-server.Context().Done():
+				readErr <- server.Context().Err()
+				return
+			default:
+				req, err := server.Recv()
+				if err == io.EOF {
+					readErr <- nil
+					return
+				}
+				if err != nil {
+					readErr <- err
+					return
+				}
+				log.Println("received:", req.Message)
+			}
 		}
-		err = server.Send(res)
+	}()
+
+	for i := 0; i < 2; i++ {
+		select {
+		case err:= <- writeErr:
+			if err != nil {
+				return err
+			}
+			log.Println("end server stream")
+		case err:= <- readErr:
+			if err != nil {
+				return err
+			}
+			log.Println("end client stream")
+		}
 	}
+
 	return nil
 }

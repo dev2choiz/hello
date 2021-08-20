@@ -16,7 +16,10 @@ func main() {
 }
 
 func executeApiGrpc(conf *server.Config) {
-	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(server.LogInterceptor))
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(server.LogInterceptor),
+		grpc.StreamInterceptor(server.LogStreamInterceptor),
+	)
 	healthpb.RegisterHealthServer(grpcServer, &handlers.HealthServer{})
 	notifypb.RegisterNotifyServer(grpcServer, &handlers.NotifyServer{})
 	sandboxpb.RegisterSandboxServer(grpcServer, &handlers.SandboxServer{})

@@ -69,3 +69,12 @@ func LogInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServer
 	}
 	return h, err
 }
+
+func LogStreamInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	logger.Info(info.FullMethod)
+	err := handler(srv, ss)
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	return err
+}
