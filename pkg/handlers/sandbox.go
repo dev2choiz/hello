@@ -51,8 +51,6 @@ func (s SandboxServer) ClientStream(server sandboxpb.Sandbox_ClientStreamServer)
 func (s SandboxServer) BidirectionalStream(server sandboxpb.Sandbox_BidirectionalStreamServer) error {
 	writeErr := make(chan error)
 	readErr := make(chan error)
-	end := make(chan int)
-	_ = end
 	go func() {
 		for i := 0; i < 25; i++ {
 			res := &sandboxpb.UnaryResponse{
