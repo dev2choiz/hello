@@ -44,6 +44,7 @@ services:
       SVC1_BASE_URL: 'http://hello-svc1:8081'
       SVC2_BASE_URL: 'http://hello-svc2:8082'
       APP_ENV: 'dev'
+      LOGGING_MODE: 'console'
     ports:
       - '8080:8080'
       - '7080:7080'

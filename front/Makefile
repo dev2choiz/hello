@@ -13,7 +13,6 @@ sh-protoc:
 	docker-compose exec -u root protoc bash
 
 gen-proto:
-	docker-compose exec protoc ls -la
 	docker-compose exec protoc ./scripts/generate_proto.sh
 
 install:

@@ -1,4 +1,5 @@
 
+## Docker
 down:
 	docker-compose down --remove-orphans
 
@@ -39,16 +40,20 @@ tag: ## example: TAG=v1.0.1 make tag
 gen-proto:
 	docker-compose exec -w /app protoc ./scripts/generate_proto.sh
 
-deploy-endpoint: gen-proto
-	gcloud endpoints services deploy api/config/api_descriptor.pb ./api/config/api_config.yaml
-
+## Restart container
 restart-api:
 	docker-compose stop hello-api
 	docker-compose up -d --build hello-api
-
 restart-esp:
 	docker-compose stop esp
 	docker-compose up -d --build esp
+restart-protoc:
+	docker-compose stop protoc
+	docker-compose up -d --build protoc
 
+## Infra
 clean-pods:
 	kubectl get pods --all-namespaces | grep -i shutdown && kubectl get pods --all-namespaces | grep -i shutdown | awk '{print $$1, $$2}' | xargs kubectl delete pod -n
+
+deploy-endpoint: gen-proto
+	gcloud endpoints services deploy api/config/api_descriptor.pb ./api/config/api_config.yaml

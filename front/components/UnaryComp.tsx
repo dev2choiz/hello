@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import type { NextPage } from 'next'
 import styles from './UnaryComp.module.css'
 import { UnaryRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 
-const Home: NextPage = () => {
+const Unary = () => {
     const [data, setData] = useState<any>(null)
     const url = process.env.NEXT_PUBLIC_API_BASE_URL as string
 
@@ -26,4 +25,4 @@ const Home: NextPage = () => {
     )
 }
 
-export default Home
+export default Unary

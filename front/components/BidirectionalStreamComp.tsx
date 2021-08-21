@@ -1,10 +1,9 @@
-import type { NextPage } from 'next'
 import styles from './UnaryComp.module.css'
 import { useEffect, useState } from 'react'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { UnaryRequest } from '@protobuf/sandbox_pb'
 
-const Home: NextPage = () => {
+const BidirectionalStream = () => {
     const [data, setData] = useState<string>('initial')
     const url = process.env.NEXT_PUBLIC_API_BASE_URL as string
     useEffect(() => {
@@ -27,4 +26,4 @@ const Home: NextPage = () => {
     </div>
 }
 
-export default Home
+export default BidirectionalStream

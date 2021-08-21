@@ -12,11 +12,9 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflag
 ## Build hello-svc
 WORKDIR "/source/cmd/apps/hello-svc"
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o "/source/bin/hello-svc"
-
 WORKDIR /source
 
 FROM gcr.io/distroless/base as release
-
 WORKDIR /
 COPY --from=stage_builder "/source/bin/hello-api" .
 COPY --from=stage_builder "/source/bin/hello-svc" .
