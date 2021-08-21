@@ -66,14 +66,9 @@ resource "google_container_cluster" "primary" {
   depends_on = [module.project-services]
 
   # anthos
-  resource_labels = {
+  /*resource_labels = {
     mesh_id = "proj-${data.google_project.project.number}"
-  }
-  /*workload_identity_config {
-    identity_namespace = "${var.project_id}.svc.id.goog"
-  }
-  monitoring_service = "monitoring.googleapis.com/kubernetes"
-  logging_service = "logging.googleapis.com/kubernetes"*/
+  }*/
 }
 
 # Separately Managed Node Pool
@@ -109,8 +104,8 @@ resource "kubernetes_namespace" "cluster_namespace" {
     name = var.namespace
     labels = {
       // anthos
-      "istio.io/rev" = "196-2"
-      istio-injection = "enabled"
+      /*"istio.io/rev" = "196-2"
+      istio-injection = "enabled"*/
     }
   }
 }

@@ -5,7 +5,7 @@ gcp:
   projectId: samyn-project4
   namespace: lazone
 
-useSvcMesh: true
+useSvcMesh: false
 
 api:
   name: hello-api

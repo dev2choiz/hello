@@ -1,5 +1,5 @@
 # https://cloud.google.com/architecture/provisioning-anthos-clusters-with-terraform
-module "project-services-anthos" {
+/*module "project-services-anthos" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
 
   project_id  = data.google_client_config.provider.project
@@ -45,4 +45,4 @@ module "asm-primary" {
 
   outdir           = "asm-dir-${google_container_cluster.primary.name}"
   depends_on = [module.project-services-anthos]
-}
+}*/
