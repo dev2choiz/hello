@@ -21,7 +21,6 @@ services:
         - "--non_gcp"
         - "--enable_debug"
         - "--ssl_server_cert_path=/etc/esp/ssl"
-
     ports:
       - 9000:9000
     volumes:

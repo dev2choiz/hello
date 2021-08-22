@@ -19,17 +19,11 @@ api:
     image:
     pullPolicy: Always
     cpu:
-      min: 50m
-      max: 100m
+      min: 30m
+      max: 60m
     memory:
       min: 64Mi
-      max: 100Mi
-
-  hpa:
-    name: 'hello-api-deploy-hpa'
-    minReplicas: 1
-    maxReplicas: 1
-    targetCPUUtilizationPercentage: 70
+      max: 90Mi
 
   esp:
     useEsp: true
@@ -38,11 +32,17 @@ api:
     host: "hello-api.endpoints.samyn-project4.cloud.goog"
     port: 9000
     cpu:
-      min: 80m
-      max: 100m
+      min: 30m
+      max: 60m
     memory:
       min: 64Mi
-      max: 100Mi
+      max: 90Mi
+
+  hpa:
+    name: 'hello-api-deploy-hpa'
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 70
 
 svc1:
   name: hello-svc1
@@ -54,6 +54,12 @@ svc1:
     port: 8081
     image:
     pullPolicy: Always
+    cpu:
+      min: 25m
+      max: 40m
+    memory:
+      min: 44Mi
+      max: 64Mi
 
 svc2:
   name: hello-svc2
@@ -65,3 +71,9 @@ svc2:
     port: 8082
     image:
     pullPolicy: Always
+    cpu:
+      min: 25m
+      max: 40m
+    memory:
+      min: 44Mi
+      max: 64Mi

@@ -34,6 +34,13 @@ spec:
           env:
             - name: APP_ENV
               value: "{{ .Values.environment }}"
+          resources:
+            requests:
+              cpu: {{ .Values.svc1.app.cpu.min }}
+              memory: {{ .Values.svc1.app.memory.min }}
+            limits:
+              cpu: {{ .Values.svc1.app.cpu.max }}
+              memory: {{ .Values.svc1.app.memory.max }}
           #livenessProbe:
           #  httpGet:
           #    path: /healthz
