@@ -39,7 +39,7 @@ api:
     port: 9000
     cpu:
       min: 80m
-      max: 160m
+      max: 100m
     memory:
       min: 64Mi
       max: 100Mi
