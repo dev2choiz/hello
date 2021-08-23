@@ -41,7 +41,7 @@ api:
   hpa:
     name: 'hello-api-deploy-hpa'
     minReplicas: 1
-    maxReplicas: 1
+    maxReplicas: 2
     targetCPUUtilizationPercentage: 70
 
 svc1:
