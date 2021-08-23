@@ -169,7 +169,7 @@ resource "kubernetes_service" "hello-svc1-cluster-ip" {
       protocol = "TCP"
       name = "http"
       port = 80
-      target_port = 8081
+      target_port = 7081
     }
   }
 }
@@ -195,7 +195,7 @@ resource "kubernetes_service" "hello-svc2-cluster-ip" {
       protocol = "TCP"
       name = "http"
       port = 80
-      target_port = 8081
+      target_port = 7082
     }
   }
 }
