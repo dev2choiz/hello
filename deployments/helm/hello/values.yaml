@@ -19,7 +19,7 @@ api:
     image:
     pullPolicy: Always
     cpu:
-      min: 30m
+      min: 20m
       max: 60m
     memory:
       min: 64Mi
@@ -33,7 +33,7 @@ api:
     port: 9000
     cpu:
       min: 30m
-      max: 60m
+      max: 70m
     memory:
       min: 64Mi
       max: 90Mi
@@ -55,11 +55,11 @@ svc1:
     image:
     pullPolicy: Always
     cpu:
-      min: 25m
+      min: 15m
       max: 40m
     memory:
-      min: 44Mi
-      max: 64Mi
+      min: 25Mi
+      max: 44Mi
 
 svc2:
   name: hello-svc2
@@ -72,8 +72,8 @@ svc2:
     image:
     pullPolicy: Always
     cpu:
-      min: 25m
+      min: 15m
       max: 40m
     memory:
-      min: 44Mi
-      max: 64Mi
+      min: 25Mi
+      max: 44Mi
