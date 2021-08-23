@@ -16,7 +16,7 @@ const Unary = () => {
             }
             setData(res?.toObject())
         })
-    }, [])
+    }, [url])
 
     return (
         <div className={styles.container}>

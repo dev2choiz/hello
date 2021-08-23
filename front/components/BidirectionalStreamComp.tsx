@@ -10,7 +10,7 @@ const BidirectionalStream = () => {
         const client = new SandboxClient(url)
         const res = client.bidirectionalStream()
         res.on('data', msg => {
-            setData(data + ' ' + msg.getResponse())
+            setData(d => d + ' ' + msg.getResponse())
         })
 
         for (let i = 0; i < 20; i++) {
@@ -19,7 +19,7 @@ const BidirectionalStream = () => {
             res.write(req)
         }
 
-    }, [])
+    }, [url])
 
     return <div className={styles.container}>
         <pre>{JSON.stringify(data, null, 2)}</pre>

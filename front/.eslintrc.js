@@ -12,6 +12,7 @@ module.exports = {
     ],
     rules: {
         'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'warn',
         indent: ['error', 4, { SwitchCase: 1 }],
         'react/jsx-indent': ['error', 4],
         yoda: 0,

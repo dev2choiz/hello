@@ -19,7 +19,7 @@ const ClientStream = () => {
                 reqStream.write(req)
             }, 5000 * i)
         }
-    }, [])
+    }, [url])
 
     return (
         <div className={styles.container}>

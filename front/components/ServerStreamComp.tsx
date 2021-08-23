@@ -10,9 +10,9 @@ const ServerStream = () => {
         const client = new SandboxClient(url)
         const res = client.serverStream(new UnaryRequest())
         res.on('data', msg => {
-            setData(data + ' ' + msg.getResponse())
+            setData(d => d + ' ' + msg.getResponse())
         })
-    }, [])
+    }, [url])
 
     return (
         <div className={styles.container}>
