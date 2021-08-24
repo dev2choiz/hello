@@ -27,12 +27,22 @@ install:
 restart-protoc:
 	docker-compose stop protoc
 	docker-compose up -d --build protoc
+restart-cdn:
+	docker-compose stop hello-front-cdn
+	docker-compose up -d --build hello-front-cdn
+	docker-compose logs -f hello-front-cdn
 
+## next.js
+next-clean: ## delete .next directory
+	rm -rf ./.next
+	rm -rf ./out
 dev:
 	docker-compose exec hello-front npm run dev
-next-build:
+next-build: next-clean
 	docker-compose exec hello-front npm run build
-next-start:
+next-start: next-build
 	docker-compose exec hello-front npm run start
-next-generate:
+generate:
 	docker-compose exec hello-front npm run generate
+export: next-build
+	docker-compose exec hello-front npm run export

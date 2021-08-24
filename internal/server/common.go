@@ -31,8 +31,8 @@ func GetConfig() *Config {
 	return RunConfig
 }
 
-func RunGrpcServer(grpcServer * grpc.Server, conf *Config) {
-	lis, err :=net.Listen("tcp", fmt.Sprintf(":%s", conf.Port))
+func RunGrpcServer(grpcServer *grpc.Server, conf *Config) {
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", conf.Port))
 	if err != nil {
 		logger.Fatal("Failed to listen: " + err.Error())
 	}

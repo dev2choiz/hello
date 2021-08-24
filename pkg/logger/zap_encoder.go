@@ -14,12 +14,12 @@ type gcpEncoder struct {
 
 func newGcpEncoder() zapcore.Encoder {
 	conf := zap.NewProductionEncoderConfig()
-		conf.LevelKey = "severity"
-		conf.MessageKey = "message"
-		conf.EncodeTime = zapcore.ISO8601TimeEncoder
-		conf.TimeKey = "time"
-		conf.CallerKey = ""
-		conf.EncodeLevel = func(l zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
+	conf.LevelKey = "severity"
+	conf.MessageKey = "message"
+	conf.EncodeTime = zapcore.ISO8601TimeEncoder
+	conf.TimeKey = "time"
+	conf.CallerKey = ""
+	conf.EncodeLevel = func(l zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
 		enc.AppendString(zapLvlToString(l))
 	}
 
@@ -47,10 +47,10 @@ func (enc gcpEncoder) EncodeEntry(ent zapcore.Entry, fields []zapcore.Field) (*b
 
 	buf, err := enc.Encoder.EncodeEntry(ent, fields)
 	cop := buf.Bytes()
-	final := make([]byte, 0, len(cop) + len(chunk))
-	final = append(final, cop[:len(cop) - 2]...)
+	final := make([]byte, 0, len(cop)+len(chunk))
+	final = append(final, cop[:len(cop)-2]...)
 	final = append(final, chunk...)
-	final = append(final, cop[len(cop) - 2:]...)
+	final = append(final, cop[len(cop)-2:]...)
 	buf.Reset()
 	_, _ = buf.Write(final)
 

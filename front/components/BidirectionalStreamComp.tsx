@@ -15,7 +15,7 @@ const BidirectionalStream = () => {
 
         for (let i = 0; i < 20; i++) {
             const req = new UnaryRequest()
-            req.setMessage('msg' + i)
+            req.setName('msg' + i)
             res.write(req)
         }
 

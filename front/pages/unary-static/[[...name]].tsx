@@ -1,20 +1,19 @@
 import type { GetStaticPropsContext, NextPage } from 'next'
 import UnaryStaticComp from '@components/UnaryStaticComp'
-import { ServerStreamRequest, UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
-import {SandboxClient} from '@protobuf/sandbox_pb_service'
+import { UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
+import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import config from '@config/config'
-import {grpc} from '@improbable-eng/grpc-web'
+import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths } from 'next'
 
 const Home: NextPage = (props) => {
     return <UnaryStaticComp result={(props as any).result} />
 }
 
-export const getStaticPaths: GetStaticPaths = async(ctx) => {
-    const names = ['rand', 'richard', 'fitz', 'belgarion', 'gerald', '']
+export const getStaticPaths: GetStaticPaths = async() => {
     return {
-        paths: names.map(name => ({
+        paths: config.unaryStaticParams.map(name => ({
             params: { name: [name] },
         })),
         fallback: false,

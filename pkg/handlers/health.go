@@ -15,11 +15,11 @@ type HealthServer struct {
 }
 
 func (h HealthServer) Healthz(ctx context.Context, request *healthpb.HealthzRequest) (*healthpb.HealthzResponse, error) {
-	return &healthpb.HealthzResponse{ Status: "ok" }, nil
+	return &healthpb.HealthzResponse{Status: "ok"}, nil
 }
 
 func (h HealthServer) Status(ctx context.Context, request *healthpb.StatusRequest) (*healthpb.StatusResponse, error) {
-	return &healthpb.StatusResponse{ Status: "ok" }, nil
+	return &healthpb.StatusResponse{Status: "ok"}, nil
 }
 
 func (h HealthServer) Check(ctx context.Context, request *healthpb.CheckServicesRequest) (*healthpb.CheckServicesResponse, error) {

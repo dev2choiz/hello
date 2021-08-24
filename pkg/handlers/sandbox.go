@@ -18,7 +18,7 @@ func (s SandboxServer) Unary(ctx context.Context, req *sandboxpb.UnaryRequest) (
 	if name == "" {
 		name = "sir"
 	}
-	return &sandboxpb.UnaryResponse{ Response: "hello " + name }, nil
+	return &sandboxpb.UnaryResponse{Response: "hello " + name}, nil
 }
 
 func (s SandboxServer) ServerStream(req *sandboxpb.ServerStreamRequest, server sandboxpb.Sandbox_ServerStreamServer) error {
@@ -28,12 +28,12 @@ func (s SandboxServer) ServerStream(req *sandboxpb.ServerStreamRequest, server s
 		nb = 10
 	}
 	for i := 0; i < nb; i++ {
-		res := &sandboxpb.ServerStreamResponse{ Message: fmt.Sprintf("%d", i)}
+		res := &sandboxpb.ServerStreamResponse{Message: fmt.Sprintf("%d", i)}
 		err := server.Send(res)
 		if err != nil {
 			return err
 		}
-		if ms != 0 && i < nb -1 {
+		if ms != 0 && i < nb-1 {
 			<-time.After(time.Duration(ms) * time.Millisecond)
 		}
 	}
@@ -65,7 +65,7 @@ func (s SandboxServer) BidirectionalStream(server sandboxpb.Sandbox_Bidirectiona
 	go func() {
 		for i := 0; i < 25; i++ {
 			res := &sandboxpb.UnaryResponse{
-				Response: fmt.Sprintf("%c", rune(65 + i)),
+				Response: fmt.Sprintf("%c", rune(65+i)),
 			}
 			err := server.Send(res)
 			if err != nil {
@@ -101,12 +101,12 @@ func (s SandboxServer) BidirectionalStream(server sandboxpb.Sandbox_Bidirectiona
 
 	for i := 0; i < 2; i++ {
 		select {
-		case err:= <- writeErr:
+		case err := <-writeErr:
 			if err != nil {
 				return err
 			}
 			log.Println("end server stream")
-		case err:= <- readErr:
+		case err := <-readErr:
 			if err != nil {
 				return err
 			}

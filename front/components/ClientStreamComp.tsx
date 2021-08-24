@@ -15,7 +15,7 @@ const ClientStream = () => {
                     return
                 }
                 const req = new UnaryRequest()
-                req.setMessage('msg' + i)
+                req.setName('msg' + i)
                 reqStream.write(req)
             }, 5000 * i)
         }

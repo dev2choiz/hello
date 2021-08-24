@@ -25,7 +25,7 @@ func (n NotifyServer) Status(ctx context.Context, req *notifypb.Function1Request
 		Data: []byte(req.Name),
 	})
 
-	<- result.Ready()
+	<-result.Ready()
 	res.PsId, err = result.Get(ctx)
 	if err != nil {
 		return nil, err

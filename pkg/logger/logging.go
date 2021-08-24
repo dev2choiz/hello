@@ -11,7 +11,7 @@ import (
 
 var sdInst *logging.Logger
 
-var gcpResource = &monitoredres.MonitoredResource { Type: "k8s_container" }
+var gcpResource = &monitoredres.MonitoredResource{Type: "k8s_container"}
 
 func initOff() {
 	ctx := context.Background()
@@ -34,7 +34,7 @@ func CWarnf(msg string, args ...interface{}) {
 func cLogf(s logging.Severity, msg string, args ...interface{}) {
 	sdInst.Log(logging.Entry{
 		Severity: s,
-		Payload: fmt.Sprintf(msg, args...),
+		Payload:  fmt.Sprintf(msg, args...),
 		Resource: gcpResource,
 	})
 }

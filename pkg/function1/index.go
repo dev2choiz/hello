@@ -10,7 +10,7 @@ import (
 
 func DoFunction1(name string) error {
 	sec := 20
-	logger.Info("hello " + name, zap.String("version", version.Get()))
+	logger.Info("hello "+name, zap.String("version", version.Get()))
 	<-time.After(time.Duration(sec) * time.Second)
 	logger.Info("bye " + name)
 	test := healthpb.StatusResponse{}

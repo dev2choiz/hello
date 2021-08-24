@@ -30,6 +30,18 @@ services:
     networks:
       - hello
 
+  hello-front-cdn:
+    image: node:16
+    working_dir: '/app/front'
+    entrypoint: ['node']
+    command: ['./server-static.js', '--port=3001', '--path-mapping=/_next/static:./.next/static']
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/app/front
+    networks:
+      - hello
+
 networks:
   hello:
     name: hello

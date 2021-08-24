@@ -6,6 +6,8 @@ const resolve = p => path.join(__dirname, p)
 
 module.exports = {
     reactStrictMode: true,
+    assetPrefix: process.env.CDN_BASE_URL,
+
     webpack(conf) {
         conf.resolve.alias['@components'] = resolve('components')
         conf.resolve.alias['@config'] = resolve('config')
@@ -15,15 +17,21 @@ module.exports = {
         return conf
     },
 
-    /*exportPathMap: async function (
-        defaultPathMap,
-        { dev, dir, outDir, distDir, buildId }
-    ) {
-        return {
-            '/unary-static': { page: '/unary-static' },
-            '/stream-server/10': { page: '/stream-server', query: { number: 10 } },
-            '/stream-server/15': { page: '/stream-server', query: { number: 15 } },
-            '/stream-server/20': { page: '/stream-server', query: { number: 20 } },
+    publicRuntimeConfig: {
+        cdnBaseUrl: process.env.CDN_BASE_URL,
+    },
+
+    /*exportPathMap: async function () {
+        const ret = {}
+        const names = ['rand', 'richard', 'fitz', 'belgarion', 'gerald', '']
+        names.forEach((name) => {
+            ret['/unary-static/' + name] = { page: '/unary-static/[[...name]]', query: { name } }
+        })
+        ret['/bidirectional-stream'] = { page: '/bidirectional-stream' }
+        ret['/client-stream'] = { page: '/client-stream' }
+        for (let i = 1; i <= 20; i++) {
+            ret['/server-stream/' + i] = { page: '/server-stream/[[...number]]', query: { number: i } }
         }
+        return ret
     },*/
 }

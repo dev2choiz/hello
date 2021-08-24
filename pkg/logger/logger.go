@@ -13,13 +13,13 @@ var strOutLogger = log.New(os.Stdout, "", log.LstdFlags)
 var strErrLogger = log.New(os.Stderr, "", log.LstdFlags)
 
 var lvlMap = map[zapcore.Level]string{
-	zapcore.DebugLevel: "DEBUG",
-	zapcore.InfoLevel: "INFO",
-	zapcore.WarnLevel: "WARNING",
-	zapcore.ErrorLevel: "ERROR",
+	zapcore.DebugLevel:  "DEBUG",
+	zapcore.InfoLevel:   "INFO",
+	zapcore.WarnLevel:   "WARNING",
+	zapcore.ErrorLevel:  "ERROR",
 	zapcore.DPanicLevel: "CRITICAL",
-	zapcore.PanicLevel: "ALERT",
-	zapcore.FatalLevel: "EMERGENCY",
+	zapcore.PanicLevel:  "ALERT",
+	zapcore.FatalLevel:  "EMERGENCY",
 }
 
 var doLog func(l zapcore.Level, msg string, fields ...zap.Field)
@@ -105,7 +105,7 @@ func doConsoleLog(l zapcore.Level, msg string, fields ...zap.Field) {
 	}
 	_ = logger.Output(2, fmt.Sprintf("[%s] %s", zapLvlToString(l), msg))
 	switch l {
-	case zap.FatalLevel, zap.PanicLevel, zap.DPanicLevel :
+	case zap.FatalLevel, zap.PanicLevel, zap.DPanicLevel:
 		os.Exit(1)
 	}
 }
