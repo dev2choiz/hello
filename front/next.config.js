@@ -6,7 +6,7 @@ const resolve = p => path.join(__dirname, p)
 
 module.exports = {
     reactStrictMode: true,
-    webpack(conf, options) {
+    webpack(conf) {
         conf.resolve.alias['@components'] = resolve('components')
         conf.resolve.alias['@config'] = resolve('config')
         conf.resolve.alias['@pages'] = resolve('pages')
@@ -15,16 +15,15 @@ module.exports = {
         return conf
     },
 
-    exportPathMap: async function (
+    /*exportPathMap: async function (
         defaultPathMap,
         { dev, dir, outDir, distDir, buildId }
     ) {
         return {
             '/unary-static': { page: '/unary-static' },
-            '/p/hello-nextjs': { page: '/post', query: { title: 'hello-nextjs' } },
-            '/p/learn-nextjs': { page: '/post', query: { title: 'learn-nextjs' } },
-            '/p/deploy-nextjs': { page: '/post', query: { title: 'deploy-nextjs' } },
+            '/stream-server/10': { page: '/stream-server', query: { number: 10 } },
+            '/stream-server/15': { page: '/stream-server', query: { number: 15 } },
+            '/stream-server/20': { page: '/stream-server', query: { number: 20 } },
         }
-    },
-
+    },*/
 }

@@ -5,9 +5,32 @@ import Link from 'next/link'
 const MyApp = ({ Component, pageProps }: AppProps) => {
     return <div>
         <div>
-            <Link href="/"><a>unary</a></Link><br/>
-            <Link href="/unary-static"><a>unary static</a></Link><br/>
-            <Link href="/server-stream"><a>serveur stream</a></Link>
+            <table><tbody>
+                <tr>
+                    <td>unary ssr</td>
+                    <td><Link href="/"><a>/</a></Link><br/></td>
+                </tr>
+                <tr>
+                    <td>unary ssr with param</td>
+                    <td><Link href="/?name=John"><a>/?name=John</a></Link><br/></td>
+                </tr>
+                <tr>
+                    <td>unary static</td>
+                    <td><Link href="/unary-static"><a>/unary-static</a></Link><br/></td>
+                </tr>
+                <tr>
+                    <td>unary static with param</td>
+                    <td><Link href="/unary-static/rand"><a>/unary-static/rand</a></Link><br/></td>
+                </tr>
+                <tr>
+                    <td>server stream</td>
+                    <td><Link href="/server-stream"><a>/server-stream</a></Link><br/></td>
+                </tr>
+                <tr>
+                    <td>server stream with param</td>
+                    <td><Link href="/server-stream/5"><a>/server-stream/5</a></Link><br/></td>
+                </tr>
+            </tbody></table>
         </div>
         <Component {...pageProps} />
     </div>

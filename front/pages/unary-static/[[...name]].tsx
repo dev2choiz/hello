@@ -11,9 +11,24 @@ const Home: NextPage = (props) => {
     return <UnaryStaticComp result={(props as any).result} />
 }
 
+export const getStaticPaths: GetStaticPaths = async(ctx) => {
+    const names = ['rand', 'richard', 'fitz', 'belgarion', 'gerald', '']
+    return {
+        paths: names.map(name => ({
+            params: { name: [name] },
+        })),
+        fallback: false,
+    }
+}
+
 export async function getStaticProps(ctx: GetStaticPropsContext) {
     const req = new UnaryRequest()
-    req.setMessage('hello')
+    let name = ''
+    if (!!ctx.params?.name) {
+        name = ctx.params?.name[0]
+    }
+
+    req.setName(name as string)
     const opts = {} as grpc.RpcOptions
     if ('undefined' === typeof window) {
         opts.transport = NodeHttpTransport()
@@ -34,20 +49,6 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
         props: {
             result,
         },
-    }
-}
-
-export const getStaticPaths: GetStaticPaths = async(ctx) => {
-    const names = ['rand', 'richard', 'fitz', 'belgarion', 'gerald']
-    return {
-        paths: names.map((name) => {
-            return {
-                params: {
-                    name,
-                },
-            }
-        }),
-        fallback: false,
     }
 }
 

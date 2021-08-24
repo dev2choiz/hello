@@ -7,19 +7,21 @@ import {grpc} from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 const Home: NextPage = (props) => {
-    return <UnaryComp unaryResult={(props as any).unaryResult} />
+    return <UnaryComp result={(props as any).result} />
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const req = new UnaryRequest()
-    req.setMessage('hello')
+    const name = (ctx.query.name ?? '') as string
+    console.log(name)
+    req.setName(name)
     const opts = {} as grpc.RpcOptions
     if ('undefined' === typeof window) {
         opts.transport = NodeHttpTransport()
     }
 
     const client = new SandboxClient(config.nodeGrpcBaseUrl, opts)
-    const unaryResult = await new Promise<UnaryResponse.AsObject | null>((resolve) => {
+    const result = await new Promise<UnaryResponse.AsObject | null>((resolve) => {
         client.unary(req, (error, res) => {
             if (!!error) {
                 console.log(error.message)
@@ -31,7 +33,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     })
     return {
         props: {
-            unaryResult,
+            result,
         },
     }
 }
