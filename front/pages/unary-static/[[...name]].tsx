@@ -1,13 +1,14 @@
 import type { GetStaticPropsContext, NextPage } from 'next'
 import UnaryStaticComp from '@components/UnaryStaticComp'
-import { UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
+import { ServerStreamRequest, UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
 import {SandboxClient} from '@protobuf/sandbox_pb_service'
 import config from '@config/config'
 import {grpc} from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import { GetStaticPaths, GetStaticProps } from 'next'
 
 const Home: NextPage = (props) => {
-    return <UnaryStaticComp unaryResult={(props as any).unaryResult} />
+    return <UnaryStaticComp result={(props as any).result} />
 }
 
 export async function getStaticProps(ctx: GetStaticPropsContext) {
@@ -19,7 +20,7 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
     }
 
     const client = new SandboxClient(config.nodeGrpcBaseUrl, opts)
-    const unaryResult = await new Promise<UnaryResponse.AsObject | null>((resolve) => {
+    const result = await new Promise<UnaryResponse.AsObject | null>((resolve) => {
         client.unary(req, (error, res) => {
             if (!!error) {
                 console.log(error.message)
@@ -31,10 +32,23 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
     })
     return {
         props: {
-            unaryResult,
+            result,
         },
     }
 }
 
+export const getStaticPaths: GetStaticPaths = async(ctx) => {
+    const names = ['rand', 'richard', 'fitz', 'belgarion', 'gerald']
+    return {
+        paths: names.map((name) => {
+            return {
+                params: {
+                    name,
+                },
+            }
+        }),
+        fallback: false,
+    }
+}
 
 export default Home

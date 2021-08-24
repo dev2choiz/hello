@@ -4,7 +4,7 @@ package hello.endpoints.sandbox;
 option go_package="pkg/protobuf/sandboxpb";
 
 message UnaryRequest{
-    string message = 1;
+    string name = 1;
 }
 message UnaryResponse{
     string response = 1;
@@ -12,6 +12,7 @@ message UnaryResponse{
 
 message ServerStreamRequest{
     int32 number = 1;
+    int32 ms_per_response = 2;
 }
 message ServerStreamResponse{
     string message = 1;

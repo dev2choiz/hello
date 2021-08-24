@@ -13,11 +13,16 @@ type SandboxServer struct {
 	sandboxpb.UnimplementedSandboxServer
 }
 
-func (s SandboxServer) Unary(ctx context.Context, request *sandboxpb.UnaryRequest) (*sandboxpb.UnaryResponse, error) {
-	return &sandboxpb.UnaryResponse{ Response: "hello" }, nil
+func (s SandboxServer) Unary(ctx context.Context, req *sandboxpb.UnaryRequest) (*sandboxpb.UnaryResponse, error) {
+	name := req.GetName()
+	if name == "" {
+		name = "sir"
+	}
+	return &sandboxpb.UnaryResponse{ Response: "hello " + name }, nil
 }
 
 func (s SandboxServer) ServerStream(req *sandboxpb.ServerStreamRequest, server sandboxpb.Sandbox_ServerStreamServer) error {
+	ms := int(req.MsPerResponse)
 	nb := int(req.Number)
 	if nb == 0 {
 		nb = 10
@@ -28,8 +33,8 @@ func (s SandboxServer) ServerStream(req *sandboxpb.ServerStreamRequest, server s
 		if err != nil {
 			return err
 		}
-		if i < nb -1 {
-			<-time.After(time.Duration(1) * time.Second)
+		if ms != 0 && i < nb -1 {
+			<-time.After(time.Duration(ms) * time.Millisecond)
 		}
 	}
 	return nil
@@ -49,7 +54,7 @@ func (s SandboxServer) ClientStream(server sandboxpb.Sandbox_ClientStreamServer)
 			if err != nil {
 				return err
 			}
-			log.Println(req.Message)
+			log.Println(req.Name)
 		}
 	}
 }
@@ -89,7 +94,7 @@ func (s SandboxServer) BidirectionalStream(server sandboxpb.Sandbox_Bidirectiona
 					readErr <- err
 					return
 				}
-				log.Println("received:", req.Message)
+				log.Println("received:", req.Name)
 			}
 		}
 	}()
