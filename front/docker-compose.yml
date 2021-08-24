@@ -11,6 +11,10 @@ services:
       - '3000:3000'
     volumes:
       - .:/app/front
+    environment:
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+    networks:
+      - hello
 
   protoc:
     build:
@@ -23,3 +27,10 @@ services:
       - .:/app/front
       - ./../api:/app/api:ro
       - ./../third_party:/app/third_party:ro
+    networks:
+      - hello
+
+networks:
+  hello:
+    name: hello
+    external: true

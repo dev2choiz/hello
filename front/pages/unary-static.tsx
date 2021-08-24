@@ -1,16 +1,16 @@
-import type {GetServerSidePropsContext, NextPage} from 'next'
-import UnaryComp from '@components/UnaryComp'
-import {UnaryRequest, UnaryResponse} from '@protobuf/sandbox_pb'
+import type { GetStaticPropsContext, NextPage } from 'next'
+import UnaryStaticComp from '@components/UnaryStaticComp'
+import { UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
 import {SandboxClient} from '@protobuf/sandbox_pb_service'
 import config from '@config/config'
 import {grpc} from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 const Home: NextPage = (props) => {
-    return <UnaryComp unaryResult={(props as any).unaryResult} />
+    return <UnaryStaticComp unaryResult={(props as any).unaryResult} />
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+export async function getStaticProps(ctx: GetStaticPropsContext) {
     const req = new UnaryRequest()
     req.setMessage('hello')
     const opts = {} as grpc.RpcOptions

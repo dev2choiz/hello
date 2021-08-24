@@ -10,9 +10,16 @@ message UnaryResponse{
     string response = 1;
 }
 
+message ServerStreamRequest{
+    int32 number = 1;
+}
+message ServerStreamResponse{
+    string message = 1;
+}
+
 service Sandbox {
     rpc Unary(UnaryRequest) returns (UnaryResponse) {}
-    rpc ServerStream(UnaryRequest) returns (stream UnaryResponse) {}
+    rpc ServerStream(ServerStreamRequest) returns (stream ServerStreamResponse) {}
     rpc ClientStream(stream UnaryRequest) returns (UnaryResponse) {}
     rpc BidirectionalStream(stream UnaryRequest) returns (stream UnaryResponse) {}
 }

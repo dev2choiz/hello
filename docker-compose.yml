@@ -27,6 +27,8 @@ services:
       - ./local/files/sa-hello-api-credentials.json:/etc/nginx/creds/credentials.json
       - ./local/files/cert/dev/server.crt:/etc/esp/ssl/server.crt
       - ./local/files/cert/dev/server.key:/etc/esp/ssl/server.key
+    networks:
+      - hello
 
   hello-api:
     build:
@@ -51,6 +53,8 @@ services:
       - .:/app
       - ./local/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json
       - ./volumes/hello-api/go:/go
+    networks:
+      - hello
 
   hello-svc1:
     build:
@@ -68,6 +72,8 @@ services:
     volumes:
       - .:/app
       - ./volumes/hello-svc1/go:/go
+    networks:
+      - hello
 
   hello-svc2:
     build:
@@ -85,6 +91,8 @@ services:
     volumes:
       - .:/app
       - ./volumes/hello-svc2/go:/go
+    networks:
+      - hello
 
   protoc:
     build:
@@ -95,3 +103,10 @@ services:
     command: ["-f", "/dev/null"]
     volumes:
       - .:/app
+    networks:
+      - hello
+
+networks:
+  hello:
+    name: hello
+    external: true

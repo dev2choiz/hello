@@ -17,14 +17,20 @@ func (s SandboxServer) Unary(ctx context.Context, request *sandboxpb.UnaryReques
 	return &sandboxpb.UnaryResponse{ Response: "hello" }, nil
 }
 
-func (s SandboxServer) ServerStream(request *sandboxpb.UnaryRequest, server sandboxpb.Sandbox_ServerStreamServer) error {
-	for i := 0; i < 60; i++ {
-		res := &sandboxpb.UnaryResponse{ Response: fmt.Sprintf("%d", i)}
+func (s SandboxServer) ServerStream(req *sandboxpb.ServerStreamRequest, server sandboxpb.Sandbox_ServerStreamServer) error {
+	nb := int(req.Number)
+	if nb == 0 {
+		nb = 10
+	}
+	for i := 0; i < nb; i++ {
+		res := &sandboxpb.ServerStreamResponse{ Message: fmt.Sprintf("%d", i)}
 		err := server.Send(res)
 		if err != nil {
 			return err
 		}
-		<-time.After(time.Duration(1) * time.Second)
+		if i < nb -1 {
+			<-time.After(time.Duration(1) * time.Second)
+		}
 	}
 	return nil
 }

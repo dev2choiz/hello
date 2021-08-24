@@ -18,5 +18,6 @@ module.exports = {
         yoda: 0,
         quotes: ['error', 'single'],
         semi: ['error', 'never'],
+        '@typescript-eslint/explicit-module-boundary-types': 0,
     }
 }

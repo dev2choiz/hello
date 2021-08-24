@@ -23,7 +23,13 @@ func main() {
 		runner.WithDataFromFile("data.json"),
 		runner.WithRootCertificate(rootCertPath),
 		// test config
-		runner.WithConcurrency(500),
+		//runner.WithConcurrency(100),
+		runner.WithConcurrencySchedule("step"),
+		runner.WithConcurrencyStart(15),
+		runner.WithConcurrencyEnd(50),
+		runner.WithConcurrencyStep(5),
+		runner.WithConcurrencyStepDuration(5 * time.Second),
+
 		runner.WithRunDuration(time.Duration(120) * time.Second),
 		runner.WithStreamInterval(time.Duration(250) * time.Millisecond),
 		runner.WithStreamCallCount(4),

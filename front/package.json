@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "generate": "next build && next export",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.14.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.14.1",
     "next": "11.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"

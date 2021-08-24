@@ -1,11 +1,17 @@
 
+help:
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+docker-network:
+	docker network create hello || true
+
 down:
 	docker-compose down --remove-orphans
 
 up:
 	docker-compose up -d --build
 
-start: down up
+start: docker-network down up
 
 sh:
 	docker-compose exec -u root hello-front bash
@@ -18,9 +24,15 @@ gen-proto:
 install:
 	docker-compose exec hello-front npm install
 
-dev:
-	docker-compose exec hello-front npm run dev
-
 restart-protoc:
 	docker-compose stop protoc
 	docker-compose up -d --build protoc
+
+dev:
+	docker-compose exec hello-front npm run dev
+next-build:
+	docker-compose exec hello-front npm run build
+next-start:
+	docker-compose exec hello-front npm run start
+next-generate:
+	docker-compose exec hello-front npm run generate

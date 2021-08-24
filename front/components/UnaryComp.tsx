@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react'
 import styles from './UnaryComp.module.css'
-import { UnaryRequest } from '@protobuf/sandbox_pb'
+import {UnaryRequest, UnaryResponse} from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
+import config from '@config/config'
 
-const Unary = () => {
-    const [data, setData] = useState<any>(null)
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL as string
+type Props = {
+    unaryResult: UnaryResponse.AsObject
+}
+
+
+const Unary = (props: Props) => {
+    console.log(props)
+    const [data, setData] = useState<any>(props.unaryResult)
+    const url = config.grpcBaseUrl
 
     useEffect(() => {
+        if (!!data) return
         const req = new UnaryRequest()
         const client = new SandboxClient(url)
         client.unary(req, (error, res) => {
