@@ -25,8 +25,8 @@ services:
       - 9000:9000
     volumes:
       - ./local/files/sa-hello-api-credentials.json:/etc/nginx/creds/credentials.json
-      - ./local/files/cert/dev/server.crt:/etc/esp/ssl/server.crt
-      - ./local/files/cert/dev/server.key:/etc/esp/ssl/server.key
+      - ./local/files/tls/server.crt:/etc/esp/ssl/server.crt
+      - ./local/files/tls/server.key:/etc/esp/ssl/server.key
     networks:
       - hello
 

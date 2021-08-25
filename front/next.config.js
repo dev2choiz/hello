@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint @typescript-eslint/no-var-requires: 0 */
 const path = require('path')
 const resolve = p => path.join(__dirname, p)
 
 module.exports = {
     reactStrictMode: true,
-    assetPrefix: process.env.CDN_BASE_URL,
+    assetPrefix: 'production' === process.env.NODE_ENV ? process.env.CDN_BASE_URL : '',
 
     webpack(conf) {
         conf.resolve.alias['@components'] = resolve('components')

@@ -24,6 +24,9 @@ gen-proto:
 install:
 	docker-compose exec hello-front npm install
 
+logs-cdn:
+	docker-compose logs -f hello-front-cdn
+
 restart-protoc:
 	docker-compose stop protoc
 	docker-compose up -d --build protoc
