@@ -8,7 +8,9 @@ type Props = {
 const Unary = (props: Props) => {
     return (
         <div className={styles.container}>
-            <div><strong>Unary Static page</strong></div>
+            <div>
+                <strong>Unary Static page</strong>
+            </div>
             <pre>{JSON.stringify(props.result, null, 2)}</pre>
         </div>
     )

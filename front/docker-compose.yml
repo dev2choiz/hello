@@ -11,8 +11,8 @@ services:
       - '3000:3000'
     volumes:
       - .:/app/front
-    environment:
-      NODE_TLS_REJECT_UNAUTHORIZED: 0
+    #environment:
+    #  NODE_TLS_REJECT_UNAUTHORIZED: 0
     networks:
       - hello
 
