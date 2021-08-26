@@ -12,7 +12,7 @@ if (!argv['path-mapping']) throw new Error('missing --path-mapping argument')
 const port = argv['port']
 const mapping = argv['path-mapping']
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     console.log(`${req.url}`)
     next()
 })

@@ -25,10 +25,12 @@ services:
       - 9000:9000
     volumes:
       - ./local/files/sa-hello-api-credentials.json:/etc/nginx/creds/credentials.json
-      - ./local/files/tls/server.crt:/etc/esp/ssl/server.crt
+      - ./local/files/tls/full_chain.pem:/etc/esp/ssl/server.crt
       - ./local/files/tls/server.key:/etc/esp/ssl/server.key
     networks:
-      - hello
+      hello:
+        aliases:
+          - esp.dev2choiz.com
 
   hello-api:
     build:

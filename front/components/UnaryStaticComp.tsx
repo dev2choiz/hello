@@ -1,11 +1,12 @@
-import styles from './UnaryComp.module.css'
+import { memo } from 'react'
 import { UnaryResponse } from '@protobuf/sandbox_pb'
+import styles from './UnaryComp.module.css'
 
 type Props = {
     result: UnaryResponse.AsObject
 }
 
-const Unary = (props: Props) => {
+const UnaryStatic = (props: Props) => {
     return (
         <div className={styles.container}>
             <div>
@@ -16,4 +17,4 @@ const Unary = (props: Props) => {
     )
 }
 
-export default Unary
+export default memo(UnaryStatic)

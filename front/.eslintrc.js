@@ -3,7 +3,6 @@ module.exports = {
         'next',
         'next/core-web-vitals',
         'plugin:@typescript-eslint/recommended',
-        'prettier',
     ],
     plugins: [
         'react',
@@ -21,5 +20,6 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 0,
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-empty-function': 0,
-    }
+        'space-before-function-paren': ['error', 'never'],
+    },
 }

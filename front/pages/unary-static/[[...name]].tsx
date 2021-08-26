@@ -7,7 +7,7 @@ import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { GetStaticPaths } from 'next'
 
-const Home: NextPage = (props) => {
+const Home: NextPage = props => {
     return <UnaryStaticComp result={(props as any).result} />
 }
 
@@ -33,8 +33,8 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
         opts.transport = NodeHttpTransport()
     }
 
-    const client = new SandboxClient(config.nodeGrpcBaseUrl, opts)
-    const result = await new Promise<UnaryResponse.AsObject | null>((resolve) => {
+    const client = new SandboxClient(config.serverGrpcBaseUrl, opts)
+    const result = await new Promise<UnaryResponse.AsObject | null>(resolve => {
         client.unary(req, (error, res) => {
             if (!!error) {
                 console.log(error.message)
