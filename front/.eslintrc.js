@@ -3,6 +3,7 @@ module.exports = {
         'next',
         'next/core-web-vitals',
         'plugin:@typescript-eslint/recommended',
+        //'prettier', // disable prettier
     ],
     plugins: [
         'react',
