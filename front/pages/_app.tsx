@@ -1,8 +1,17 @@
-import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import faker from 'faker'
+import '@/styles/globals.css'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+    const [randomName, setRandomName] = useState<string>('rand')
+
+    useEffect(() => {
+        setRandomName(faker.name.lastName())
+        const interval = setInterval(() => { setRandomName(faker.name.lastName()) }, 5000)
+        return () => { clearInterval(interval) }
+    }, [])
     return <div>
         <div>
             <table><tbody>
@@ -20,7 +29,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                 </tr>
                 <tr>
                     <td>unary static with param</td>
-                    <td><Link prefetch={false} href="/unary-static/rand"><a>/unary-static/rand</a></Link><br/></td>
+                    <td><Link prefetch={false} href={`/unary-static/${randomName}`}><a>/unary-static/{randomName}</a></Link><br/></td>
                 </tr>
                 <tr>
                     <td>server stream</td>

@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import ServerStreamComp from '@components/ServerStreamComp'
 
-const Home: NextPage = () => {
+const ServerStreamPage: NextPage = () => {
     return <ServerStreamComp />
 }
 
-export default Home
+export default ServerStreamPage

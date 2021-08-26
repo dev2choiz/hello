@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import styles from './UnaryComp.module.css'
 import { ServerStreamRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
@@ -35,4 +35,4 @@ const ServerStream = () => {
     )
 }
 
-export default ServerStream
+export default memo(ServerStream)
