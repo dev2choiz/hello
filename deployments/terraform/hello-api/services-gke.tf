@@ -132,7 +132,7 @@ resource "kubernetes_ingress" "hello-api-ingress" {
     annotations = {
       // Not work with regional static ip
       "kubernetes.io/ingress.class": "gce"
-      "kubernetes.io/ingress.allow-http": "false"
+      //"kubernetes.io/ingress.allow-http": "false"
       "kubernetes.io/ingress.global-static-ip-name": google_compute_global_address.hello-api.name
       "networking.gke.io/v1beta1.FrontendConfig": "${var.app_name}-api-frontend-config"
     }
