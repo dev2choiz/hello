@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import BidirectionalStreamComp from '@components/BidirectionalStreamComp'
 
-const Home: NextPage = () => {
+const BidirectionalStreamPage: NextPage = () => {
     return <BidirectionalStreamComp />
 }
 
-export default Home
+export default BidirectionalStreamPage

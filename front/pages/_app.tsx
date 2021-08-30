@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import faker from 'faker'
 import '@/styles/globals.css'
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps }: AppProps) => {
     const [randomName, setRandomName] = useState<string>('rand')
 
     useEffect(() => {
@@ -45,4 +45,4 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     </div>
 }
 
-export default MyApp
+export default App

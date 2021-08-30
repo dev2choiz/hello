@@ -6,7 +6,7 @@ import config from '@config/config'
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
-const Home: NextPage = props => {
+const UnaryPage: NextPage = props => {
     return <UnaryComp result={(props as any).result} />
 }
 
@@ -38,4 +38,4 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     }
 }
 
-export default Home
+export default UnaryPage
