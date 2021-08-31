@@ -1,4 +1,4 @@
-import styles from './UnaryComp.module.css'
+import styles from './Style.module.css'
 import { useEffect, useState } from 'react'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { UnaryRequest } from '@protobuf/sandbox_pb'

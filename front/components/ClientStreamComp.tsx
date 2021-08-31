@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import styles from './UnaryComp.module.css'
+import styles from './Style.module.css'
 import { UnaryRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 

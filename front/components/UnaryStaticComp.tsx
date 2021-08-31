@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { UnaryResponse } from '@protobuf/sandbox_pb'
-import styles from './UnaryComp.module.css'
+import styles from './Style.module.css'
 import { useRouter } from 'next/router'
 
 export type UnaryStaticProps = {
