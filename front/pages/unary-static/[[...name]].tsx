@@ -1,4 +1,4 @@
-import type { GetStaticProps, GetStaticPropsContext, GetStaticPaths, NextPage } from 'next'
+import type { GetStaticProps, GetStaticPropsContext, GetStaticPaths, NextPage, InferGetStaticPropsType } from 'next'
 import UnaryStaticComp, { UnaryStaticProps } from '@components/UnaryStaticComp'
 import { UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
@@ -6,8 +6,8 @@ import config from '@config/config'
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
-const UnaryStaticPage: NextPage<UnaryStaticProps> = props => {
-    return <UnaryStaticComp { ...(props) } />
+const UnaryStaticPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = props => {
+    return <UnaryStaticComp { ...props } />
 }
 
 export const getStaticPaths: GetStaticPaths = async() => {
@@ -24,7 +24,7 @@ const timeout = (t = 2000) => {
     return new Promise(resolve => setTimeout(resolve, t))
 }
 
-export const getStaticProps: GetStaticProps = async(ctx: GetStaticPropsContext) => {
+export const getStaticProps = async(ctx: GetStaticPropsContext) => {
     let name = ''
     if (!!ctx.params?.name) {
         name = ctx.params?.name[0]

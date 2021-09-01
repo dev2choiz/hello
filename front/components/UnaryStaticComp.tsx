@@ -4,7 +4,7 @@ import styles from './Style.module.css'
 import { useRouter } from 'next/router'
 
 export type UnaryStaticProps = {
-    result: UnaryResponse.AsObject
+    result: UnaryResponse.AsObject | null
     dateTime: string
 }
 
