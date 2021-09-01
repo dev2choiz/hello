@@ -11,6 +11,7 @@ const ServerStream = () => {
     const nbResp = !!router.query.number ? parseInt(router.query.number[0] as string) : 15
     const [data, setData] = useState<string>('')
     const url = config.grpcBaseUrl
+
     useEffect(() => {
         setData('server responses:')
         const client = new SandboxClient(url)

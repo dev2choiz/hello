@@ -5,9 +5,12 @@ import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import config from '@config/config'
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
+import IndexContext from '@/pageContexts/indexContext'
 
 const UnaryPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (props) => {
-    return <UnaryComp result={props.result} />
+    return <IndexContext.Provider value={props}>
+        <UnaryComp />
+    </IndexContext.Provider>
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {

@@ -1,14 +1,12 @@
 import styles from './Style.module.css'
-import { UnaryResponse } from '@protobuf/sandbox_pb'
+import { useContext } from 'react'
+import IndexContext from '@/pageContexts/indexContext'
 
-type Props = {
-    result: UnaryResponse.AsObject | null
-}
-
-const Unary = (props: Props) => {
+const Unary = () => {
+    const ctx = useContext(IndexContext)
     return (
         <div className={styles.container}>
-            <pre>{JSON.stringify(props.result, null, 2)}</pre>
+            <pre>{JSON.stringify(ctx.result, null, 2)}</pre>
         </div>
     )
 }
