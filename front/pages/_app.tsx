@@ -1,5 +1,6 @@
-import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import Link from 'next/link'
+import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 import faker from 'faker'
 import '@/styles/globals.css'
@@ -13,6 +14,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         return () => { clearInterval(interval) }
     }, [])
     return <div>
+        <Head>
+            <title>HelloFront</title>
+        </Head>
         <div>
             <table><tbody>
                 <tr>
