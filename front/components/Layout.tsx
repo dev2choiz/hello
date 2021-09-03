@@ -147,9 +147,11 @@ const Layout = ({ children }: PropsWithChildren< Record<string, any> >) => {
                         >
                             <MenuIcon />
                         </IconButton>
+                        <Box sx={{ flexGrow: 1 }} />
                         <Typography variant="h6" noWrap component="div">
-                            Mini variant drawer
+                            HelloFront
                         </Typography>
+                        <Box sx={{ flexGrow: 1 }} />
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
