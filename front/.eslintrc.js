@@ -15,6 +15,7 @@ module.exports = {
         'react-hooks/exhaustive-deps': 'warn',
         indent: ['error', 4, { SwitchCase: 1 }],
         'react/jsx-indent': ['error', 4],
+        'react/display-name': 0,
         yoda: 0,
         quotes: ['error', 'single'],
         semi: ['error', 'never'],
