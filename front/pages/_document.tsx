@@ -1,11 +1,12 @@
 import * as React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionServer from '@emotion/server/create-instance'
-import theme from '@/styles/theme'
+import { createAppTheme } from '@/styles/theme'
 import createEmotionCache from '@/styles/createEmotionCache'
 
 export default class MyDocument extends Document {
     render() {
+        const theme = createAppTheme(true)
         return (
             <Html lang="en">
                 <Head>

@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.3.0",
     "@improbable-eng/grpc-web": "^0.14.0",
     "@improbable-eng/grpc-web-node-http-transport": "^0.14.1",
+    "@mui/icons-material": "^5.0.0-rc.0",
     "@mui/material": "^5.0.0-rc.0",
     "faker": "^5.5.3",
     "next": "11.1.0",

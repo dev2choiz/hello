@@ -4,6 +4,7 @@ import { ServerStreamRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { useRouter } from 'next/router'
 import config from '@config/config'
+import { Container } from '@mui/material'
 
 const ServerStream = () => {
     const cancelGrpc = useRef<(() => void)>(() => {})
@@ -29,10 +30,10 @@ const ServerStream = () => {
     }, [url, nbResp])
 
     return (
-        <div className={styles.container}>
+        <Container maxWidth={'lg'} className={styles.container}>
             <div>nb: { nbResp }</div>
             <pre>{JSON.stringify(data, null, 2)}</pre>
-        </div>
+        </Container>
     )
 }
 
