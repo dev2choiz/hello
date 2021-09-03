@@ -1,9 +1,11 @@
-import styles from './Style.module.css'
 import { useEffect, useState } from 'react'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { UnaryRequest } from '@protobuf/sandbox_pb'
+import { Box, Container } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 const BidirectionalStream = () => {
+    const theme = useTheme()
     const [data, setData] = useState<string>('initial')
     const url = process.env.NEXT_PUBLIC_API_BASE_URL as string
     useEffect(() => {
@@ -21,9 +23,9 @@ const BidirectionalStream = () => {
 
     }, [url])
 
-    return <div className={styles.container}>
+    return <Container sx={{ bgcolor: theme.palette.background.paper }}>
         <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
+    </Container>
 }
 
 export default BidirectionalStream

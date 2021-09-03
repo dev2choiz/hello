@@ -1,14 +1,15 @@
 import { memo, useEffect, useRef, useState } from 'react'
-import styles from './Style.module.css'
 import { ServerStreamRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { useRouter } from 'next/router'
 import config from '@config/config'
 import { Container } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 const ServerStream = () => {
     const cancelGrpc = useRef<(() => void)>(() => {})
     const router = useRouter()
+    const theme = useTheme()
     const nbResp = !!router.query.number ? parseInt(router.query.number[0] as string) : 15
     const [data, setData] = useState<string>('')
     const url = config.grpcBaseUrl
@@ -30,7 +31,7 @@ const ServerStream = () => {
     }, [url, nbResp])
 
     return (
-        <Container maxWidth={'lg'} className={styles.container}>
+        <Container sx={{ bgcolor: theme.palette.background.paper }}>
             <div>nb: { nbResp }</div>
             <pre>{JSON.stringify(data, null, 2)}</pre>
         </Container>

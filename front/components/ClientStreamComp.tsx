@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
-import styles from './Style.module.css'
 import { UnaryRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
+import { Box, Container } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 const ClientStream = () => {
     const url = process.env.NEXT_PUBLIC_API_BASE_URL as string
+    const theme = useTheme()
+
     useEffect(() => {
         const client = new SandboxClient(url)
         const reqStream = client.clientStream()
@@ -22,9 +25,9 @@ const ClientStream = () => {
     }, [url])
 
     return (
-        <div className={styles.container}>
+        <Container sx={{ bgcolor: theme.palette.background.paper }}>
             <pre>streaming to server</pre>
-        </div>
+        </Container>
     )
 }
 
