@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { UnaryRequest } from '@protobuf/sandbox_pb'
-import { Box, Container } from '@mui/material'
+import { Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 const BidirectionalStream = () => {

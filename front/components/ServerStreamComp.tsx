@@ -3,7 +3,7 @@ import { ServerStreamRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { useRouter } from 'next/router'
 import config from '@config/config'
-import { Container } from '@mui/material'
+import { Box, Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 const ServerStream = () => {
@@ -11,11 +11,10 @@ const ServerStream = () => {
     const router = useRouter()
     const theme = useTheme()
     const nbResp = !!router.query.number ? parseInt(router.query.number[0] as string) : 15
-    const [data, setData] = useState<string>('')
+    const [data, setData] = useState<Array<string>>([])
     const url = config.grpcBaseUrl
 
     useEffect(() => {
-        setData('server responses:')
         const client = new SandboxClient(url)
         const req = new ServerStreamRequest()
         req.setNumber(nbResp)
@@ -23,7 +22,11 @@ const ServerStream = () => {
         const res = client.serverStream(req)
         cancelGrpc.current = res.cancel
         res.on('data', msg => {
-            setData(d => d + ' ' + msg.getMessage())
+            setData(d => {
+                const cd = [ ...d ]
+                cd.push(msg.getMessage())
+                return cd
+            })
         })
         return () => {
             cancelGrpc.current()
@@ -32,8 +35,22 @@ const ServerStream = () => {
 
     return (
         <Container sx={{ bgcolor: theme.palette.background.paper }}>
-            <div>nb: { nbResp }</div>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
+            <div>nb requested: { nbResp }</div>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                p={1}
+                m={1}
+            >
+                { data.map((d, i) => {
+                    return <Box p={1} m={1} bgcolor={theme.palette.text.primary} key={i} style={ {
+                        color: theme.palette.background.paper,
+                        borderRadius: 4,
+                    } }>
+                        { d }
+                    </Box>
+                })}
+            </Box>
         </Container>
     )
 }
