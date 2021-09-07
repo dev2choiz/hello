@@ -12,4 +12,3 @@ __debug_bin
 pkg/protobuf
 api/config/api_descriptor.pb
 test/
-deployments/terraform/certificate
