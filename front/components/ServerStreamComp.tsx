@@ -15,6 +15,7 @@ const ServerStream = () => {
     const url = config.grpcBaseUrl
 
     useEffect(() => {
+        setData([])
         const client = new SandboxClient(url)
         const req = new ServerStreamRequest()
         req.setNumber(nbResp)
