@@ -25,6 +25,7 @@ import MailIcon from '@mui/icons-material/Mail'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import faker from 'faker'
 import { createAppTheme } from '@/styles/theme'
+import Link from 'next/link'
 
 const drawerWidth = 240
 
@@ -119,12 +120,12 @@ const Layout = ({ children }: PropsWithChildren< Record<string, any> >) => {
     }, [])
 
     const links = [
-        ['ssr', '/', <InboxIcon key={1}/>],
-        ['ssr with params', '/?name=John', <MailIcon key={2}/>],
-        ['static', '/unary-static', <AcUnitIcon key={3}/>],
-        ['static with params', `/unary-static/${randomName}`, <AccessibilityIcon key={4}/>],
-        ['server stream', '/server-stream', <AccessTimeIcon key={5}/>],
-        ['server stream with param', '/server-stream/5', <AccountBalanceIcon key={6}/>],
+        ['ssr', '/', '/', <InboxIcon key={1}/>],
+        ['ssr with params', '/?name=John', '/?name=John', <MailIcon key={2}/>],
+        ['static', '/unary-static', '/unary-static', <AcUnitIcon key={3}/>],
+        ['static with params', `/unary-static/${randomName}`, `/unary-static/${randomName}`, <AccessibilityIcon key={4}/>],
+        ['server stream', '/server-stream', '/server-stream', <AccessTimeIcon key={5}/>],
+        ['server stream with param', '/server-stream/5', '/server-stream/5', <AccountBalanceIcon key={6}/>],
     ]
 
     return (
@@ -174,15 +175,19 @@ const Layout = ({ children }: PropsWithChildren< Record<string, any> >) => {
                     <Divider />
                     <List>
                         {links.map((l, i) => (
-                            <ListItem
-                                component={'a'}
-                                /* @ts-ignore */
-                                button={true}
-                                href={l[1]} key={i}
+                            <Link
+                                href={l[1] as string}
+                                as={l[2] as string}
+                                key={i}
                             >
-                                <ListItemIcon>{l[2]}</ListItemIcon>
-                                <ListItemText primary={l[0]} secondary={l[1]} />
-                            </ListItem>
+                                <ListItem
+                                    component={'a'}
+                                    button={true}
+                                >
+                                    <ListItemIcon>{l[3]}</ListItemIcon>
+                                    <ListItemText primary={l[0]} secondary={l[1]} />
+                                </ListItem>
+                            </Link>
                         ))}
                     </List>
                 </Drawer>
