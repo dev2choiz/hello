@@ -1,7 +1,7 @@
 import { memo, useContext } from 'react'
 import { useRouter } from 'next/router'
 import UnaryStaticContext from '@/pageContexts/unaryStaticContext'
-import { Box, Container } from '@mui/material'
+import { Box, CircularProgress, Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 const UnaryStatic = () => {
@@ -10,7 +10,7 @@ const UnaryStatic = () => {
     const theme = useTheme()
 
     if (router.isFallback) {
-        return <Container sx={{ bgcolor: theme.palette.background.paper }}><div>Loading...</div></Container>
+        return <Container sx={{ bgcolor: theme.palette.background.paper }}><CircularProgress /></Container>
     }
 
     return (

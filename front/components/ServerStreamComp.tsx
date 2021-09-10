@@ -3,7 +3,7 @@ import { ServerStreamRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { useRouter } from 'next/router'
 import config from '@config/config'
-import { Box, Container, Skeleton } from '@mui/material'
+import { Box, Container, LinearProgress, Skeleton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 const ServerStream = () => {
@@ -12,6 +12,7 @@ const ServerStream = () => {
     const theme = useTheme()
     const nbResp = !!router.query.number ? parseInt(router.query.number[0] as string) : 15
     const [data, setData] = useState<Array<string>>([])
+    const [progress, setProgress] = useState(0)
     const url = config.grpcBaseUrl
 
     useEffect(() => {
@@ -26,6 +27,8 @@ const ServerStream = () => {
             setData(d => {
                 const cd = [ ...d ]
                 cd.push(msg.getMessage())
+
+                setProgress(Math.floor((cd.length / nbResp) * 100))
                 return cd
             })
         })
@@ -55,6 +58,7 @@ const ServerStream = () => {
                     })
                 }
             </Box>
+            <LinearProgress variant="determinate" value={progress} />
         </Container>
     )
 }

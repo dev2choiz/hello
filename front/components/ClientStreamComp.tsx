@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { UnaryRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
-import { Box, Container } from '@mui/material'
+import { Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 const ClientStream = () => {
