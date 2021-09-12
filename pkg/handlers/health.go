@@ -14,15 +14,15 @@ type HealthServer struct {
 	healthpb.UnimplementedHealthServer
 }
 
-func (h HealthServer) Healthz(ctx context.Context, request *healthpb.HealthzRequest) (*healthpb.HealthzResponse, error) {
+func (h HealthServer) Healthz(ctx context.Context, req *healthpb.HealthzRequest) (*healthpb.HealthzResponse, error) {
 	return &healthpb.HealthzResponse{Status: "ok"}, nil
 }
 
-func (h HealthServer) Status(ctx context.Context, request *healthpb.StatusRequest) (*healthpb.StatusResponse, error) {
+func (h HealthServer) Status(ctx context.Context, req *healthpb.StatusRequest) (*healthpb.StatusResponse, error) {
 	return &healthpb.StatusResponse{Status: "ok"}, nil
 }
 
-func (h HealthServer) Check(ctx context.Context, request *healthpb.CheckServicesRequest) (*healthpb.CheckServicesResponse, error) {
+func (h HealthServer) Check(ctx context.Context, req *healthpb.CheckServicesRequest) (*healthpb.CheckServicesResponse, error) {
 	res := &healthpb.CheckServicesResponse{}
 
 	data := map[string]string{}
@@ -51,6 +51,7 @@ func addSvcData(ctx context.Context, data map[string]string, name, url string) {
 		logger.Error(err.Error())
 		return
 	}
+	logger.Infof("%s response: %s", name, res.Response)
 
 	data[name] = res.Response
 
