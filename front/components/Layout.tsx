@@ -156,10 +156,7 @@ const Layout = ({ children }: PropsWithChildren< Record<string, any> >) => {
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
-                            onClick={() => {
-                                setDarkMode(!darkMode)
-                                //theme.palette.mode = darkMode ? 'dark' : 'light'
-                            }}
+                            onClick={() => { setDarkMode(!darkMode) }}
                             edge="end"
                         >
                             { darkMode ? <BrightnessLowIcon /> : <BrightnessHighIcon /> }
