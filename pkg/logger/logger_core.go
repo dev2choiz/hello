@@ -48,58 +48,50 @@ func (l *Logger) init() {
 	defer l.logger.Sync() // flushes buffer, if any
 	l.logger = l.logger.With(zap.Namespace("more"))
 	if os.Getenv("LOGGING_MODE") == "console" {
-		doLog = doConsoleLog
+		l.doLog = l.doConsoleLog
 	} else {
-		doLog = doZapLog
+		l.doLog = l.doZapLog
 	}
-}
-
-// zapLvlToString Turn zap level to string according to stackdriver
-func (l *Logger) zapLvlToString(lvl zapcore.Level) string {
-	if ret, ok := lvlMap[lvl]; ok {
-		return ret
-	}
-	panic("unknown zap log level")
 }
 
 func (l *Logger) Debug(msg string, fields ...zap.Field) {
-	doLog(zap.InfoLevel, msg, fields...)
+	l.doLog(zap.InfoLevel, msg, fields...)
 }
 
 func (l *Logger) Info(msg string, fields ...zap.Field) {
-	doLog(zap.InfoLevel, msg, fields...)
+	l.doLog(zap.InfoLevel, msg, fields...)
 }
 
 func (l *Logger) Warn(msg string, fields ...zap.Field) {
-	doLog(zap.WarnLevel, msg, fields...)
+	l.doLog(zap.WarnLevel, msg, fields...)
 }
 
 func (l *Logger) Error(msg string, fields ...zap.Field) {
-	doLog(zap.ErrorLevel, msg, fields...)
+	l.doLog(zap.ErrorLevel, msg, fields...)
 }
 
 func (l *Logger) Fatal(msg string, fields ...zap.Field) {
-	doLog(zap.FatalLevel, msg, fields...)
+	l.doLog(zap.FatalLevel, msg, fields...)
 }
 
 func (l *Logger) Debugf(msg string, args ...interface{}) {
-	doLog(zap.DebugLevel, fmt.Sprintf(msg, args...))
+	l.doLog(zap.DebugLevel, fmt.Sprintf(msg, args...))
 }
 
 func (l *Logger) Infof(msg string, args ...interface{}) {
-	doLog(zap.InfoLevel, fmt.Sprintf(msg, args...))
+	l.doLog(zap.InfoLevel, fmt.Sprintf(msg, args...))
 }
 
 func (l *Logger) Warnf(msg string, args ...interface{}) {
-	doLog(zap.WarnLevel, fmt.Sprintf(msg, args...))
+	l.doLog(zap.WarnLevel, fmt.Sprintf(msg, args...))
 }
 
 func (l *Logger) Errorf(msg string, args ...interface{}) {
-	doLog(zap.ErrorLevel, fmt.Sprintf(msg, args...))
+	l.doLog(zap.ErrorLevel, fmt.Sprintf(msg, args...))
 }
 
 func (l *Logger) Fatalf(msg string, args ...interface{}) {
-	doLog(zap.FatalLevel, fmt.Sprintf(msg, args...))
+	l.doLog(zap.FatalLevel, fmt.Sprintf(msg, args...))
 }
 
 func (l *Logger) doZapLog(lvl zapcore.Level, msg string, fields ...zap.Field) {
