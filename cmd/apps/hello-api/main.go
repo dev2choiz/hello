@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/dev2choiz/hello/internal/server"
+	"github.com/dev2choiz/hello/pkg/app_wire"
 	"github.com/dev2choiz/hello/pkg/handlers"
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
 	"github.com/dev2choiz/hello/pkg/protobuf/notifypb"
@@ -10,6 +11,7 @@ import (
 )
 
 func main() {
+	app_wire.InitializeLogger()
 	conf := server.GetConfig()
 	conf.Name = "hello-api"
 	executeApiGrpc(conf)

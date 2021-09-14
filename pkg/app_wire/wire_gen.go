@@ -4,7 +4,7 @@
 //go:build !wireinject
 // +build !wireinject
 
-package wire
+package app_wire
 
 import (
 	"github.com/dev2choiz/hello/pkg/logger"
