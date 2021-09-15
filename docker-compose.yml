@@ -38,8 +38,7 @@ services:
       dockerfile: ./docker/dev/Dockerfile
       target: stage_dev
     command: bash -c "
-      cd cmd/apps/hello-api
-      && go run . -port=7080"
+      go run . hello-api --port=7080"
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: '/volumes/secrets/sa/credentials.json'
       SVC1_GRPC_BASE_URL: 'hello-svc1:7081'
@@ -64,8 +63,7 @@ services:
       dockerfile: ./docker/dev/Dockerfile
       target: stage_dev
     command: bash -c "
-      cd cmd/apps/hello-svc
-      && go run . -name=svc1 -port=7081"
+      go run . hello-svc --name=svc1 --port=7081"
     ports:
       - '8081:8081'
       - '7081:7081'
@@ -83,8 +81,7 @@ services:
       dockerfile: ./docker/dev/Dockerfile
       target: stage_dev
     command: bash -c "
-      cd cmd/apps/hello-svc
-      && go run . -name=svc2 -port=7082"
+      go run . hello-svc --name=svc2 --port=7082"
     ports:
       - '8082:8082'
       - '7082:7082'

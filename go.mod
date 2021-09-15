@@ -4,10 +4,11 @@ go 1.16
 
 require (
 	cloud.google.com/go v0.91.1 // indirect
-	cloud.google.com/go/logging v1.4.2
+	cloud.google.com/go/logging v1.4.2 // indirect
 	cloud.google.com/go/pubsub v1.13.0
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/wire v0.5.0
+	github.com/spf13/cobra v1.2.1
 	go.uber.org/zap v1.19.0
 	golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d // indirect
 	golang.org/x/oauth2 v0.0.0-20210810183815-faf39c7919d5 // indirect

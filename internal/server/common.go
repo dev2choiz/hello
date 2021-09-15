@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"github.com/dev2choiz/hello/pkg/logger"
 	"google.golang.org/grpc"
@@ -19,14 +18,7 @@ type Config struct {
 
 var RunConfig = &Config{}
 
-func init() {
-	flag.StringVar(&RunConfig.Name, "name", "", "svc name")
-	flag.StringVar(&RunConfig.Port, "port", "", "grpc port")
-	flag.Parse()
-}
-
 func GetConfig() *Config {
-	logger.Infof("config name=%s port=%s", RunConfig.Name, RunConfig.Port)
 	return RunConfig
 }
 

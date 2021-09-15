@@ -50,6 +50,12 @@ gen-proto:
 restart-api:
 	docker-compose stop hello-api
 	docker-compose up -d --build hello-api
+restart-svc1:
+	docker-compose stop hello-svc1
+	docker-compose up -d --build hello-svc1
+restart-svc2:
+	docker-compose stop hello-svc2
+	docker-compose up -d --build hello-svc2
 restart-esp:
 	docker-compose stop esp
 	docker-compose up -d --build esp
