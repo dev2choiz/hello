@@ -23,11 +23,10 @@ func init() {
 	flag.StringVar(&RunConfig.Name, "name", "", "svc name")
 	flag.StringVar(&RunConfig.Port, "port", "", "grpc port")
 	flag.Parse()
-
-	logger.Infof("config name=%s port=%s", RunConfig.Name, RunConfig.Port)
 }
 
 func GetConfig() *Config {
+	logger.Infof("config name=%s port=%s", RunConfig.Name, RunConfig.Port)
 	return RunConfig
 }
 
