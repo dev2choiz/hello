@@ -16,3 +16,8 @@ func InitializeLogger() logger.LoggerInterface {
 	loggerInterface := logger.NewLogger()
 	return loggerInterface
 }
+
+func InitializeLoggerMock() logger.LoggerInterface {
+	loggerInterface := logger.NewLoggerMock()
+	return loggerInterface
+}
