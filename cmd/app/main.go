@@ -16,7 +16,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	app_wire.InitializeLogger()
+	app_wire.InitApp()
 }
 
 func Execute() error {

@@ -3,6 +3,7 @@ package function1
 import (
 	"cloud.google.com/go/pubsub"
 	"context"
+	"github.com/dev2choiz/hello/pkg/app_wire"
 	f1 "github.com/dev2choiz/hello/pkg/function1"
 	"github.com/dev2choiz/hello/pkg/logger"
 	"go.uber.org/zap"
@@ -10,6 +11,10 @@ import (
 
 type PubSubMessage struct {
 	Data []byte `json:"data"`
+}
+
+func init() {
+	app_wire.InitApp()
 }
 
 func Function1(ctx context.Context, m pubsub.Message) error {
