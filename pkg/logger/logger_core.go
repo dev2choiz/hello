@@ -42,7 +42,7 @@ func (l *Logger) init() {
 	l.logger = zap.New(
 		zapcore.NewCore(encoder, zapcore.Lock(os.Stdout), zap.NewAtomicLevelAt(zap.InfoLevel)),
 		zap.AddCaller(),
-		zap.AddCallerSkip(2),
+		zap.AddCallerSkip(3),
 	)
 
 	defer l.logger.Sync() // flushes buffer, if any
