@@ -30,7 +30,7 @@ spec:
           ports:
           - containerPort: {{ .Values.svc2.app.grpcPort }}
             name: grpc-port
-          command: ['/app', '--name=svc2', '--port={{ .Values.svc2.app.grpcPort }}']
+          command: ['/app', 'hello-svc', '--name=svc2', '--port={{ .Values.svc2.app.grpcPort }}']
           env:
           - name: APP_ENV
             value: "{{ .Values.environment }}"

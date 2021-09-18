@@ -5,11 +5,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var usage = `hello CLI`
+var rootDesc = `hello CLI`
 
 var rootCmd = &cobra.Command{
-	Short: "",
-	Long: usage,
+	Short: rootDesc,
+	Long: rootDesc,
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = cmd.Help()
 	},
