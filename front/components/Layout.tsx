@@ -120,6 +120,7 @@ const Layout = ({ children }: PropsWithChildren< Record<string, any> >) => {
     }, [])
 
     const links = [
+        ['health', '/health', '/health', <InboxIcon key={1}/>],
         ['ssr', '/', '/', <InboxIcon key={1}/>],
         ['ssr with params', '/?name=John', '/?name=John', <MailIcon key={2}/>],
         ['static', '/unary-static', '/unary-static', <AcUnitIcon key={3}/>],

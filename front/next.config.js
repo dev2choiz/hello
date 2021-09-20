@@ -21,6 +21,10 @@ module.exports = {
         cdnBaseUrl: process.env.CDN_BASE_URL,
     },
 
+    serverRuntimeConfig: {
+        apiKey: process.env.GRPC_API_KEY,
+    },
+
     /*exportPathMap: async function () {
         const ret = {}
         const names = ['rand', 'richard', 'fitz', 'belgarion', 'gerald', '']
