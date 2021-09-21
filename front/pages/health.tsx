@@ -1,5 +1,5 @@
 import type { NextPage, InferGetStaticPropsType, GetStaticProps } from 'next'
-import StatusComp from '@components/StatusComp'
+import HealthComp from '@components/HealthComp'
 import config from '@config/config'
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
@@ -10,23 +10,20 @@ import getConfig from 'next/config'
 
 const HealthPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = props => {
     return <HealthContext.Provider value={ props }>
-        <StatusComp />
+        <HealthComp />
     </HealthContext.Provider>
 }
 
 export const getStaticProps: GetStaticProps<ContextDataType> = async() => {
     console.log('\ngenerate status\n')
 
-    const opts = {} as grpc.RpcOptions & Record<string, any>
-    if ('undefined' === typeof window) {
-        opts.transport = NodeHttpTransport()
-    }
+    const opts: grpc.RpcOptions = {}
+    opts.transport = NodeHttpTransport()
 
     const { serverRuntimeConfig } = getConfig()
-    const apiKey = serverRuntimeConfig.apiKey
 
     const md = new grpc.Metadata()
-    md.set('x-api-key', apiKey)
+    md.set('x-api-key', serverRuntimeConfig.apiKey)
     const req = new CheckServicesRequest()
     const client = new HealthClient(config.serverGrpcBaseUrl, opts)
     const result = await new Promise<CheckServicesResponse.AsObject | null>(resolve => {
