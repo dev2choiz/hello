@@ -177,6 +177,7 @@ const Layout = ({ children }: PropsWithChildren< Record<string, any> >) => {
                                 href={l[1] as string}
                                 as={l[2] as string}
                                 key={i}
+                                passHref
                             >
                                 <ListItem
                                     component={'a'}

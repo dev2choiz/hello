@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+  # main container running npm run dev
   hello-front:
     build:
       context: .
@@ -17,6 +18,36 @@ services:
     networks:
       - hello
 
+  # container simulating cdn for static files
+  hello-front-dev-cdn:
+    image: node:16
+    working_dir: '/app/front'
+    entrypoint: ['node']
+    command: ['./server-static.js', '--port=3001', '--path-mapping=/_next/static:./.next/static']
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/app/front
+    networks:
+      - hello
+
+  # container to run npm start
+  hello-front-prod:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      target: next_prod
+    command: bash -c "
+      npm run build
+      && npm run start"
+    environment:
+      CDN_BASE_URL: '/'
+    ports:
+      - '3002:3000'
+    networks:
+      - hello
+
+  # container to generate protobuf files
   protoc:
     build:
       context: .
@@ -30,33 +61,6 @@ services:
       - ./../third_party:/app/third_party:ro
     networks:
       - hello
-
-  hello-front-dev-cdn:
-    image: node:16
-    working_dir: '/app/front'
-    entrypoint: ['node']
-    command: ['./server-static.js', '--port=3001', '--path-mapping=/_next/static:./.next/static']
-    ports:
-      - '3001:3001'
-    volumes:
-      - .:/app/front
-    networks:
-      - hello
-
-  hello-front-prod:
-      build:
-          context: .
-          dockerfile: ./docker/dev/Dockerfile
-          target: next_prod
-      command: bash -c "
-          npm run build
-          && npm run start"
-      environment:
-          CDN_BASE_URL: '/'
-      ports:
-          - '3002:3000'
-      networks:
-          - hello
 
 networks:
   hello:

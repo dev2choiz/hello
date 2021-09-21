@@ -1,7 +1,7 @@
 import { memo, useContext } from 'react'
 import { useRouter } from 'next/router'
 import UnaryStaticContext from '@/pageContexts/unaryStaticContext'
-import { Box, CircularProgress, Container } from '@mui/material'
+import { CircularProgress, Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 const UnaryStatic = () => {

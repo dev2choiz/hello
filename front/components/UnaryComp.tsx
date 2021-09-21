@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import IndexContext from '@/pageContexts/indexContext'
-import { Box, Container } from '@mui/material'
+import { Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 const Unary = () => {

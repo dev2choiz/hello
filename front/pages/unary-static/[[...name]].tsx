@@ -25,11 +25,6 @@ export const getStaticPaths: GetStaticPaths = async() => {
     }
 }
 
-const timeout = (t = 2000) => {
-    console.log(`\nsleep of ${t}ms\n`)
-    return new Promise(resolve => setTimeout(resolve, t))
-}
-
 export const getStaticProps: GetStaticProps<ContextDataType> = async(ctx) => {
     let name = ''
     if (!!ctx.params?.name) {
@@ -57,7 +52,7 @@ export const getStaticProps: GetStaticProps<ContextDataType> = async(ctx) => {
         })
     })
 
-    //if (!config.unaryStaticParams.includes(name)) await timeout(4000) // simulate waiting
+    //if (!config.unaryStaticParams.includes(name)) await new Promise(resolve => setTimeout(resolve, 4000)) // simulate waiting
 
     return {
         props: { result, dateTime: new Date().toLocaleString(), revalidate },

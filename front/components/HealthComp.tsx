@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { CircularProgress, Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import HealthContext from '@/pageContexts/healthContext'
-import getConfig from 'next/config'
 
 const Health = () => {
     const router = useRouter()
