@@ -19,10 +19,12 @@ module.exports = {
 
     publicRuntimeConfig: {
         cdnBaseUrl: process.env.CDN_BASE_URL,
+        grpcBaseUrl: process.env.BROWSER_API_BASE_URL,
     },
 
     serverRuntimeConfig: {
         apiKey: process.env.GRPC_API_KEY,
+        serverGrpcBaseUrl: process.env.SERVER_API_BASE_URL,
     },
 
     /*exportPathMap: async function () {

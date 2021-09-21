@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps<ContextDataType> = async() => {
     const md = new grpc.Metadata()
     md.set('x-api-key', serverRuntimeConfig.apiKey)
     const req = new CheckServicesRequest()
-    const client = new HealthClient(config.serverGrpcBaseUrl, opts)
+    const client = new HealthClient(serverRuntimeConfig.serverGrpcBaseUrl, opts)
     const result = await new Promise<CheckServicesResponse.AsObject | null>(resolve => {
         client.check(req, md, (error, res) => {
             if (!!error) {

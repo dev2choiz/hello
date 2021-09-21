@@ -2,10 +2,10 @@ import type { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage }
 import UnaryComp from '@components/UnaryComp'
 import { UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
-import config from '@config/config'
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import IndexContext from '@/pageContexts/indexContext'
+import getConfig from 'next/config'
 
 const UnaryPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (props) => {
     return <IndexContext.Provider value={props}>
@@ -22,8 +22,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         opts.transport = NodeHttpTransport()
         opts.debug = false
     }
+    const { serverRuntimeConfig } = getConfig()
 
-    const client = new SandboxClient(config.serverGrpcBaseUrl, opts)
+    const client = new SandboxClient(serverRuntimeConfig.serverGrpcBaseUrl, opts)
     const result = await new Promise<UnaryResponse.AsObject | null>(resolve => {
         client.unary(req, (error, res) => {
             if (!!error) {

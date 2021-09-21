@@ -2,9 +2,9 @@ import { memo, useEffect, useRef, useState } from 'react'
 import { ServerStreamRequest } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { useRouter } from 'next/router'
-import config from '@config/config'
 import { Box, Container, LinearProgress, Skeleton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import getConfig from 'next/config'
 
 const ServerStream = () => {
     const cancelGrpc = useRef<(() => void)>(() => {})
@@ -13,7 +13,8 @@ const ServerStream = () => {
     const nbResp = !!router.query.number ? parseInt(router.query.number[0] as string) : 15
     const [data, setData] = useState<Array<string>>([])
     const [progress, setProgress] = useState(0)
-    const url = config.grpcBaseUrl
+    const { publicRuntimeConfig } = getConfig()
+    const url = publicRuntimeConfig.grpcBaseUrl
 
     useEffect(() => {
         setData([])
