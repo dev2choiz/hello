@@ -30,10 +30,14 @@ logs-cdn:
 restart-protoc:
 	docker-compose stop protoc
 	docker-compose up -d --build protoc
-restart-cdn:
-	docker-compose stop hello-front-cdn
-	docker-compose up -d --build hello-front-cdn
-	docker-compose logs -f hello-front-cdn
+restart-dev-cdn:
+	docker-compose stop hello-front-dev-cdn
+	docker-compose up -d --build hello-front-dev-cdn
+	docker-compose logs -f hello-front-dev-cdn
+restart-prod:
+	docker-compose stop hello-front-prod
+	docker-compose up -d --build hello-front-prod
+	docker-compose logs -f hello-front-prod
 
 ## next.js
 next-clean: ## delete .next directory

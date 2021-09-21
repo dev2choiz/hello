@@ -8,6 +8,8 @@ import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import UnaryStaticContext, { ContextDataType } from '@/pageContexts/unaryStaticContext'
 import getConfig from 'next/config'
 
+const revalidate = 15
+
 const UnaryStaticPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = props => {
     return <UnaryStaticContext.Provider value={ props }>
         <UnaryStaticComp />
@@ -58,8 +60,8 @@ export const getStaticProps: GetStaticProps<ContextDataType> = async(ctx) => {
     //if (!config.unaryStaticParams.includes(name)) await timeout(4000) // simulate waiting
 
     return {
-        props: { result, dateTime: new Date().toLocaleString() },
-        revalidate: 15,
+        props: { result, dateTime: new Date().toLocaleString(), revalidate },
+        revalidate,
     }
 }
 

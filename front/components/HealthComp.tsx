@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { CircularProgress, Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import HealthContext from '@/pageContexts/healthContext'
+import getConfig from 'next/config'
 
 const Health = () => {
     const router = useRouter()
@@ -19,6 +20,7 @@ const Health = () => {
                 <strong>Health page</strong>
             </div>
             <div>last generation: <strong>{ctx.dateTime}</strong></div>
+            <div>regenerate each <strong>{ctx.revalidate}</strong> seconds</div>
             <pre>{JSON.stringify(ctx.result, null, 2)}</pre>
         </Container>
     )

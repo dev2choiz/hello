@@ -1,12 +1,13 @@
 import type { NextPage, InferGetStaticPropsType, GetStaticProps } from 'next'
 import HealthComp from '@components/HealthComp'
-import config from '@config/config'
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import HealthContext, { ContextDataType } from '@/pageContexts/healthContext'
 import { CheckServicesRequest, CheckServicesResponse } from '@protobuf/health_pb'
 import { HealthClient } from '@protobuf/health_pb_service'
 import getConfig from 'next/config'
+
+const revalidate = 30
 
 const HealthPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = props => {
     return <HealthContext.Provider value={ props }>
@@ -38,8 +39,8 @@ export const getStaticProps: GetStaticProps<ContextDataType> = async() => {
     })
 
     return {
-        props: { result, dateTime: new Date().toLocaleString() },
-        revalidate: 30,
+        props: { result, dateTime: new Date().toLocaleString(), revalidate },
+        revalidate,
     }
 }
 

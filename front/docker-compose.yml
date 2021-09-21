@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/dev/Dockerfile
+      target: next_base
     entrypoint: ["tail"]
     command: ["-f", "/dev/null"]
     ports:
@@ -30,7 +31,7 @@ services:
     networks:
       - hello
 
-  hello-front-cdn:
+  hello-front-dev-cdn:
     image: node:16
     working_dir: '/app/front'
     entrypoint: ['node']
@@ -41,6 +42,21 @@ services:
       - .:/app/front
     networks:
       - hello
+
+  hello-front-prod:
+      build:
+          context: .
+          dockerfile: ./docker/dev/Dockerfile
+          target: next_prod
+      command: bash -c "
+          npm run build
+          && npm run start"
+      environment:
+          CDN_BASE_URL: '/'
+      ports:
+          - '3002:3000'
+      networks:
+          - hello
 
 networks:
   hello:
