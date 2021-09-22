@@ -3,6 +3,7 @@ package function1
 import (
 	"cloud.google.com/go/pubsub"
 	"context"
+	_ "github.com/GoogleCloudPlatform/functions-framework-go/funcframework"
 	"github.com/dev2choiz/hello/pkg/app_wire"
 	f1 "github.com/dev2choiz/hello/pkg/function1"
 	"github.com/dev2choiz/hello/pkg/logger"
