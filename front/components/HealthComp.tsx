@@ -19,7 +19,7 @@ const Health = () => {
                 <strong>Health page</strong>
             </div>
             <div>last generation: <strong>{ctx.dateTime}</strong></div>
-            <div>regenerate each <strong>{ctx.revalidate}</strong> seconds</div>
+            <div>Generation interval: <strong>{ctx.revalidate}</strong> seconds</div>
             <pre>{JSON.stringify(ctx.result, null, 2)}</pre>
         </Container>
     )

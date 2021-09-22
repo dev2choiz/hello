@@ -12,6 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import AcUnitIcon from '@mui/icons-material/AcUnit'
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
 import AccessibilityIcon from '@mui/icons-material/Accessibility'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
@@ -120,7 +121,7 @@ const Layout = ({ children }: PropsWithChildren< Record<string, any> >) => {
     }, [])
 
     const links = [
-        ['health', '/health', '/health', <InboxIcon key={1}/>],
+        ['health', '/health', '/health', <HealthAndSafetyIcon key={0}/>],
         ['ssr', '/', '/', <InboxIcon key={1}/>],
         ['ssr with params', '/?name=John', '/?name=John', <MailIcon key={2}/>],
         ['static', '/unary-static', '/unary-static', <AcUnitIcon key={3}/>],
