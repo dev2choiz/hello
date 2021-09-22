@@ -112,7 +112,7 @@ steps:
     name: 'gcr.io/cloud-builders/gcloud'
     args: ['functions', 'deploy', '${_FUNCTION_NAME}',
        '--source', '.',
-       '--runtime', 'go113',
+       '--runtime', 'go116',
        '--region', '${_GCP_REGION}',
        '--entry-point', '${_ENTRYPOINT}',
        '--trigger-topic', '${_TRIGGER_TOPIC}',
