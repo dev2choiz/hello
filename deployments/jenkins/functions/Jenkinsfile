@@ -31,7 +31,6 @@ node {
         _KMS_KEYRING_NAME: "kr-hello",
         _KMS_KEY_NAME: "key-default-hello",
         _GITHUB_PRIVATE_KEY_ENCRYPTED_PATH: "deployments/security/hello_github_deploy_id_rsa.enc",
-        _GITHUB_PRIVATE_KEY_DECRYPTED_FILE: "hello_github_deploy_id_rsa",
         _GITHUB_REPOSITORY: "github.com/dev2choiz/hello",
         _SERVICE_ACCOUNT: "sa-serverless@${projectId}.iam.gserviceaccount.com",
         _APP_ENV: environment,
