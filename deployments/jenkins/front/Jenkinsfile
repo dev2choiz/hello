@@ -32,21 +32,19 @@ node {
         _APP_TAG: appTag,
     ]
 
-    stage("Build image hello-api ${appTag}") {
+    stage("Build image hello-front ${appTag}") {
         googleCloudBuild  \
         credentialsId: gcloudCredentialsId,
             source: local('.'),
-            request: file('deployments/cloudbuild/apis/build-image.yaml'),
-            substitutions: commonSubst + [
-                _APP_NAME: "hello-api",
-            ]
+            request: file('deployments/cloudbuild/front/build-image.yaml'),
+            substitutions: commonSubst + []
     }
 
-    stage("Deploy ${appTag}") {
+    /* stage("Deploy ${appTag}") {
         googleCloudBuild  \
             credentialsId: gcloudCredentialsId,
             source: local('.'),
-            request: file('deployments/cloudbuild/apis/deployment.yaml'),
+            request: file('deployments/cloudbuild/front/deployment.yaml'),
             substitutions: commonSubst + [
                 _APP_NAME: "hello-api",
                 _NAMESPACE   : namespace,
@@ -55,5 +53,5 @@ node {
                 _HELM_TAG    : helmTag,
                 _ENVIRONMENT : environment,
             ]
-    }
+    } */
 }

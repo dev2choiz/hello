@@ -1,0 +1,45 @@
+steps:
+  - id: GenerateProtobuf
+    name: 'gcr.io/$PROJECT_ID/node-protoc:latest'
+    entrypoint: 'bash'
+    args: [ './scripts/generate_proto.sh' ]
+    dir: './front'
+
+  - id: 'Create env file'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+        - '-c'
+        - |
+            echo "CDN_BASE_URL=/" > .env
+            echo "BROWSER_API_BASE_URL=https://dev2choiz.com" >> .env
+            echo "SERVER_API_BASE_URL=https://dev2choiz.com" >> .env
+            echo "GRPC_API_KEY=todoWithKms" >> .env
+    dir: './front'
+
+  - id: ImageBuildAndTag
+    name: gcr.io/cloud-builders/docker
+    args: [
+      'build',
+      '-f', './docker/prod/Dockerfile',
+      '--target', 'release',
+      '-t', 'gcr.io/${PROJECT_ID}/hello-front:${_APP_TAG}',
+      '-t', 'gcr.io/${PROJECT_ID}/hello-front:latest',
+      '.']
+    dir: './front'
+
+  - id: DeleteTAG
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud container images delete gcr.io/${PROJECT_ID}/hello-front:${_APP_TAG} --force-delete-tags --quiet || exit 0
+
+  - id: ImagePushTAG
+    name: gcr.io/cloud-builders/docker
+    args: ['push', 'gcr.io/${PROJECT_ID}/hello-front:${_APP_TAG}']
+
+  - id: ImagePushLatestTAG
+    name: gcr.io/cloud-builders/docker
+    args: ['push', 'gcr.io/${PROJECT_ID}/hello-front:latest']
