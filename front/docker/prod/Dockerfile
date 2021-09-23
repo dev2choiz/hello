@@ -2,7 +2,7 @@ FROM node:16-alpine as next_builder
 WORKDIR /app/front
 COPY --chown=node:node . /app/front
 RUN npm install
-RUN npm build
+RUN npm run build
 
 FROM next_builder as release
 USER node
