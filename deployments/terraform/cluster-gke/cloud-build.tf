@@ -28,3 +28,9 @@ resource "google_project_iam_member" "default-cb-svcman-adm" {
   member = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
   depends_on = [module.project-services]
 }
+
+resource "google_project_iam_member" "default-cb-cloudrun-adm" {
+  role    = "roles/run.admin"
+  member = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
+  depends_on = [module.project-services]
+}
