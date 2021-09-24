@@ -36,7 +36,7 @@ node {
         googleCloudBuild  \
         credentialsId: gcloudCredentialsId,
             source: local('.'),
-            request: file('deployments/cloudbuild/front/build-image.yaml'),
+            request: file('front/deployments/cloudbuild/build-image.yaml'),
             substitutions: commonSubst + []
     }
 
