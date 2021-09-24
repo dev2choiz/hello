@@ -12,8 +12,8 @@ steps:
       - '-c'
       - |
           echo "CDN_BASE_URL=/" > .env
-          echo "BROWSER_API_BASE_URL=https://dev2choiz.com" >> .env
-          echo "SERVER_API_BASE_URL=https://dev2choiz.com" >> .env
+          echo "BROWSER_API_BASE_URL=https://api.dev2choiz.com" >> .env
+          echo "SERVER_API_BASE_URL=https://api.dev2choiz.com" >> .env
           echo -n "GRPC_API_KEY=" >> .env
           gcloud kms decrypt \
             --location=${_GCP_REGION} \

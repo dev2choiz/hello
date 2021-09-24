@@ -13,7 +13,7 @@ const rootCertPath = "./../local/files/cert/client.pem"
 const protoPath = "./../api/proto"
 const thirdPartyPath = "./../third_party"
 
-const url = "dev2choiz.com:443"
+const url = "api.dev2choiz.com:443"
 
 func main() {
 	report, err := runner.Run(
