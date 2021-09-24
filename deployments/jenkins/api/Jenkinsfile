@@ -6,13 +6,7 @@ parameters([
 
 node {
     def repoURL = 'git@github.com:dev2choiz/hello.git'
-    def helmTag = '3.2.4'
     def projectName = 'hello-api'
-    def projectId = "samyn-project4"
-    def gcloudCredentialsId = projectId
-    def clusterZone = "europe-west1-d"
-    def clusterName = "samyn-cluster"
-    def namespace   = "lazone"
     def environment = "staging"
     def appTag      = params.VERSION
     def commitShort = ""
@@ -28,13 +22,16 @@ node {
         echo "git commit: ${commitShort}"
     }
 
+    def ws = pwd()
+    def common = load "${ws}/deployments/jenkins/common.groovy"
+
     def commonSubst = [
         _APP_TAG: appTag,
     ]
 
     stage("Build image hello-api ${appTag}") {
         googleCloudBuild  \
-        credentialsId: gcloudCredentialsId,
+        credentialsId: common.gcloudCredentialsId,
             source: local('.'),
             request: file('deployments/cloudbuild/apis/build-image.yaml'),
             substitutions: commonSubst + [
@@ -44,15 +41,15 @@ node {
 
     stage("Deploy ${appTag}") {
         googleCloudBuild  \
-            credentialsId: gcloudCredentialsId,
+            credentialsId: common.gcloudCredentialsId,
             source: local('.'),
             request: file('deployments/cloudbuild/apis/deployment.yaml'),
             substitutions: commonSubst + [
                 _APP_NAME: "hello-api",
-                _NAMESPACE   : namespace,
-                _CLUSTER_ZONE: clusterZone,
-                _CLUSTER_NAME: clusterName,
-                _HELM_TAG    : helmTag,
+                _NAMESPACE   : common.namespace,
+                _CLUSTER_ZONE: common.clusterZone,
+                _CLUSTER_NAME: common.clusterName,
+                _HELM_TAG    : common.helmTag,
                 _ENVIRONMENT : environment,
             ]
     }

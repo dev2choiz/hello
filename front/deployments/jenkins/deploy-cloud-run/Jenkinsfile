@@ -5,8 +5,8 @@ parameters([
 ])
 
 node {
-
     def repoURL     = 'git@github.com:dev2choiz/hello.git'
+    def environment = "staging"
     def appTag      = params.VERSION
     def commitShort = ""
 
@@ -21,11 +21,8 @@ node {
         echo "git commit: ${commitShort}"
     }
 
-    sh "ls -la ./deployments/jenkins/"
     def ws = pwd()
     def common = load "${ws}/deployments/jenkins/common.groovy"
-    //def common = load "./../../../../deployments/jenkins/common.groovy"
-    echo common.helmTag
 
     def commonSubst = [
         _APP_TAG: appTag,
@@ -50,7 +47,7 @@ node {
                 _CLUSTER_ZONE: common.clusterZone,
                 _CLUSTER_NAME: common.clusterName,
                 _HELM_TAG    : common.helmTag,
-                _ENVIRONMENT : common.environment,
+                _ENVIRONMENT : environment,
             ]
     } */
 }

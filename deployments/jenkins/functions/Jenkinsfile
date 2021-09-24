@@ -7,11 +7,6 @@ parameters([
 
 node {
     def repoURL             = 'git@github.com:dev2choiz/hello.git'
-    def helmTag             = '3.2.4'
-    def projectName         = 'hello'
-    def projectId           = "samyn-project4"
-    def gcloudCredentialsId = projectId
-    def gcpRegion           = "europe-west1"
     def environment         = params.ENVIRONMENT
     def appTag              = params.VERSION
     def commitShort         = ""
@@ -25,20 +20,23 @@ node {
     commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0,7)
     echo "git commit: ${commitShort}"
 
+    def ws = pwd()
+    def common = load "${ws}/deployments/jenkins/common.groovy"
+
     def cbSubstitutions = [
         _APP_TAG: appTag,
-        _GCP_REGION: gcpRegion,
-        _KMS_KEYRING_NAME: "kr-hello",
-        _KMS_KEY_NAME: "key-default-hello",
+        _GCP_REGION: common.gcpRegion,
+        _KMS_KEYRING_NAME: common.kmsKeyringName,
+        _KMS_KEY_NAME: common.kmsKeyName,
         _GITHUB_PRIVATE_KEY_ENCRYPTED_PATH: "deployments/security/hello_github_deploy_id_rsa.enc",
         _GITHUB_REPOSITORY: "github.com/dev2choiz/hello",
-        _SERVICE_ACCOUNT: "sa-serverless@${projectId}.iam.gserviceaccount.com",
+        _SERVICE_ACCOUNT: "sa-serverless@${common.projectId}.iam.gserviceaccount.com",
         _APP_ENV: environment,
     ]
 
     stage('Deploy functions') {
       googleCloudBuild \
-        credentialsId: gcloudCredentialsId,
+        credentialsId: common.gcloudCredentialsId,
         source: local('.'),
         request: file('deployments/cloudbuild/deploy-functions/function1/cloudbuild.yaml'),
         substitutions: cbSubstitutions + [
