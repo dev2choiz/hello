@@ -34,6 +34,7 @@ module "project-services" {
     "dns.googleapis.com",
     "domains.googleapis.com",
     "endpoints.googleapis.com",
+    "run.googleapis.com",
   ]
 }
 
