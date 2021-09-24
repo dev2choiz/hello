@@ -28,26 +28,21 @@ node {
         _APP_TAG: appTag,
     ]
 
-    stage("Build image hello-front ${appTag}") {
+    /* stage("Build image hello-front ${appTag}") {
         googleCloudBuild  \
         credentialsId: common.gcloudCredentialsId,
             source: local('.'),
             request: file('front/deployments/cloudbuild/build-image.yaml'),
             substitutions: commonSubst + []
-    }
+    } */
 
-    /* stage("Deploy ${appTag}") {
+    stage("Deploy CloudRun ${appTag}") {
         googleCloudBuild  \
             credentialsId: common.gcloudCredentialsId,
             source: local('.'),
-            request: file('deployments/cloudbuild/front/deployment.yaml'),
+            request: file('front/deployments/cloudbuild/deploy-cloud-run.yaml'),
             substitutions: commonSubst + [
-                _APP_NAME: "hello-api",
-                _NAMESPACE   : common.namespace,
-                _CLUSTER_ZONE: common.clusterZone,
-                _CLUSTER_NAME: common.clusterName,
-                _HELM_TAG    : common.helmTag,
-                _ENVIRONMENT : environment,
+                _GCP_REGION  : common.gcpRegion,
             ]
-    } */
+    }
 }

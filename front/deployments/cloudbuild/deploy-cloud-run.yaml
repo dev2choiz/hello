@@ -1,0 +1,17 @@
+steps:
+  - id: DeployCloudRun
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run', 'deploy', 'hello-front',
+      '--image=gcr.io/${PROJECT_ID}/hello-front:${_APP_TAG}',
+      '--project=${PROJECT_ID}',
+      '--allow-unauthenticated',
+      '--port=3000',
+      '--memory=512Mi',
+      '--max-instances=5',
+      '--no-use-http2',
+      '--platform=managed',
+      '--region=${_GCP_REGION}',
+      '--command="npm"',
+      '--args="run,start"',
+   ]
