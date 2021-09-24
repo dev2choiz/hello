@@ -59,3 +59,7 @@ variable "kms_key_ring_hello" {
 variable "kms_key_hello" {
   description = "Hello kms key"
 }
+
+variable "dir_output" {
+    description = "dir_output"
+}

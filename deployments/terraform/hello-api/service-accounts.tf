@@ -24,6 +24,11 @@ resource "kubernetes_secret" "sa-jenkins-credentials" {
     "credentials.json" = base64decode(google_service_account_key.sa-jenkins-key.private_key)
   }
 }
+## save google_service_account_key.sa-jenkins-key locally
+resource "local_file" "file-sa-jenkins-key" {
+    sensitive_content = base64decode(google_service_account_key.sa-jenkins-key.private_key)
+    filename = "${var.dir_output}/sa-jenkins-credentials.json"
+}
 
 ## Api
 resource "google_service_account" "sa-hello-api" {
@@ -57,6 +62,11 @@ resource "kubernetes_secret" "sa-hello-api-credentials" {
   data = {
     "credentials.json" = base64decode(google_service_account_key.sa-hello-key.private_key)
   }
+}
+## save google_service_account_key.sa-hello-key locally
+resource "local_file" "file-sa-hello-key" {
+    sensitive_content = base64decode(google_service_account_key.sa-hello-key.private_key)
+    filename = "${var.dir_output}/sa-hello-api-credentials.json"
 }
 
 ## Serverless
