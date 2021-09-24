@@ -12,6 +12,6 @@ steps:
       '--no-use-http2',
       '--platform=managed',
       '--region=${_GCP_REGION}',
-      '--command="npm"',
-      '--args="run,start"',
+      '--command=npm',
+      '--args=run,start',
    ]
