@@ -26,6 +26,7 @@ node {
 
     def commonSubst = [
         _APP_TAG: appTag,
+        _GCP_REGION: common.gcpRegion,
     ]
 
     stage("Build image hello-front ${appTag}") {
@@ -33,7 +34,10 @@ node {
         credentialsId: common.gcloudCredentialsId,
             source: local('.'),
             request: file('front/deployments/cloudbuild/build-image.yaml'),
-            substitutions: commonSubst + []
+            substitutions: commonSubst + [
+                _KMS_KEYRING_NAME: common.kmsKeyringName,
+                _KMS_KEY_NAME: common.kmsKeyName,
+            ]
     }
 
     stage("Deploy CloudRun ${appTag}") {
@@ -42,7 +46,7 @@ node {
             source: local('.'),
             request: file('front/deployments/cloudbuild/deploy-cloud-run.yaml'),
             substitutions: commonSubst + [
-                _GCP_REGION  : common.gcpRegion,
+
             ]
     }
 }

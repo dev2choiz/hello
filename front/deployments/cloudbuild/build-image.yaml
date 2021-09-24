@@ -6,15 +6,21 @@ steps:
     dir: './front'
 
   - id: 'Create env file'
-    name: 'gcr.io/cloud-builders/git'
+    name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
-        - '-c'
-        - |
-            echo "CDN_BASE_URL=/" > .env
-            echo "BROWSER_API_BASE_URL=https://dev2choiz.com" >> .env
-            echo "SERVER_API_BASE_URL=https://dev2choiz.com" >> .env
-            echo "GRPC_API_KEY=todoWithKms" >> .env
+      - '-c'
+      - |
+          echo "CDN_BASE_URL=/" > .env
+          echo "BROWSER_API_BASE_URL=https://dev2choiz.com" >> .env
+          echo "SERVER_API_BASE_URL=https://dev2choiz.com" >> .env
+          echo -n "GRPC_API_KEY=" >> .env
+          gcloud kms decrypt \
+            --location=${_GCP_REGION} \
+            --keyring=${_KMS_KEYRING_NAME} \
+            --key=${_KMS_KEY_NAME} \
+            --ciphertext-file=./../deployments/security/api_key.enc \
+            --plaintext-file="-" >> .env
     dir: './front'
 
   - id: ImageBuildAndTag
