@@ -11,7 +11,7 @@ down:
 up:
 	docker-compose up -d --build
 
-start: docker-network down up
+start: docker-network down up dev
 
 sh:
 	docker-compose exec -u root hello-front bash
