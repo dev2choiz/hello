@@ -33,7 +33,7 @@ node {
         googleCloudBuild  \
         credentialsId: common.gcloudCredentialsId,
             source: local('.'),
-            request: file('front/deployments/cloudbuild/build-image.yaml'),
+            request: file('front/deployments/cloudbuild/build-image/cloudbuild.yaml'),
             substitutions: commonSubst + [
                 _KMS_KEYRING_NAME: common.kmsKeyringName,
                 _KMS_KEY_NAME: common.kmsKeyName,
@@ -44,7 +44,7 @@ node {
         googleCloudBuild  \
             credentialsId: common.gcloudCredentialsId,
             source: local('.'),
-            request: file('front/deployments/cloudbuild/deploy-cloud-run.yaml'),
+            request: file('front/deployments/cloudbuild/deploy-cloud-run/cloudbuild.yaml'),
             substitutions: commonSubst + [
 
             ]

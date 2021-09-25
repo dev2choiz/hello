@@ -33,7 +33,7 @@ node {
         googleCloudBuild  \
         credentialsId: common.gcloudCredentialsId,
             source: local('.'),
-            request: file('deployments/cloudbuild/apis/build-image.yaml'),
+            request: file('deployments/cloudbuild/apis/build-image/cloudbuild.yaml'),
             substitutions: commonSubst + [
                 _APP_NAME: "hello-api",
             ]
@@ -43,7 +43,7 @@ node {
         googleCloudBuild  \
             credentialsId: common.gcloudCredentialsId,
             source: local('.'),
-            request: file('deployments/cloudbuild/apis/deployment.yaml'),
+            request: file('deployments/cloudbuild/apis/deployment/cloudbuild.yaml'),
             substitutions: commonSubst + [
                 _APP_NAME: "hello-api",
                 _NAMESPACE   : common.namespace,
