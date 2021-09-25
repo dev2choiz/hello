@@ -41,6 +41,12 @@ variable "environment" {
 variable "domain" {
   description = "domain"
 }
+variable "front_cr_sub_domain" {
+  description = "front cloud run sub domain"
+}
+variable "front_gke_sub_domain" {
+  description = "front gke sub domain"
+}
 
 variable "certPrivateKeyPath" {
   description = "private key path"
