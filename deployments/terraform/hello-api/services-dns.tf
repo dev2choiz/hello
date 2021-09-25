@@ -18,7 +18,7 @@ resource "google_dns_record_set" "resource-recordset-front-cr" {
   provider     = google-beta
   project      = var.project_id
   managed_zone = data.google_dns_managed_zone.main-zone.name
-  name         = "${var.front_cr_sub_domain}.${data.google_dns_managed_zone.main-zone.dns_name}"
+  name         = "front.${data.google_dns_managed_zone.main-zone.dns_name}"
   type         = "A"
   rrdatas      = [google_compute_global_address.front_cr_address.address]
   ttl          = 300
