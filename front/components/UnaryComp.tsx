@@ -9,6 +9,9 @@ const Unary = () => {
 
     return (
         <Container sx={{ bgcolor: theme.palette.background.paper }}>
+            <div>
+                <strong>Homepage - Unary gRPC server-side call [SSR]</strong>
+            </div>
             <pre>{JSON.stringify(ctx.result, null, 2)}</pre>
         </Container>
     )

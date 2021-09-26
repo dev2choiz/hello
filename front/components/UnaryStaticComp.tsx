@@ -16,7 +16,7 @@ const UnaryStatic = () => {
     return (
         <Container sx={{ bgcolor: theme.palette.background.paper }}>
             <div>
-                <strong>Unary Static page</strong>
+                <strong>Unary gRPC server-side call [Incremental Static (Re)Generation]</strong>
             </div>
             <div>last generation: <strong>{ctx.dateTime}</strong></div>
             <div>Generation interval: <strong>{ctx.revalidate}</strong> seconds</div>

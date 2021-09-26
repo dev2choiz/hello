@@ -6,6 +6,7 @@ import HealthContext, { ContextDataType } from '@/pageContexts/healthContext'
 import { CheckServicesRequest, CheckServicesResponse } from '@protobuf/health_pb'
 import { HealthClient } from '@protobuf/health_pb_service'
 import getConfig from 'next/config'
+import dateSvc from '@/services/dateSvc'
 
 const revalidate = 30
 
@@ -39,7 +40,7 @@ export const getStaticProps: GetStaticProps<ContextDataType> = async() => {
     })
 
     return {
-        props: { result, dateTime: new Date().toLocaleString(), revalidate },
+        props: { result, dateTime: dateSvc.getNowString(), revalidate },
         revalidate,
     }
 }

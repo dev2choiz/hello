@@ -16,7 +16,7 @@ const Health = () => {
     return (
         <Container sx={{ bgcolor: theme.palette.background.paper }}>
             <div>
-                <strong>Health page</strong>
+                <strong>Unary gRPC server-side call [Static + Regeneration]</strong>
             </div>
             <div>last generation: <strong>{ctx.dateTime}</strong></div>
             <div>Generation interval: <strong>{ctx.revalidate}</strong> seconds</div>

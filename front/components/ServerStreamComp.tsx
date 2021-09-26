@@ -40,7 +40,10 @@ const ServerStream = () => {
 
     return (
         <Container sx={{ bgcolor: theme.palette.background.paper }}>
-            <div>nb requested: { nbResp }</div>
+            <div>
+                <strong>Server stream gRPC client-side call [SPA]</strong>
+            </div>
+            <div>nb responses: { nbResp }</div>
             <Box
                 display="flex"
                 flexWrap="wrap"

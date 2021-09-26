@@ -7,6 +7,7 @@ import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import UnaryStaticContext, { ContextDataType } from '@/pageContexts/unaryStaticContext'
 import getConfig from 'next/config'
+import dateSvc from '@/services/dateSvc'
 
 const revalidate = 15
 
@@ -52,10 +53,10 @@ export const getStaticProps: GetStaticProps<ContextDataType> = async(ctx) => {
         })
     })
 
-    //if (!config.unaryStaticParams.includes(name)) await new Promise(resolve => setTimeout(resolve, 4000)) // simulate waiting
+    //if (!config.unaryStaticParams.includes(name)) await new Promise(resolve => setTimeout(resolve, 5000)) // simulate waiting
 
     return {
-        props: { result, dateTime: new Date().toLocaleString(), revalidate },
+        props: { result, dateTime: dateSvc.getNowString(), revalidate },
         revalidate,
     }
 }
