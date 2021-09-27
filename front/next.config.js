@@ -1,10 +1,10 @@
-/** @type {import('next').NextConfig} */
-
 /* eslint @typescript-eslint/no-var-requires: 0 */
 const path = require('path')
 const resolve = p => path.join(__dirname, p)
+const headerSvc = require('./services/headerSvc')
 
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
     reactStrictMode: true,
     assetPrefix: 'production' === process.env.NODE_ENV ? process.env.CDN_BASE_URL : '',
 
@@ -13,6 +13,7 @@ module.exports = {
         conf.resolve.alias['@config'] = resolve('config')
         conf.resolve.alias['@pages'] = resolve('pages')
         conf.resolve.alias['@protobuf'] = resolve('protobuf')
+        conf.resolve.alias['@services'] = resolve('services')
         conf.resolve.alias['@'] = resolve('./')
         return conf
     },
@@ -40,4 +41,10 @@ module.exports = {
         }
         return ret
     },*/
+
+    async headers() {
+        return headerSvc.generateConfig()
+    },
 }
+
+module.exports = nextConfig

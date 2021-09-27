@@ -1,11 +1,12 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next'
+import getConfig from 'next/config'
 import UnaryComp from '@components/UnaryComp'
 import { UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
 import { SandboxClient } from '@protobuf/sandbox_pb_service'
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import IndexContext from '@/pageContexts/indexContext'
-import getConfig from 'next/config'
+import headerSvc from '@/services/headerSvc'
 
 const UnaryPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (props) => {
     return <IndexContext.Provider value={props}>
@@ -35,6 +36,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             resolve((res as UnaryResponse).toObject())
         })
     })
+
+    ctx.res.setHeader('Cache-Control', headerSvc.getCacheControl(3600))
+
     return {
         props: {
             result,

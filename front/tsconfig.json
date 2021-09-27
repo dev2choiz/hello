@@ -19,6 +19,7 @@
       "@config/*": ["./config/*"],
       "@pages/*": ["./pages/*"],
       "@protobuf/*": ["./protobuf/*"],
+      "@services/*": ["./services/*"],
       "@/*": ["./*"]
     }
   },
