@@ -34,3 +34,9 @@ resource "google_project_iam_member" "default-cb-cloudrun-adm" {
   member = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
   depends_on = [module.project-services]
 }
+
+resource "google_project_iam_member" "default-cb-compute-adm" {
+  role    = "roles/compute.admin"
+  member = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
+  depends_on = [module.project-services]
+}
