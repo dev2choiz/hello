@@ -16,7 +16,7 @@ type SandboxServer struct {
 func (s SandboxServer) Unary(ctx context.Context, req *sandboxpb.UnaryRequest) (*sandboxpb.UnaryResponse, error) {
 	name := req.GetName()
 	if name == "" {
-		name = "sir"
+		name = "world"
 	}
 	return &sandboxpb.UnaryResponse{Response: "hello " + name}, nil
 }

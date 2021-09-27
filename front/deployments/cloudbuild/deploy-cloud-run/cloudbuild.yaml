@@ -14,5 +14,8 @@ steps:
       '--region=${_GCP_REGION}',
       '--command=npm',
       '--args=run,start',
+      #--revision-suffix=${APP_TAG},
    ]
-#--revision-suffix=${APP_TAG}
+  - id: InvalidateCdn
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: ['compute', 'url-maps','invalidate-cdn-cache', 'front-cr-lb', '--path=/*']
