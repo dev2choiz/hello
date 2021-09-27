@@ -22,6 +22,7 @@ steps:
             --ciphertext-file=./../deployments/security/api_key.enc \
             --plaintext-file="-" >> .env
     dir: './front'
+    waitFor: ['-']
 
   - id: ImageBuildAndTag
     name: gcr.io/cloud-builders/docker
