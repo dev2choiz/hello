@@ -6,14 +6,17 @@ import (
 	"github.com/dev2choiz/hello/pkg/logger"
 	"google.golang.org/grpc"
 	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 type Config struct {
-	Name string
-	Port string
+	Name               string
+	Port               string
+	WithImprobable     bool
 }
 
 var RunConfig = &Config{}
@@ -68,4 +71,42 @@ func LogStreamInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.Stre
 		logger.Error(err.Error())
 	}
 	return err
+}
+
+func RunHttpServer(server *http.Server, conf *Config) {
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", conf.Port))
+	if err != nil {
+		logger.Fatal("Failed to listen: " + err.Error())
+	}
+	defer lis.Close()
+
+	errChan := make(chan error)
+	stopChan := make(chan os.Signal)
+	signal.Notify(stopChan, syscall.SIGTERM, syscall.SIGINT)
+
+	go func() {
+		logger.Infof("starting %s gRPC server on :%s", conf.Name, conf.Port)
+		if err = server.Serve(lis); err != nil {
+			errChan <- err
+		}
+	}()
+
+	select {
+	case err := <-errChan:
+		if err != nil && err != http.ErrServerClosed {
+			logger.Fatalf("Fatal error: %s", err.Error())
+		}
+	case <-stopChan:
+		logger.Warnf("will stop %s grpc server gracefully...", conf.Name)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer func() {
+		cancel()
+	}()
+
+	if err := server.Shutdown(ctx); err != nil {
+		logger.Fatalf("Server Shutdown Failed: %s", err.Error())
+	}
+	logger.Warnf("%s grpc server stopped", conf.Name)
 }

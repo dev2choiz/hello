@@ -1,3 +1,8 @@
+/**
+ * Not a typescript file because is too used by next.config.js
+ * which is not parsed by webpack neither babel :(
+ */
+
 const getCacheControl = (ttl, public = false) => {
     const pub = public ? 'public,' : ''
     return ttl ?

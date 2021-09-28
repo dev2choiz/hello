@@ -38,5 +38,12 @@ func executeHelloApi() {
 	notifypb.RegisterNotifyServer(grpcServer, &handlers.NotifyServer{})
 	sandboxpb.RegisterSandboxServer(grpcServer, &handlers.SandboxServer{})
 
-	server.RunGrpcServer(grpcServer, conf)
+	conf.WithImprobable = true
+	if conf.WithImprobable {
+		mux := server.GetServeMux()
+		xServer := server.GetWrappedServer(grpcServer, mux, conf)
+		server.RunHttpServer(xServer, conf)
+	} else {
+		server.RunGrpcServer(grpcServer, conf)
+	}
 }
