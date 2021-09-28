@@ -1,4 +1,4 @@
-FROM golang:1.16 as stage_base
+FROM golang:1.17 as stage_base
 WORKDIR /app
 
 FROM stage_base as stage_dev

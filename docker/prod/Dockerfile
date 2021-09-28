@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine as stage_base
+FROM golang:1.17-alpine as stage_base
 WORKDIR /source
 
 FROM stage_base as stage_dependencies
