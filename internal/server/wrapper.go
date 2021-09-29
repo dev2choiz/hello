@@ -18,14 +18,18 @@ func GetWrappedServer(server *grpc.Server, mux *http.ServeMux, conf *Config) *ht
 		}),
 	)
 
-	handler := &CHandler{
+	var handler http.Handler
+	handler = &CHandler{
 		config: conf,
 		wrappedGrpcServer: wrappedServer,
 		grpcServer: server,
 		mux: mux,
 	}
 
-	return &http.Server{Handler: h2c.NewHandler(handler, &http2.Server{})}
+	if !conf.WithTLS {
+		handler = h2c.NewHandler(handler, &http2.Server{})
+	}
+	return &http.Server{Handler: handler}
 }
 
 type CHandler struct {

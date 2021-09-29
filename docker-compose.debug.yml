@@ -2,10 +2,11 @@ version: '3.9'
 
 services:
   hello-api:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      target: stage_debug
     command: bash -c "
-      cd
-      && go install github.com/go-delve/delve/cmd/dlv@latest
-      && cd -
-      && dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug . -- hello-api --port=7080"
+      dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug . -- hello-api --port=7080"
     ports:
       - 2345:2345

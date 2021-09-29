@@ -14,9 +14,10 @@ import (
 )
 
 type Config struct {
-	Name               string
-	Port               string
-	WithImprobable     bool
+	Name           string
+	Port           string
+	WithImprobable bool
+	WithTLS        bool
 }
 
 var RunConfig = &Config{}
@@ -94,7 +95,7 @@ func RunHttpServer(server *http.Server, conf *Config) {
 	select {
 	case err := <-errChan:
 		if err != nil && err != http.ErrServerClosed {
-			logger.Fatalf("Fatal error: %s", err.Error())
+			logger.Fatalf("error: %s", err.Error())
 		}
 	case <-stopChan:
 		logger.Warnf("will stop %s grpc server gracefully...", conf.Name)
@@ -106,7 +107,7 @@ func RunHttpServer(server *http.Server, conf *Config) {
 	}()
 
 	if err := server.Shutdown(ctx); err != nil {
-		logger.Fatalf("Server Shutdown Failed: %s", err.Error())
+		logger.Fatalf("server Shutdown Failed: %s", err.Error())
 	}
 	logger.Warnf("%s grpc server stopped", conf.Name)
 }
