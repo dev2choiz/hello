@@ -37,3 +37,12 @@ variable "domain" {
 variable "membership_id" {
   description = "membership_id"
 }
+
+// secrets
+variable "sql_user" {
+  description = "sql_password"
+}
+
+variable "sql_password" {
+  description = "sql_password"
+}
