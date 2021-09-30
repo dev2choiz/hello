@@ -47,6 +47,8 @@ services:
       SVC2_BASE_URL: 'http://hello-svc2:8082'
       APP_ENV: 'dev'
       LOGGING_MODE: 'console'
+    env_file:
+        - .env.local
     ports:
       - '8080:8080'
       - '7080:7080'
@@ -102,6 +104,26 @@ services:
     command: ["-f", "/dev/null"]
     volumes:
       - .:/app
+    networks:
+      - hello
+
+  sql-proxy:
+    build:
+      context: ./docker/sql-proxy
+    command: ["/entrypoint.sh"]
+    volumes:
+        - ./local/files/sa-hello-api-credentials.json:/credentials.json
+    env_file:
+        - .env.local
+    networks:
+      - hello
+
+  postgres:
+    image: postgres:13-alpine
+    ports:
+        - "5432:5432"
+    env_file:
+        - .env.local
     networks:
       - hello
 

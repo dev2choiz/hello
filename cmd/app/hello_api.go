@@ -27,7 +27,7 @@ func init() {
 }
 
 func executeHelloApi() {
-	conf := config.GetConfig()
+	conf := config.Conf
 	conf.Name = "hello-api"
 	logger.Infof("config name=%s port=%s", conf.Name, conf.Port)
 

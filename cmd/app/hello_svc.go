@@ -25,7 +25,7 @@ func init() {
 }
 
 func executeHelloSvc() {
-	conf := config.GetConfig()
+	conf := config.Conf
 	logger.Infof("config name=%s port=%s", conf.Name, conf.Port)
 
 	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(server.LogInterceptor))
