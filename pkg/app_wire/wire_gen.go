@@ -8,6 +8,8 @@ package app_wire
 
 import (
 	"github.com/dev2choiz/hello/pkg/logger"
+	"github.com/dev2choiz/hello/pkg/pg"
+	"gorm.io/gorm"
 )
 
 // Injectors from wire.go:
@@ -20,4 +22,9 @@ func InitializeLogger() logger.LoggerInterface {
 func InitializeLoggerMock() logger.LoggerInterface {
 	loggerInterface := logger.NewLoggerMock()
 	return loggerInterface
+}
+
+func InitializePostgres() *gorm.DB {
+	db := pg.NewDB()
+	return db
 }

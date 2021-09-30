@@ -35,7 +35,7 @@ node {
         parallel (
             "Build image hello-api ${appTag}": {
                 googleCloudBuild  \
-                credentialsId: gcloudCredentialsId,
+                    credentialsId: gcloudCredentialsId,
                     source: local('.'),
                     request: file('deployments/cloudbuild/build-image.yaml'),
                     substitutions: commonSubst + [
@@ -44,7 +44,7 @@ node {
             },
             "Build image hello-svc1 ${appTag}": {
                 googleCloudBuild  \
-                credentialsId: gcloudCredentialsId,
+                    credentialsId: gcloudCredentialsId,
                     source: local('.'),
                     request: file('deployments/cloudbuild/build-image.yaml'),
                     substitutions: commonSubst + [

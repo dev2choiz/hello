@@ -62,6 +62,18 @@ restart-esp:
 restart-protoc:
 	docker-compose stop protoc
 	docker-compose up -d --build protoc
+restart-proxy:
+	docker-compose stop sql-proxy
+	docker-compose up -d --build sql-proxy
+	docker-compose -f docker-compose.yml logs -f sql-proxy
+restart-postgres:
+	docker-compose stop postgres
+	docker-compose up -d --build postgres
+	#docker-compose -f docker-compose.yml logs -f postgres
+
+## DB
+migration-diff:
+	docker-compose exec -u hello hello-api go run cmd/dev/*.go migration diff
 
 ## Infra
 clean-pods:

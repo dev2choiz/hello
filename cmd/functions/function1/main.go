@@ -15,7 +15,7 @@ type PubSubMessage struct {
 }
 
 func init() {
-	app_wire.InitApp()
+	app_wire.InitializeLogger()
 }
 
 func Execute(ctx context.Context, m pubsub.Message) error {
