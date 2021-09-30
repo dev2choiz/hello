@@ -9,6 +9,7 @@ node {
     def repoURL             = 'git@github.com:dev2choiz/hello.git'
     def environment         = params.ENVIRONMENT
     def appTag              = params.VERSION
+    def migrationType       = params.MIGRATION_TYPE
     def commitShort         = ""
 
     echo "start building tag/branch '${appTag}'. env: ${environment}"
@@ -17,11 +18,10 @@ node {
         userRemoteConfigs: [[url: repoURL]],
         branches: [[name: appTag]]
     ], poll: false
-    commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0,7)
 
     def ws = pwd()
     def modCloudFunc = load "${ws}/deployments/jenkins/modules/cloudFunc.groovy"
-    stage('Deploy function1') {
-        modCloudFunc.deployFunction1(appTag, environment)
+    stage('Deploy hello-pg-migration') {
+        modCloudFunc.deployPgMigration(appTag, environment)
     }
 }

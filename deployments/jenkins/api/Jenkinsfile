@@ -23,7 +23,7 @@ node {
     }
 
     def ws = pwd()
-    def common = load "${ws}/deployments/jenkins/common.groovy"
+    def moduleVars = load "${ws}/deployments/jenkins/modules/variables.groovy"
 
     def commonSubst = [
         _APP_TAG: appTag,
@@ -32,7 +32,7 @@ node {
 
     stage("Build image hello-api ${appTag}") {
         googleCloudBuild  \
-        credentialsId: common.gcloudCredentialsId,
+        credentialsId: moduleVars.gcloudCredentialsId,
             source: local('.'),
             request: file('deployments/cloudbuild/apis/build-image/cloudbuild.yaml'),
             substitutions: commonSubst + []
@@ -40,14 +40,14 @@ node {
 
     stage("Deploy ${appTag}") {
         googleCloudBuild  \
-            credentialsId: common.gcloudCredentialsId,
+            credentialsId: moduleVars.gcloudCredentialsId,
             source: local('.'),
             request: file('deployments/cloudbuild/apis/deployment/cloudbuild.yaml'),
             substitutions: commonSubst + [
-                _NAMESPACE   : common.namespace,
-                _CLUSTER_ZONE: common.clusterZone,
-                _CLUSTER_NAME: common.clusterName,
-                _HELM_TAG    : common.helmTag,
+                _NAMESPACE   : moduleVars.namespace,
+                _CLUSTER_ZONE: moduleVars.clusterZone,
+                _CLUSTER_NAME: moduleVars.clusterName,
+                _HELM_TAG    : moduleVars.helmTag,
                 _ENVIRONMENT : environment,
             ]
     }

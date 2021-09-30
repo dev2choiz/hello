@@ -1,6 +1,8 @@
 import groovy.transform.Field
 
 @Field
+def repoURL = 'git@github.com:dev2choiz/hello.git'
+@Field
 def helmTag = '3.2.4'
 @Field
 def projectName = 'hello-api'
