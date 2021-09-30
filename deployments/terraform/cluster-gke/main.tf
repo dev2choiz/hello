@@ -36,6 +36,7 @@ module "project-services" {
     "endpoints.googleapis.com",
     "run.googleapis.com",
     "sql-component.googleapis.com",
+    "sqladmin.googleapis.com",
   ]
 }
 

@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/dev2choiz/hello/internal/server"
+	"github.com/dev2choiz/hello/pkg/config"
 	"github.com/dev2choiz/hello/pkg/handlers"
 	"github.com/dev2choiz/hello/pkg/logger"
 	"github.com/dev2choiz/hello/pkg/protobuf/pingpb"
@@ -19,12 +20,12 @@ var helloSvcCmd = &cobra.Command{
 }
 
 func init() {
-	helloSvcCmd.PersistentFlags().StringVar(&server.RunConfig.Port, "port", "", "grpc port")
-	helloSvcCmd.PersistentFlags().StringVar(&server.RunConfig.Name, "name", "", "service name")
+	helloSvcCmd.PersistentFlags().StringVar(&config.Conf.Port, "port", "", "grpc port")
+	helloSvcCmd.PersistentFlags().StringVar(&config.Conf.Name, "name", "", "service name")
 }
 
 func executeHelloSvc() {
-	conf := server.GetConfig()
+	conf := config.GetConfig()
 	logger.Infof("config name=%s port=%s", conf.Name, conf.Port)
 
 	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(server.LogInterceptor))

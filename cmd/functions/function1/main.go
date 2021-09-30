@@ -18,7 +18,7 @@ func init() {
 	app_wire.InitApp()
 }
 
-func Function1(ctx context.Context, m pubsub.Message) error {
+func Execute(ctx context.Context, m pubsub.Message) error {
 	logger.Info("received msg:", zap.String("data", string(m.Data)))
 	name := string(m.Data)
 	if name == "" {

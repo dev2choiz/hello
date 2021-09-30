@@ -36,7 +36,7 @@ resource "google_service_account" "sa-hello-api" {
   display_name = "Hello-api Service Account"
 }
 resource "google_project_iam_member" "sa-hello-api-ps-publisher" {
-  role    = "roles/pubsub.publisher"
+  role   = "roles/pubsub.publisher"
   member = "serviceAccount:${google_service_account.sa-hello-api.email}"
 }
 resource "google_project_iam_member" "sa-hello-api-svc-ctrl" {
@@ -49,6 +49,10 @@ resource "google_project_iam_member" "sa-hello-api-cl-ag" {
 }
 resource "google_project_iam_member" "sa-hello-api-log-lw" {
   role    = "roles/logging.logWriter"
+  member = "serviceAccount:${google_service_account.sa-hello-api.email}"
+}
+resource "google_project_iam_member" "sa-hello-api-sql-client" {
+  role    = "roles/cloudsql.client"
   member = "serviceAccount:${google_service_account.sa-hello-api.email}"
 }
 resource "google_service_account_key" "sa-hello-key" {

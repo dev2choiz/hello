@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/dev2choiz/hello/pkg/config"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -10,7 +11,7 @@ import (
 )
 
 // GetWrappedServer a grpc server to serve http and grpc
-func GetWrappedServer(server *grpc.Server, mux *http.ServeMux, conf *Config) *http.Server {
+func GetWrappedServer(server *grpc.Server, mux *http.ServeMux, conf *config.Config) *http.Server {
 	wrappedServer := grpcweb.WrapServer(
 		server,
 		grpcweb.WithOriginFunc(func(origin string) bool {
@@ -33,7 +34,7 @@ func GetWrappedServer(server *grpc.Server, mux *http.ServeMux, conf *Config) *ht
 }
 
 type CHandler struct {
-	config            *Config
+	config            *config.Config
 	wrappedGrpcServer *grpcweb.WrappedGrpcServer
 	grpcServer        *grpc.Server
 	mux               *http.ServeMux

@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/dev2choiz/hello/pkg/config"
 	"github.com/dev2choiz/hello/pkg/logger"
 	"google.golang.org/grpc"
 	"net"
@@ -13,20 +14,7 @@ import (
 	"time"
 )
 
-type Config struct {
-	Name           string
-	Port           string
-	WithImprobable bool
-	WithTLS        bool
-}
-
-var RunConfig = &Config{}
-
-func GetConfig() *Config {
-	return RunConfig
-}
-
-func RunGrpcServer(grpcServer *grpc.Server, conf *Config) {
+func RunGrpcServer(grpcServer *grpc.Server, conf *config.Config) {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", conf.Port))
 	if err != nil {
 		logger.Fatal("Failed to listen: " + err.Error())
@@ -74,7 +62,7 @@ func LogStreamInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.Stre
 	return err
 }
 
-func RunHttpServer(server *http.Server, conf *Config) {
+func RunHttpServer(server *http.Server, conf *config.Config) {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", conf.Port))
 	if err != nil {
 		logger.Fatal("Failed to listen: " + err.Error())

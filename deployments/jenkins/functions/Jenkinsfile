@@ -43,7 +43,7 @@ node {
             _FUNCTION_SOURCE_PATH: 'cmd/functions/function1',
             _FUNCTION_NAME: 'hello-function1',
             _FUNCTION_GO_MODULE: 'github.com/dev2choiz/hello/cmd/function/function1',
-            _ENTRYPOINT: 'Function1',
+            _ENTRYPOINT: 'Execute',
             _TRIGGER_TOPIC: 'hello-function1',
         ]
     }

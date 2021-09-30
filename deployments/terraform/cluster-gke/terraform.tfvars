@@ -14,3 +14,4 @@ disk_size     = 25
 #machine_type  = "e2-standard-4"
 #disk_size     = 50
 membership_id = "samyn-cluster-mi"
+dir_output    = "./../../../local/files"

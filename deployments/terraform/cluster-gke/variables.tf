@@ -38,6 +38,10 @@ variable "membership_id" {
   description = "membership_id"
 }
 
+variable "dir_output" {
+    description = "dir_output"
+}
+
 // secrets
 variable "sql_user" {
   description = "sql_password"
