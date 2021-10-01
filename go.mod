@@ -5,9 +5,8 @@ go 1.17
 require (
 	cloud.google.com/go v0.91.1
 	cloud.google.com/go/pubsub v1.13.0
-	github.com/go-pg/migrations v6.7.3+incompatible
 	github.com/go-pg/migrations/v8 v8.1.0
-	github.com/go-pg/pg v8.0.7+incompatible
+	github.com/go-pg/pg/v10 v10.4.0
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/wire v0.5.0
 	github.com/improbable-eng/grpc-web v0.14.1
@@ -29,7 +28,6 @@ require (
 require (
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
-	github.com/go-pg/pg/v10 v10.4.0 // indirect
 	github.com/go-pg/zerochecker v0.2.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.6 // indirect

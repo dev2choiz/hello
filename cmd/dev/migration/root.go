@@ -14,6 +14,7 @@ var RootCmd = &cobra.Command{
 }
 
 func init() {
+	RootCmd.AddCommand(initCmd)
 	RootCmd.AddCommand(upCmd)
 	RootCmd.AddCommand(downCmd)
 	RootCmd.AddCommand(migrationDiffCmd)

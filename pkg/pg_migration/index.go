@@ -2,12 +2,11 @@ package pg_migration
 
 import (
 	"fmt"
+	mig "github.com/dev2choiz/hello/migrations"
 	"github.com/dev2choiz/hello/pkg/config"
 	"github.com/dev2choiz/hello/pkg/logger"
-	"github.com/go-pg/migrations"
-	"github.com/go-pg/pg"
-	"log"
-	"os"
+	"github.com/go-pg/migrations/v8"
+	"github.com/go-pg/pg/v10"
 )
 
 const usageText = `This program runs command on the db. Supported commands are:
@@ -24,6 +23,8 @@ Usage:
 
 // Migrate execute migrations
 func Migrate(params []string, conf *config.Config) error {
+	deb := migrations.DefaultCollection; _ = deb
+	deb2 := mig.Collection; _ = deb2
 	if len(params) == 0 {
 		logger.Info(usageText)
 		return nil
@@ -40,25 +41,17 @@ func Migrate(params []string, conf *config.Config) error {
 		Password:  conf.PostgresPassword,
 		TLSConfig: nil,
 	}
-	var addr string
-	log.Println(conf.AppEnvContext, os.Getenv("DB_SOCKET_DIR"))
 	if conf.AppEnvContext == "cloud_function" {
-		//opt.Addr = fmt.Sprintf("%s", conf.PostgresHost)
-		//opt.Addr = fmt.Sprintf("%s:%s", conf.PostgresHost, conf.PostgresPort)
 		opt.Addr = fmt.Sprintf("%s/.s.PGSQL.%s", conf.PostgresHost, conf.PostgresPort)
 		opt.Network = "unix"
 	} else {
 		opt.Addr = fmt.Sprintf("%s:%s", conf.PostgresHost, conf.PostgresPort)
 	}
 
-	log.Println(addr)
-
-	log.Println("in migration: before Connect()")
 	db := pg.Connect(opt)
 	defer db.Close()
-	log.Println("in migration: after Connect()")
 
-	oldVer, newVer, err := migrations.Run(db, params...)
+	oldVer, newVer, err := mig.Collection.Run(db, params...)
 	logResult(params[0], err, oldVer, newVer)
 	return nil
 }

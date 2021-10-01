@@ -12,7 +12,7 @@ down:
 up:
 	docker-compose up -d --build
 
-start: docker-network down vendor up
+start: docker-network down vendor up migration-init migration-up
 
 debug:
 	docker-compose -f docker-compose.yml -f docker-compose.debug.yml stop hello-api
@@ -71,9 +71,17 @@ restart-postgres:
 	docker-compose up -d --build postgres
 	#docker-compose -f docker-compose.yml logs -f postgres
 
-## DB
-migration-diff:
-	docker-compose exec -u hello hello-api go run cmd/dev/*.go migration diff
+## dev DB
+vendor-dev:
+	docker-compose exec -w /app/cmd/dev hello-api go mod vendor
+migration-diff: vendor-dev
+	docker-compose exec -u hello -w /app/cmd/dev hello-api go run *.go migration diff
+migration-init: vendor-dev
+	docker-compose exec -u hello -w /app/cmd/dev hello-api go run . migration init
+migration-up: vendor-dev
+	docker-compose exec -u hello -w /app/cmd/dev hello-api go run . migration up
+	#docker-compose exec -u hello -w /app/cmd/dev hello-api dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug . -- migration up
+
 
 ## Infra
 clean-pods:

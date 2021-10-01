@@ -24,8 +24,18 @@ var upCmd = &cobra.Command{
 	},
 }
 
+var initCmd = &cobra.Command{
+	Use:   "init",
+	Short: "Execute a pg migration init",
+	Long: "Execute a pg migration init",
+	Run: func(cmd *cobra.Command, args []string) {
+		executeMigration([]string{"init"})
+	},
+}
+
 func executeMigration(params []string) {
-	conf := config.GetConfig()
+	conf := config.Conf
+	//dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug *.go migration up
 	err := pg_migration.Migrate(params, conf)
 	if err != nil {
 		panic(err)

@@ -52,6 +52,7 @@ services:
     ports:
       - '8080:8080'
       - '7080:7080'
+      - '2345:2345'
     volumes:
       - .:/app
       - ./local/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json
