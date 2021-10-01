@@ -121,6 +121,26 @@ steps:
           path: '/root/.ssh'
     dir: '${_FUNCTION_SOURCE_PATH}'
 
+  - id: 'EnvVarFile'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+        - '-c'
+        - |
+            cp deployments/security/variables.${_APP_ENV}.yaml "./${_FUNCTION_SOURCE_PATH}/"
+            ls -la "./${_FUNCTION_SOURCE_PATH}/"
+            cat "./${_FUNCTION_SOURCE_PATH}/variables.${_APP_ENV}.yaml"
+
+  - id: 'Debug 2'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+        - '-c'
+        - |
+            ls -la
+            cat "./variables.${_APP_ENV}.yaml"
+    dir: '${_FUNCTION_SOURCE_PATH}'
+
   - id: 'Deploy cloud function'
     name: 'gcr.io/cloud-builders/gcloud'
     args: ['functions', 'deploy', '${_FUNCTION_NAME}',
@@ -131,7 +151,7 @@ steps:
        '--trigger-topic', '${_TRIGGER_TOPIC}',
        '--timeout', '30s',
        '--service-account', '${_SERVICE_ACCOUNT}',
-       '--set-env-vars', 'APP_ENV=${_APP_ENV}',
+       '--env-vars-file', './variables.${_APP_ENV}.yaml',
        #'--clear-vpc-connector'
        ]
     dir: '${_FUNCTION_SOURCE_PATH}'

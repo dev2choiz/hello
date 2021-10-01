@@ -6,6 +6,8 @@ import (
 	"github.com/dev2choiz/hello/pkg/logger"
 	"github.com/go-pg/migrations"
 	"github.com/go-pg/pg"
+	"log"
+	"os"
 )
 
 const usageText = `This program runs command on the db. Supported commands are:
@@ -37,9 +39,24 @@ func Migrate(params []string, conf *config.Config) error {
 		Database:  conf.PostgresDB,
 		Password:  conf.PostgresPassword,
 		TLSConfig: nil,
-		Addr: fmt.Sprintf("%s:%s", conf.PostgresHost, conf.PostgresPort),
 	}
+	var addr string
+	log.Println(conf.AppEnvContext, os.Getenv("DB_SOCKET_DIR"))
+	if conf.AppEnvContext == "cloud_function" {
+		//opt.Addr = fmt.Sprintf("%s", conf.PostgresHost)
+		//opt.Addr = fmt.Sprintf("%s:%s", conf.PostgresHost, conf.PostgresPort)
+		opt.Addr = fmt.Sprintf("%s/.s.PGSQL.%s", conf.PostgresHost, conf.PostgresPort)
+		opt.Network = "unix"
+	} else {
+		opt.Addr = fmt.Sprintf("%s:%s", conf.PostgresHost, conf.PostgresPort)
+	}
+
+	log.Println(addr)
+
+	log.Println("in migration: before Connect()")
 	db := pg.Connect(opt)
+	defer db.Close()
+	log.Println("in migration: after Connect()")
 
 	oldVer, newVer, err := migrations.Run(db, params...)
 	logResult(params[0], err, oldVer, newVer)

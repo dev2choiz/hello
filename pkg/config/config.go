@@ -18,7 +18,8 @@ type Config struct {
 
 	// set by viper
 	DecryptConf      bool
-	KmsKey           string
+	AppEnvContext    string
+	KmsCryptoKeys    string
 	PostgresHost     string
 	PostgresUser     string
 	PostgresPassword string
@@ -41,7 +42,8 @@ func init()  {
 
 	viper.AutomaticEnv()
 	Conf.DecryptConf = viper.GetBool("decrypt_conf")
-	Conf.KmsKey = viper.GetString("kms_key")
+	Conf.AppEnvContext = viper.GetString("app_env_context")
+	Conf.KmsCryptoKeys = viper.GetString("kms_crypto_keys")
 	Conf.PostgresHost = viper.GetString("postgres_host")
 	Conf.PostgresUser = viper.GetString("postgres_user")
 	Conf.PostgresPassword = getString("postgres_password")
@@ -58,7 +60,7 @@ func getString(s string) string {
 		return v
 	}
 
-	log.Println("decrypt", s)
+	log.Println("decrypt", s, Conf.KmsCryptoKeys)
 	cypherText, err := base64.StdEncoding.DecodeString(v)
 	if err != nil {
 		panic(err)
@@ -79,7 +81,7 @@ func kmsDecrypt(cypherText []byte) (string, error) {
 	}
 
 	req := &kmspb.DecryptRequest{
-		Name:       Conf.KmsKey,
+		Name:       Conf.KmsCryptoKeys,
 		Ciphertext: cypherText,
 	}
 	res, err := client.Decrypt(ctx, req)

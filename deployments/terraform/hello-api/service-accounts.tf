@@ -55,6 +55,10 @@ resource "google_project_iam_member" "sa-hello-api-sql-client" {
   role    = "roles/cloudsql.client"
   member = "serviceAccount:${google_service_account.sa-hello-api.email}"
 }
+resource "google_project_iam_member" "sa-hello-api-kms" {
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member = "serviceAccount:${google_service_account.sa-hello-api.email}"
+}
 resource "google_service_account_key" "sa-hello-key" {
   service_account_id = google_service_account.sa-hello-api.name
 }
@@ -77,4 +81,12 @@ resource "local_file" "file-sa-hello-key" {
 resource "google_service_account" "sa_serverless" {
   account_id   = "sa-serverless"
   display_name = "Serverless Service Account"
+}
+resource "google_project_iam_member" "sa-serverless-sql-client" {
+    role    = "roles/cloudsql.client"
+    member = "serviceAccount:${google_service_account.sa_serverless.email}"
+}
+resource "google_project_iam_member" "sa-serverless-kms" {
+    role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    member = "serviceAccount:${google_service_account.sa_serverless.email}"
 }
