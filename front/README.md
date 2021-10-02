@@ -1,16 +1,6 @@
-## Getting Started
-
-### Run docker containers
+## Setup
+_To start the stack, execute this command_
 ```bash
-make start
+make docker-network down up install gen-proto dev
 ```
-
-### Generate protobuf
-```bash
-make gen-proto
-```
-
-### Run the application on http://localhost:3000
-```bash
-make dev
-```
+available in http://localhost:3000
