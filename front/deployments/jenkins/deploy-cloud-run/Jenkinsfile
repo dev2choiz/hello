@@ -22,27 +22,27 @@ node {
     }
 
     def ws = pwd()
-    def common = load "${ws}/deployments/jenkins/common.groovy"
+    def moduleVars = load "${ws}/deployments/jenkins/modules/variables.groovy"
 
     def commonSubst = [
         _APP_TAG: appTag,
-        _GCP_REGION: common.gcpRegion,
+        _GCP_REGION: moduleVars.gcpRegion,
     ]
 
     stage("Build image hello-front ${appTag}") {
         googleCloudBuild  \
-        credentialsId: common.gcloudCredentialsId,
+        credentialsId: moduleVars.gcloudCredentialsId,
             source: local('.'),
             request: file('front/deployments/cloudbuild/build-image/cloudbuild.yaml'),
             substitutions: commonSubst + [
-                _KMS_KEYRING_NAME: common.kmsKeyringName,
-                _KMS_KEY_NAME: common.kmsKeyName,
+                _KMS_KEYRING_NAME: moduleVars.kmsKeyringName,
+                _KMS_KEY_NAME: moduleVars.kmsKeyName,
             ]
     }
 
     stage("Deploy CloudRun ${appTag}") {
         googleCloudBuild  \
-            credentialsId: common.gcloudCredentialsId,
+            credentialsId: moduleVars.gcloudCredentialsId,
             source: local('.'),
             request: file('front/deployments/cloudbuild/deploy-cloud-run/cloudbuild.yaml'),
             substitutions: commonSubst + [
