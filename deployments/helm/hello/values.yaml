@@ -3,6 +3,7 @@ environment: staging
 
 gcp:
   projectId: samyn-project4
+  region: europe-west1
   namespace: lazone
 
 useSvcMesh: false
@@ -37,6 +38,22 @@ api:
     memory:
       min: 64Mi
       max: 90Mi
+
+  sqlProxy:
+    port: '5432'
+    cpu:
+        min: 15m
+        max: 35m
+    memory:
+        min: 20Mi
+        max: 30Mi
+
+  postgres:
+    instance: 'hello-db-instance'
+    host: 'localhost'
+    port: '5432'
+    user: 'hello'
+    dbName: 'hello-db'
 
   hpa:
     name: 'hello-api-deploy-hpa'

@@ -9,4 +9,4 @@ services:
     command: bash -c "
       dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug . -- hello-api --port=7080"
     ports:
-      - 2345:2345
+      - '2345:2345'

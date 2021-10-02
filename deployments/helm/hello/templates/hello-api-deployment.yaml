@@ -24,6 +24,29 @@ spec:
       namespace: {{ .Values.gcp.namespace }}
     spec:
       containers:
+
+        # CLOUD PROXY
+        - name: sql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.25.0
+          command:
+            - "/cloud_sql_proxy"
+            - "-instances={{ .Values.gcp.projectId }}:{{ .Values.gcp.region }}:{{ .Values.api.postgres.instance }}=tcp:{{ .Values.api.sqlProxy.port }}"
+            - "-credential_file=/secrets/credentials.json"
+          securityContext:
+            runAsNonRoot: true
+          volumeMounts:
+            - name: hello-sa-secret
+              mountPath: /secrets/
+              readOnly: true
+          resources:
+              requests:
+                  cpu: {{ .Values.api.sqlProxy.cpu.min }}
+                  memory: {{ .Values.api.sqlProxy.memory.min }}
+              limits:
+                  cpu: {{ .Values.api.sqlProxy.cpu.max }}
+                  memory: {{ .Values.api.sqlProxy.memory.max }}
+        # END CLOUD PROXY
+
         # ESP
         {{- if .Values.api.esp.useEsp }}
         - name: esp
@@ -97,6 +120,22 @@ spec:
               value: "hello-svc1-cluster-ip:80"
             - name: SVC2_GRPC_BASE_URL
               value: "hello-svc2-cluster-ip:80"
+            - name: POSTGRES_HOST
+              value: {{ .Values.api.postgres.host | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.api.postgres.port | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.api.postgres.dbName | quote }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: sql-user-credentials
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sql-user-credentials
+                  key: password
           volumeMounts:
             - name: hello-sa-secret
               mountPath: /volumes/secrets/sa

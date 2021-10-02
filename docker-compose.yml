@@ -22,7 +22,7 @@ services:
         - "--ssl_server_cert_path=/etc/esp/ssl"
         #- "--enable_debug"
     ports:
-      - 9000:9000
+      - '9000:9000'
     volumes:
       - ./local/files/sa-hello-api-credentials.json:/etc/nginx/creds/credentials.json
       - ./local/files/tls/full_chain.pem:/etc/esp/ssl/server.crt
@@ -52,7 +52,6 @@ services:
     ports:
       - '8080:8080'
       - '7080:7080'
-      - '2345:2345'
     volumes:
       - .:/app
       - ./local/files/sa-hello-api-credentials.json:/volumes/secrets/sa/credentials.json

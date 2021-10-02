@@ -9,7 +9,6 @@ node {
     def projectName = 'hello-api'
     def environment = "staging"
     def appTag      = params.VERSION
-    def commitShort = ""
 
     echo "start building tag/branch '${appTag}'"
     stage("Checkout ${appTag}") {
@@ -18,8 +17,6 @@ node {
             userRemoteConfigs: [[url: repoURL]],
             branches         : [[name: appTag]]
         ], poll: false
-        commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0, 7)
-        echo "git commit: ${commitShort}"
     }
 
     def ws = pwd()

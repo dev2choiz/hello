@@ -5,7 +5,6 @@ import (
 	mig "github.com/dev2choiz/hello/migrations"
 	"github.com/dev2choiz/hello/pkg/config"
 	"github.com/dev2choiz/hello/pkg/logger"
-	"github.com/go-pg/migrations/v8"
 	"github.com/go-pg/pg/v10"
 )
 
@@ -23,8 +22,6 @@ Usage:
 
 // Migrate execute migrations
 func Migrate(params []string, conf *config.Config) error {
-	deb := migrations.DefaultCollection; _ = deb
-	deb2 := mig.Collection; _ = deb2
 	if len(params) == 0 {
 		logger.Info(usageText)
 		return nil
