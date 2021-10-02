@@ -1,0 +1,39 @@
+#!groovy
+
+parameters([
+    string(name: 'VERSION', defaultValue: 'dev', description: 'branch or tag', trim: true),
+    string(name: 'ENVIRONMENT', defaultValue: 'staging', description: 'environment', trim: true),
+    string(name: 'TOPIC_ID', description: 'topic id', trim: true),
+    string(name: 'MESSAGE', description: 'message', trim: true),
+    string(name: 'ATTRIBUTES', description: 'attributes', trim: true),
+])
+
+node {
+    def repoURL             = 'git@github.com:dev2choiz/hello.git'
+    def environment         = params.ENVIRONMENT
+    def appTag              = params.VERSION
+    def topicID             = params.TOPIC_ID
+    def message             = params.MESSAGE
+    def attributes           = params.ATTRIBUTES
+
+    echo "start building tag/branch '${appTag}'. env: ${environment}"
+    checkout scm: [
+        $class: 'GitSCM',
+        userRemoteConfigs: [[url: repoURL]],
+        branches: [[name: appTag]]
+    ], poll: false
+
+    def ws = pwd()
+    def moduleVars = load "${ws}/deployments/jenkins/modules/variables.groovy"
+    stage('Pubsub') {
+        googleCloudBuild   \
+            credentialsId: moduleVars.gcloudCredentialsId,
+                source: local('.'),
+                request: file('deployments/cloudbuild/pubsub/cloudbuild.yaml'),
+                substitutions: [
+                    _TOPIC_ID: topicID,
+                    _ATTRIBUTES: attributes,
+                    _MESSAGE: message,
+                ]
+    }
+}

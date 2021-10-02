@@ -1,0 +1,10 @@
+steps:
+  - id: 'PubSub'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'pubsub'
+      - 'topics'
+      - 'publish'
+      - '${_TOPIC_ID}'
+      - '--message=${_MESSAGE}'
+      - '--attribute=${_ATTRIBUTES}'
