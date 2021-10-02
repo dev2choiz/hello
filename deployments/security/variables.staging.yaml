@@ -5,5 +5,6 @@ POSTGRES_HOST: "/cloudsql/samyn-project4:europe-west1:hello-db-instance"
 POSTGRES_USER: "hello"
 POSTGRES_DB: "hello-db"
 POSTGRES_PORT: "5432"
-POSTGRES_PASSWORD: "CiQAXT+Fx812iRUNft0IjGmOkAH5zi5WkzN4xj2hWHYnzXJkMi4SMgDWvIbjxSvLY2W+ygrjHxgOEV6VSA7kZx3t/tHXkfEO7Ev4IdvPL9ylNEGB3xtYeHCR"
 KMS_CRYPTO_KEYS: "projects/samyn-project4/locations/europe-west1/keyRings/kr-hello/cryptoKeys/key-default-hello"
+## kms encrypted
+POSTGRES_PASSWORD: "CiQAXT+Fx812iRUNft0IjGmOkAH5zi5WkzN4xj2hWHYnzXJkMi4SMgDWvIbjxSvLY2W+ygrjHxgOEV6VSA7kZx3t/tHXkfEO7Ev4IdvPL9ylNEGB3xtYeHCR"

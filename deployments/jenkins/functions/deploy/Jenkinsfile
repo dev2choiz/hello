@@ -5,12 +5,11 @@ parameters([
     string(name: 'ENVIRONMENT', defaultValue: 'staging', description: 'environment', trim: true),
 ])
 
+// Deploy all cloud functions in parallel
 node {
     def repoURL             = 'git@github.com:dev2choiz/hello.git'
     def environment         = params.ENVIRONMENT
     def appTag              = params.VERSION
-    def migrationType       = params.MIGRATION_TYPE
-    def commitShort         = ""
 
     echo "start building tag/branch '${appTag}'. env: ${environment}"
     checkout scm: [
@@ -18,48 +17,18 @@ node {
         userRemoteConfigs: [[url: repoURL]],
         branches: [[name: appTag]]
     ], poll: false
-    commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0,7)
-    echo "git commit: ${commitShort}"
 
     def ws = pwd()
-    def common = load "${ws}/deployments/jenkins/common.groovy"
-
-    def cbSubstitutions = [
-        _APP_TAG: appTag,
-        _GCP_REGION: common.gcpRegion,
-        _KMS_KEYRING_NAME: common.kmsKeyringName,
-        _KMS_KEY_NAME: common.kmsKeyName,
-        _GITHUB_PRIVATE_KEY_ENCRYPTED_PATH: "deployments/security/hello_github_deploy_id_rsa.enc",
-        _GITHUB_REPOSITORY: "github.com/dev2choiz/hello",
-        _SERVICE_ACCOUNT: "sa-serverless@${common.projectId}.iam.gserviceaccount.com",
-        _APP_ENV: environment,
-    ]
+    def modCloudFunc = load "${ws}/deployments/jenkins/modules/cloudFunc.groovy"
 
     stage('Deploy functions') {
-      googleCloudBuild \
-        credentialsId: common.gcloudCredentialsId,
-        source: local('.'),
-        request: file('deployments/cloudbuild/deploy-functions/function1/cloudbuild.yaml'),
-        substitutions: cbSubstitutions + [
-            _FUNCTION_SOURCE_PATH: 'cmd/functions/function1',
-            _FUNCTION_NAME: 'hello-function1',
-            _FUNCTION_GO_MODULE: 'github.com/dev2choiz/hello/cmd/function/function1',
-            _ENTRYPOINT: 'Execute',
-            _TRIGGER_TOPIC: 'hello-function1',
-        ]
-    }
-
-    stage('Deploy hello-pg-migration') {
-      googleCloudBuild \
-        credentialsId: common.gcloudCredentialsId,
-        source: local('.'),
-        request: file('deployments/cloudbuild/deploy-functions/pg-migration/cloudbuild.yaml'),
-        substitutions: cbSubstitutions + [
-          _FUNCTION_SOURCE_PATH: 'cmd/functions/migration',
-          _FUNCTION_NAME: 'pg-migration',
-          _FUNCTION_GO_MODULE: 'github.com/dev2choiz/hello/cmd/function/migration',
-          _ENTRYPOINT: 'Execute',
-          _TRIGGER_TOPIC: 'pg-migration',
-        ]
+        parallel (
+            "Deploy hello-pg-migration": {
+                modCloudFunc.deployPgMigration(appTag, environment)
+            },
+            "Deploy function1": {
+                modCloudFunc.deployFunction1(appTag, environment)
+            },
+        )
     }
 }
