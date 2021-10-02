@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/dev2choiz/hello/pkg/app_wire"
 	"github.com/spf13/cobra"
 )
 
@@ -13,10 +12,6 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = cmd.Help()
 	},
-}
-
-func init() {
-	app_wire.InitApp()
 }
 
 func Execute() error {

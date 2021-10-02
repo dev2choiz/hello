@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/dev2choiz/hello/internal/server"
+	"github.com/dev2choiz/hello/pkg/app_wire"
 	"github.com/dev2choiz/hello/pkg/config"
 	"github.com/dev2choiz/hello/pkg/handlers"
 	"github.com/dev2choiz/hello/pkg/logger"
@@ -27,6 +28,8 @@ func init() {
 }
 
 func executeHelloApi() {
+	// initialize dependencies
+	app_wire.InitApp()
 	conf := config.Conf
 	conf.Name = "hello-api"
 	logger.Infof("config name=%s port=%s", conf.Name, conf.Port)

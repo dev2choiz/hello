@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/dev2choiz/hello/internal/server"
+	"github.com/dev2choiz/hello/pkg/app_wire"
 	"github.com/dev2choiz/hello/pkg/config"
 	"github.com/dev2choiz/hello/pkg/handlers"
 	"github.com/dev2choiz/hello/pkg/logger"
@@ -25,6 +26,8 @@ func init() {
 }
 
 func executeHelloSvc() {
+	// initialize dependencies
+	app_wire.InitializeLogger()
 	conf := config.Conf
 	logger.Infof("config name=%s port=%s", conf.Name, conf.Port)
 

@@ -6,7 +6,6 @@ import (
 	"encoding/base64"
 	"github.com/spf13/viper"
 	kmspb "google.golang.org/genproto/googleapis/cloud/kms/v1"
-	"log"
 )
 
 type Config struct {
@@ -60,7 +59,6 @@ func getString(s string) string {
 		return v
 	}
 
-	log.Println("decrypt", s, Conf.KmsCryptoKeys)
 	cypherText, err := base64.StdEncoding.DecodeString(v)
 	if err != nil {
 		panic(err)
