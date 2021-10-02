@@ -17,8 +17,8 @@ func init() {
 // Execute the entrypoint executed in the cloud function
 func Execute(ctx context.Context, m pubsub.Message) error {
 	conf := config.Conf
-	op := string(m.Data)
-	// op should be "init" | "up" | "down"
-	params := []string{op}
+	cmd := string(m.Data)
+	// cmd should be "init" | "up" | "down"
+	params := []string{cmd}
 	return pg_migration.Migrate(params, conf)
 }
