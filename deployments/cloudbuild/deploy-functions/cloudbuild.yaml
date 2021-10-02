@@ -69,7 +69,7 @@ steps:
         cd "./${_FUNCTION_SOURCE_PATH}/protobuf"
         go mod init github.com/dev2choiz/hello/pkg/protobuf
 
-  - id: 'go get github.com/dev2choiz/hello@xxxxxx'
+  - id: 'go get github.com/dev2choiz/hello@APP_TAG'
     name: golang:1.16
     args: ['go', 'get', 'github.com/dev2choiz/hello@${_APP_TAG}']
     env: ['GOPRIVATE=${_GITHUB_REPOSITORY}']
@@ -129,7 +129,6 @@ steps:
         - |
             cp deployments/security/variables.${_APP_ENV}.yaml "./${_FUNCTION_SOURCE_PATH}/"
             ls -la "./${_FUNCTION_SOURCE_PATH}/"
-            cat "./${_FUNCTION_SOURCE_PATH}/variables.${_APP_ENV}.yaml"
 
   - id: 'Debug 2'
     name: 'gcr.io/cloud-builders/git'
@@ -138,7 +137,6 @@ steps:
         - '-c'
         - |
             ls -la
-            cat "./variables.${_APP_ENV}.yaml"
     dir: '${_FUNCTION_SOURCE_PATH}'
 
   - id: 'Deploy cloud function'
@@ -149,7 +147,7 @@ steps:
        '--region', '${_GCP_REGION}',
        '--entry-point', '${_ENTRYPOINT}',
        '--trigger-topic', '${_TRIGGER_TOPIC}',
-       '--timeout', '30s',
+       '--timeout', '${_CF_TIMEOUT}',
        '--service-account', '${_SERVICE_ACCOUNT}',
        '--env-vars-file', './variables.${_APP_ENV}.yaml',
        #'--clear-vpc-connector'

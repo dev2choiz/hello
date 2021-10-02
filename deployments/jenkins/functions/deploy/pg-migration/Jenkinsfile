@@ -9,8 +9,6 @@ node {
     def repoURL             = 'git@github.com:dev2choiz/hello.git'
     def environment         = params.ENVIRONMENT
     def appTag              = params.VERSION
-    def migrationType       = params.MIGRATION_TYPE
-    def commitShort         = ""
 
     echo "start building tag/branch '${appTag}'. env: ${environment}"
     checkout scm: [

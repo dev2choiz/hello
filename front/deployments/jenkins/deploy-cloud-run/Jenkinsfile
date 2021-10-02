@@ -8,7 +8,6 @@ node {
     def repoURL     = 'git@github.com:dev2choiz/hello.git'
     def environment = "staging"
     def appTag      = params.VERSION
-    def commitShort = ""
 
     echo "start building tag/branch '${appTag}'"
     stage("Checkout ${appTag}") {
@@ -17,8 +16,6 @@ node {
             userRemoteConfigs: [[url: repoURL]],
             branches         : [[name: appTag]]
         ], poll: false
-        commitShort = sh(script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0, 7)
-        echo "git commit: ${commitShort}"
     }
 
     def ws = pwd()
@@ -45,8 +42,6 @@ node {
             credentialsId: moduleVars.gcloudCredentialsId,
             source: local('.'),
             request: file('front/deployments/cloudbuild/deploy-cloud-run/cloudbuild.yaml'),
-            substitutions: commonSubst + [
-
-            ]
+            substitutions: commonSubst
     }
 }
