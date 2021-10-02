@@ -25,6 +25,7 @@ func init() {
 	helloSvcCmd.PersistentFlags().StringVar(&config.Conf.Name, "name", "", "service name")
 }
 
+// executeHelloSvc is the entrypoint for the generic micro-services
 func executeHelloSvc() {
 	// initialize dependencies
 	app_wire.InitializeLogger()

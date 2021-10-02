@@ -1,6 +1,6 @@
 
 resource "google_sql_database_instance" "cloud-sql-instance" {
-    name   = "hello-db-instance"
+    name   = var.sql_instance
     region = var.region
     database_version = "POSTGRES_13"
     settings {
@@ -31,11 +31,10 @@ resource "kubernetes_secret" "sql_client_cert_secret" {
 resource "local_file" "client_cert_local_file" {
     filename = "${var.dir_output}/tls/sql_client_cert.pem"
     sensitive_content = google_sql_ssl_cert.sql_client_cert.cert
-
 }
 
 resource "google_sql_database" "hello-db" {
-    name     = "hello-db"
+    name     = var.db_name
     instance = google_sql_database_instance.cloud-sql-instance.name
 }
 

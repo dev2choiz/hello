@@ -28,6 +28,7 @@ type Logger struct {
 
 var instance LoggerInterface
 
+// NewLogger return a Logger instance
 func NewLogger() LoggerInterface {
 	if instance == nil {
 		l := &Logger{}

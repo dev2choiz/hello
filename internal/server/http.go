@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-// GetServeMux
+// GetServeMux return a http server mux
 func GetServeMux() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", healthzHandler)

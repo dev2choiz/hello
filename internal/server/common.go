@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+// RunGrpcServer handle listening and graceful stop of a grpc server
 func RunGrpcServer(grpcServer *grpc.Server, conf *config.Config) {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", conf.Port))
 	if err != nil {
@@ -44,6 +45,7 @@ func RunGrpcServer(grpcServer *grpc.Server, conf *config.Config) {
 	}
 }
 
+// LogInterceptor a grpc unary interceptor to log requests
 func LogInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 	logger.Info(info.FullMethod)
 	h, err := handler(ctx, req)
@@ -53,6 +55,7 @@ func LogInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServer
 	return h, err
 }
 
+// LogStreamInterceptor a grpc stream interceptor to log requests
 func LogStreamInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 	logger.Info(info.FullMethod)
 	err := handler(srv, ss)
@@ -62,6 +65,7 @@ func LogStreamInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.Stre
 	return err
 }
 
+// RunHttpServer handle listening and graceful stop of a http server
 func RunHttpServer(server *http.Server, conf *config.Config) {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", conf.Port))
 	if err != nil {

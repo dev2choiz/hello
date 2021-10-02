@@ -7,6 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// DoFunction1 execute the treatment of "function1" cloud function
 func DoFunction1(name string) error {
 	logger.Info("hello "+name, zap.String("version", version.Get()))
 	test := healthpb.StatusResponse{}

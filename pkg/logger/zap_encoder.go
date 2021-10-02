@@ -12,6 +12,7 @@ type gcpEncoder struct {
 	zapcore.Encoder
 }
 
+// newGcpEncoder return a zapcore.Encoder for stackdriver
 func newGcpEncoder() zapcore.Encoder {
 	conf := zap.NewProductionEncoderConfig()
 	conf.LevelKey = "severity"

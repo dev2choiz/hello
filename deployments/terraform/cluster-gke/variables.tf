@@ -42,6 +42,14 @@ variable "dir_output" {
     description = "dir_output"
 }
 
+// database
+variable "sql_instance" {
+    description = "sql_instance"
+}
+variable "db_name" {
+    description = "db_name"
+}
+
 // secrets
 variable "sql_user" {
   description = "sql_password"

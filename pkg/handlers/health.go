@@ -14,14 +14,17 @@ type HealthServer struct {
 	healthpb.UnimplementedHealthServer
 }
 
+// Healthz is the handler of Healthz service
 func (h HealthServer) Healthz(ctx context.Context, req *healthpb.HealthzRequest) (*healthpb.HealthzResponse, error) {
 	return &healthpb.HealthzResponse{Status: "ok"}, nil
 }
 
+// Status is the handler of Status service
 func (h HealthServer) Status(ctx context.Context, req *healthpb.StatusRequest) (*healthpb.StatusResponse, error) {
 	return &healthpb.StatusResponse{Status: "ok"}, nil
 }
 
+// Check is a handler checking healthiness of multiple micro-services
 func (h HealthServer) Check(ctx context.Context, req *healthpb.CheckServicesRequest) (*healthpb.CheckServicesResponse, error) {
 	res := &healthpb.CheckServicesResponse{}
 

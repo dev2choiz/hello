@@ -21,6 +21,7 @@ func (s SandboxServer) Unary(ctx context.Context, req *sandboxpb.UnaryRequest) (
 	return &sandboxpb.UnaryResponse{Response: "hello " + name}, nil
 }
 
+// ServerStream a handler sending streamed content
 func (s SandboxServer) ServerStream(req *sandboxpb.ServerStreamRequest, server sandboxpb.Sandbox_ServerStreamServer) error {
 	ms := int(req.MsPerResponse)
 	nb := int(req.Number)
@@ -40,6 +41,7 @@ func (s SandboxServer) ServerStream(req *sandboxpb.ServerStreamRequest, server s
 	return nil
 }
 
+// ClientStream a handler receiving streamed content
 func (s SandboxServer) ClientStream(server sandboxpb.Sandbox_ClientStreamServer) error {
 	for {
 		select {
@@ -59,6 +61,7 @@ func (s SandboxServer) ClientStream(server sandboxpb.Sandbox_ClientStreamServer)
 	}
 }
 
+// BidirectionalStream send and receive streamed content
 func (s SandboxServer) BidirectionalStream(server sandboxpb.Sandbox_BidirectionalStreamServer) error {
 	writeErr := make(chan error)
 	readErr := make(chan error)

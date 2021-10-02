@@ -15,3 +15,7 @@ disk_size     = 25
 #disk_size     = 50
 membership_id = "samyn-cluster-mi"
 dir_output    = "./../../../local/files"
+
+# postgresql
+sql_instance = "hello-db-instance"
+db_name      = "hello-db"

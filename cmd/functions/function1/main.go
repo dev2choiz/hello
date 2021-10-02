@@ -18,6 +18,7 @@ func init() {
 	app_wire.InitializeLogger()
 }
 
+// Execute the entrypoint executed in the cloud function
 func Execute(ctx context.Context, m pubsub.Message) error {
 	logger.Info("received msg:", zap.String("data", string(m.Data)))
 	name := string(m.Data)

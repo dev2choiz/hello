@@ -11,6 +11,7 @@ type NotifyServer struct {
 	notifypb.UnimplementedNotifyServer
 }
 
+// Status handler to call a cloud function using pubsub
 func (n NotifyServer) Status(ctx context.Context, req *notifypb.Function1Request) (*notifypb.Function1Response, error) {
 	res := &notifypb.Function1Response{}
 

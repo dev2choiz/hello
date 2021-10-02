@@ -27,6 +27,7 @@ func init() {
 	helloApiCmd.PersistentFlags().StringVar(&config.Conf.Name, "name", "", "service name")
 }
 
+// executeHelloApi is the entrypoint for the main api
 func executeHelloApi() {
 	// initialize dependencies
 	app_wire.InitApp()

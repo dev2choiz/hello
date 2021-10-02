@@ -34,6 +34,7 @@ var sensibles = []string {
 	"postgres_password",
 }
 
+// init initialize Conf from environment variables using viper
 func init()  {
 	if confInitialized {
 		return
@@ -86,6 +87,7 @@ func kmsDecrypt(cypherText []byte) (string, error) {
 	return string(res.Plaintext), err
 }
 
+// shouldDecrypt check if a config need to be decrypted
 func shouldDecrypt(e string) bool {
 	if !Conf.DecryptConf {
 		return false

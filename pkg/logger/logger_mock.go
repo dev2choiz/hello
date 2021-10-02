@@ -6,6 +6,7 @@ import (
 
 type LoggerMock struct {}
 
+// NewLoggerMock return a LoggerMock instance
 func NewLoggerMock() LoggerInterface {
 	if instance == nil {
 		instance = &LoggerMock{}

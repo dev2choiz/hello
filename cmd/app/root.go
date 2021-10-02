@@ -14,6 +14,7 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+// Execute initialize cobra sub commands
 func Execute() error {
 	rootCmd.AddCommand(helloApiCmd)
 	rootCmd.AddCommand(helloSvcCmd)
