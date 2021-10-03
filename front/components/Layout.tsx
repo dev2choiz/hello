@@ -121,13 +121,13 @@ const Layout = ({ children }: PropsWithChildren< Record<string, any> >) => {
     }, [])
 
     const links = [
-        ['health', '/health', '/health', <HealthAndSafetyIcon key={0}/>],
-        ['ssr', '/', '/', <InboxIcon key={1}/>],
-        ['ssr with params', '/?name=John', '/?name=John', <MailIcon key={2}/>],
-        ['static', '/unary-static', '/unary-static', <AcUnitIcon key={3}/>],
-        ['static with params', `/unary-static/${randomName}`, `/unary-static/${randomName}`, <AccessibilityIcon key={4}/>],
-        ['server stream', '/server-stream', '/server-stream', <AccessTimeIcon key={5}/>],
-        ['server stream with param', '/server-stream/5', '/server-stream/5', <AccountBalanceIcon key={6}/>],
+        ['ISR - health', '/health', '/health', <HealthAndSafetyIcon key={0}/>],
+        ['SSR', '/', '/', <InboxIcon key={1}/>],
+        ['SSR - with params', '/?name=John', '/?name=John', <MailIcon key={2}/>],
+        ['SSG', '/unary-static', '/unary-static', <AcUnitIcon key={3}/>],
+        ['ISG - with params', `/unary-static/${randomName}`, `/unary-static/${randomName}`, <AccessibilityIcon key={4}/>],
+        ['SPA - server stream', '/server-stream', '/server-stream', <AccessTimeIcon key={5}/>],
+        ['SPA - server stream with param', '/server-stream/5', '/server-stream/5', <AccountBalanceIcon key={6}/>],
     ]
 
     return (

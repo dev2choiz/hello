@@ -10,10 +10,6 @@ import (
 	"go.uber.org/zap"
 )
 
-type PubSubMessage struct {
-	Data []byte `json:"data"`
-}
-
 func init() {
 	app_wire.InitializeLogger()
 }
@@ -26,5 +22,8 @@ func Execute(ctx context.Context, m pubsub.Message) error {
 		name = "World"
 	}
 
-	return f1.DoFunction1(name)
+	if err := f1.DoFunction1(name); err != nil {
+		logger.Error(err.Error())
+	}
+	return nil // no retry
 }

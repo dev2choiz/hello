@@ -55,3 +55,8 @@ The **next.js** front is deployed in google **cloud run**
 
 As for micro-services, a jenkins job triggers a gcp cloud-build which builds a docker image then deploy it in a cloud run.
 The load balancer and others resources are generated with terraform.
+
+
+## Others
+
+[postgres migrations](./doc/migration.md)

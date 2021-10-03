@@ -6,6 +6,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/functions-framework-go/funcframework"
 	"github.com/dev2choiz/hello/pkg/app_wire"
 	"github.com/dev2choiz/hello/pkg/config"
+	"github.com/dev2choiz/hello/pkg/logger"
 	"github.com/dev2choiz/hello/pkg/pg_migration"
 )
 
@@ -20,5 +21,8 @@ func Execute(ctx context.Context, m pubsub.Message) error {
 	cmd := string(m.Data)
 	// cmd should be "init" | "up" | "down"
 	params := []string{cmd}
-	return pg_migration.Migrate(params, conf)
+	if err := pg_migration.Migrate(params, conf); err != nil {
+		logger.Errorf("error during migration: %s", err.Error())
+	}
+	return nil // no retry
 }
