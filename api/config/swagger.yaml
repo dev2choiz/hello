@@ -1,3 +1,4 @@
+# was used for ESPv1
 swagger: "2.0"
 info:
   description: "hello-api endpoints"

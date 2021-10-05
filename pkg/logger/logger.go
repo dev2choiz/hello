@@ -12,6 +12,7 @@ var inst *zap.Logger
 var strOutLogger = log.New(os.Stdout, "", log.LstdFlags)
 var strErrLogger = log.New(os.Stderr, "", log.LstdFlags)
 
+// lvlMap map zap log level to stack-drive
 var lvlMap = map[zapcore.Level]string{
 	zapcore.DebugLevel:  "DEBUG",
 	zapcore.InfoLevel:   "INFO",

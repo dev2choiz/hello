@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	// run the application using cobra
 	if err := app.Execute(); err != nil {
 		logger.Fatalf(err.Error())
 	}

@@ -9,13 +9,15 @@ import (
 )
 
 type Config struct {
-	// set by command
+	// set with command flags
 	Name           string
 	Port           string
+
+	// set programmatically
 	WithImprobable bool
 	WithTLS        bool
 
-	// set by viper
+	// set with viper according environment variables
 	DecryptConf      bool
 	AppEnvContext    string
 	KmsCryptoKeys    string
