@@ -17,7 +17,7 @@ const HealthPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = pro
 }
 
 export const getStaticProps: GetStaticProps<ContextDataType> = async() => {
-    console.log('\ngenerate status\n')
+    console.log('\n(re)generate /health\n')
 
     const opts: grpc.RpcOptions = {}
     opts.transport = NodeHttpTransport()

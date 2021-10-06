@@ -13,28 +13,28 @@ up: ## Run docker container
 
 start: docker-network down up dev ## start the stack
 
-sh:
+sh: ## Access to the hello-front container
 	docker-compose exec -u root hello-front bash
-sh-protoc:
+sh-protoc: ## Access to the protoc container
 	docker-compose exec -u root protoc bash
 
-gen-proto:
+gen-proto: ## Generate typescript protobuf
 	docker-compose exec protoc ./scripts/generate_proto.sh
 
-install:
+install: ## Run npm install in docker
 	docker-compose exec hello-front npm install
 
-logs-cdn:
+logs-cdn: ## Display local cdn logs
 	docker-compose logs -f hello-front-cdn
 
-restart-protoc:
+restart-protoc: ## Restart protoc container
 	docker-compose stop protoc
 	docker-compose up -d --build protoc
-restart-dev-cdn:
+restart-dev-cdn: ## restart hello-front-dev-cdn container and display logs
 	docker-compose stop hello-front-dev-cdn
 	docker-compose up -d --build hello-front-dev-cdn
 	docker-compose logs -f hello-front-dev-cdn
-restart-prod:
+restart-prod: ## Restart the container running optimized app as in prod
 	docker-compose stop hello-front-prod
 	docker-compose up -d --build hello-front-prod
 	docker-compose logs -f hello-front-prod

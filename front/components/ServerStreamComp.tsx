@@ -26,8 +26,7 @@ const ServerStream = () => {
         cancelGrpc.current = res.cancel
         res.on('data', msg => {
             setData(d => {
-                const cd = [ ...d ]
-                cd.push(msg.getMessage())
+                const cd = [ ...d, msg.getMessage() ]
 
                 setProgress(Math.floor((cd.length / nbResp) * 100))
                 return cd
