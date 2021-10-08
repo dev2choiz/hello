@@ -3,6 +3,8 @@ package handlers
 import (
 	"context"
 	"github.com/dev2choiz/hello/pkg/logger"
+	"github.com/dev2choiz/hello/pkg/models"
+	"github.com/dev2choiz/hello/pkg/pg"
 	"github.com/dev2choiz/hello/pkg/protobuf/healthpb"
 	"github.com/dev2choiz/hello/pkg/protobuf/pingpb"
 	"github.com/dev2choiz/hello/pkg/version"
@@ -26,14 +28,18 @@ func (h HealthServer) Status(ctx context.Context, req *healthpb.StatusRequest) (
 
 // Check is a handler checking healthiness of multiple micro-services
 func (h HealthServer) Check(ctx context.Context, req *healthpb.CheckServicesRequest) (*healthpb.CheckServicesResponse, error) {
-	res := &healthpb.CheckServicesResponse{}
+	d := models.Data{ Field1: "default", Field2: "health.check"}
+	if db := pg.GetDB().Create(&d); db.Error != nil {
+		return nil, db.Error
+	}
 
+	res := &healthpb.CheckServicesResponse{}
 	data := map[string]string{}
 	addSvcData(ctx, data, "svc1", os.Getenv("SVC1_GRPC_BASE_URL"))
 	addSvcData(ctx, data, "svc2", os.Getenv("SVC2_GRPC_BASE_URL"))
 
 	res.Status = "ok"
-	res.Version = version.Get()
+	res.Version = version.Get() // Deprecated: Use wire injection dependencies ?
 	res.Data = data
 
 	return res, nil
