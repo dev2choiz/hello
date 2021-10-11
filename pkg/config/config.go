@@ -20,7 +20,10 @@ type Config struct {
 	// set with viper according environment variables
 	DecryptConf      bool
 	AppEnvContext    string
+	// GCP
 	KmsCryptoKeys    string
+	GcpProjectName   string
+	// Postgres
 	PostgresHost     string
 	PostgresUser     string
 	PostgresPassword string
@@ -45,7 +48,10 @@ func init()  {
 	viper.AutomaticEnv()
 	Conf.DecryptConf = viper.GetBool("decrypt_conf")
 	Conf.AppEnvContext = viper.GetString("app_env_context")
+	// GCP
 	Conf.KmsCryptoKeys = viper.GetString("kms_crypto_keys")
+	Conf.GcpProjectName = viper.GetString("gcp_project_name")
+	// Postgres
 	Conf.PostgresHost = viper.GetString("postgres_host")
 	Conf.PostgresUser = viper.GetString("postgres_user")
 	Conf.PostgresPassword = getString("postgres_password")

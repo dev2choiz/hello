@@ -116,6 +116,8 @@ spec:
               value: "{{ .Values.environment }}"
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/volumes/secrets/sa/credentials.json"
+            - name: GCP_PROJECT_NAME
+              value: {{ .Values.gcp.projectId | quote }}
             - name: SVC1_GRPC_BASE_URL
               value: "hello-svc1-cluster-ip:80"
             - name: SVC2_GRPC_BASE_URL

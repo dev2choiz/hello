@@ -4,6 +4,7 @@ import (
 	"cloud.google.com/go/pubsub"
 	"context"
 	"fmt"
+	"github.com/dev2choiz/hello/pkg/config"
 	"github.com/dev2choiz/hello/pkg/protobuf/notifypb"
 )
 
@@ -15,7 +16,7 @@ type NotifyServer struct {
 func (n NotifyServer) Status(ctx context.Context, req *notifypb.Function1Request) (*notifypb.Function1Response, error) {
 	res := &notifypb.Function1Response{}
 
-	client, err := pubsub.NewClient(ctx, "samyn-project4")
+	client, err := pubsub.NewClient(ctx, config.Conf.GcpProjectName)
 	if err != nil {
 		return nil, fmt.Errorf("can't create pubsub client:" + err.Error())
 	}
