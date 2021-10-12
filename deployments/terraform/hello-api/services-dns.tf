@@ -14,25 +14,25 @@ resource "google_dns_record_set" "resource-recordset-api" {
   ttl          = 300
 }
 
-resource "google_dns_record_set" "resource-recordset-front-cr" {
+resource "google_dns_record_set" "resource-recordset-front-next-cr" {
   provider     = google-beta
   project      = var.project_id
   managed_zone = data.google_dns_managed_zone.main-zone.name
   name         = "front.${data.google_dns_managed_zone.main-zone.dns_name}"
   type         = "A"
-  rrdatas      = [google_compute_global_address.front_cr_address.address]
+  rrdatas      = [google_compute_global_address.front_next_cr_address.address]
   ttl          = 300
 }
 
 /*
 // Disabled, waiting the certificate updating
-resource "google_dns_record_set" "resource-recordset-front-cr-www" {
+resource "google_dns_record_set" "resource-recordset-front-next-cr-www" {
   provider     = google-beta
   project      = var.project_id
   managed_zone = data.google_dns_managed_zone.main-zone.name
-  name         = "www.${google_dns_record_set.resource-recordset-front-cr.name}"
+  name         = "www.${google_dns_record_set.resource-recordset-front-next-cr.name}"
   type         = "CNAME"
-  rrdatas      = [google_dns_record_set.resource-recordset-front-cr.name]
+  rrdatas      = [google_dns_record_set.resource-recordset-front-next-cr.name]
   ttl          = 300
 }*/
 

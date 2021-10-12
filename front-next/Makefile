@@ -13,8 +13,8 @@ up: ## Run docker container
 
 start: docker-network down up dev ## start the stack
 
-sh: ## Access to the hello-front container
-	docker-compose exec -u root hello-front bash
+sh: ## Access to the hello-front-next container
+	docker-compose exec -u root hello-front-next bash
 sh-protoc: ## Access to the protoc container
 	docker-compose exec -u root protoc bash
 
@@ -22,34 +22,34 @@ gen-proto: ## Generate typescript protobuf
 	docker-compose exec protoc ./scripts/generate_proto.sh
 
 install: ## Run npm install in docker
-	docker-compose exec hello-front npm install
+	docker-compose exec hello-front-next npm install
 
 logs-cdn: ## Display local cdn logs
-	docker-compose logs -f hello-front-cdn
+	docker-compose logs -f hello-front-next-cdn
 
 restart-protoc: ## Restart protoc container
 	docker-compose stop protoc
 	docker-compose up -d --build protoc
-restart-dev-cdn: ## restart hello-front-dev-cdn container and display logs
-	docker-compose stop hello-front-dev-cdn
-	docker-compose up -d --build hello-front-dev-cdn
-	docker-compose logs -f hello-front-dev-cdn
+restart-dev-cdn: ## restart hello-front-next-dev-cdn container and display logs
+	docker-compose stop hello-front-next-dev-cdn
+	docker-compose up -d --build hello-front-next-dev-cdn
+	docker-compose logs -f hello-front-next-dev-cdn
 restart-prod: ## Restart the container running optimized app as in prod
-	docker-compose stop hello-front-prod
-	docker-compose up -d --build hello-front-prod
-	docker-compose logs -f hello-front-prod
+	docker-compose stop hello-front-next-prod
+	docker-compose up -d --build hello-front-next-prod
+	docker-compose logs -f hello-front-next-prod
 
 ## next.js
 next-clean: ## delete .next directory
 	rm -rf ./.next
 	rm -rf ./out
 dev: ## Execute next with dev mode
-	docker-compose exec hello-front npm run dev
+	docker-compose exec hello-front-next npm run dev
 next-build: next-clean
-	docker-compose exec hello-front npm run build
+	docker-compose exec hello-front-next npm run build
 next-start: next-build
-	docker-compose exec hello-front npm run start
+	docker-compose exec hello-front-next npm run start
 generate:
-	docker-compose exec hello-front npm run generate
+	docker-compose exec hello-front-next npm run generate
 export: next-build
-	docker-compose exec hello-front npm run export
+	docker-compose exec hello-front-next npm run export

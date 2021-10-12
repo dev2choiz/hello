@@ -11,7 +11,7 @@ FROM node:16-buster-slim as release
 RUN npm i -g grpc-tools ts-protoc-gen
 COPY --from=protoc_builder /protoc /protoc
 ENV PATH=$PATH:/protoc/bin
-WORKDIR /app/front
+WORKDIR /app/front-next
 
 FROM release as release_dev
 RUN chown -R node:node /protoc/

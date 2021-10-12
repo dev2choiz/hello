@@ -3,7 +3,7 @@
 
 ## Requirements
 - Create a `.env.local` file taking for example `.env.local.example`  
-- Create a `./front/.env.local` file taking for example `./front/.env.local.example`
+- Create a `./front-next/.env.local` file taking for example `./front-next/.env.local.example`
 
 ## Start the backend
 ```shell
