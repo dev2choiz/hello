@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	app_wire.InitializeLogger()
+	app_wire.InitApp()
 }
 
 // Execute the entrypoint executed in the cloud function
