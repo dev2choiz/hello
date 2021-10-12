@@ -26,11 +26,11 @@ node {
         _GCP_REGION: moduleVars.gcpRegion,
     ]
 
-    stage("Build image hello-front ${appTag}") {
+    stage("Build image hello-front-next ${appTag}") {
         googleCloudBuild  \
         credentialsId: moduleVars.gcloudCredentialsId,
             source: local('.'),
-            request: file('front/deployments/cloudbuild/build-image/cloudbuild.yaml'),
+            request: file('front-next/deployments/cloudbuild/build-image/cloudbuild.yaml'),
             substitutions: commonSubst + [
                 _KMS_KEYRING_NAME: moduleVars.kmsKeyringName,
                 _KMS_KEY_NAME: moduleVars.kmsKeyName,
@@ -41,7 +41,7 @@ node {
         googleCloudBuild  \
             credentialsId: moduleVars.gcloudCredentialsId,
             source: local('.'),
-            request: file('front/deployments/cloudbuild/deploy-cloud-run/cloudbuild.yaml'),
+            request: file('front-next/deployments/cloudbuild/deploy-cloud-run/cloudbuild.yaml'),
             substitutions: commonSubst
     }
 }

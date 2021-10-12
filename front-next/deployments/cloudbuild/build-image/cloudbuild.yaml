@@ -3,7 +3,7 @@ steps:
     name: 'gcr.io/$PROJECT_ID/node-protoc:latest'
     entrypoint: 'bash'
     args: [ './scripts/generate_proto.sh' ]
-    dir: './front'
+    dir: './front-next'
 
   - id: 'Create env file'
     name: 'gcr.io/cloud-builders/gcloud'
@@ -21,7 +21,7 @@ steps:
             --key=${_KMS_KEY_NAME} \
             --ciphertext-file=./../deployments/security/api_key.enc \
             --plaintext-file="-" >> .env
-    dir: './front'
+    dir: './front-next'
     waitFor: ['-']
 
   - id: ImageBuildAndTag
@@ -30,10 +30,10 @@ steps:
       'build',
       '-f', './docker/prod/Dockerfile',
       '--target', 'release',
-      '-t', 'gcr.io/${PROJECT_ID}/hello-front:${_APP_TAG}',
-      '-t', 'gcr.io/${PROJECT_ID}/hello-front:latest',
+      '-t', 'gcr.io/${PROJECT_ID}/hello-front-next:${_APP_TAG}',
+      '-t', 'gcr.io/${PROJECT_ID}/hello-front-next:latest',
       '.']
-    dir: './front'
+    dir: './front-next'
 
   - id: DeleteTAG
     name: gcr.io/cloud-builders/gcloud
@@ -41,12 +41,12 @@ steps:
     args:
       - '-c'
       - |
-        gcloud container images delete gcr.io/${PROJECT_ID}/hello-front:${_APP_TAG} --force-delete-tags --quiet || exit 0
+        gcloud container images delete gcr.io/${PROJECT_ID}/hello-front-next:${_APP_TAG} --force-delete-tags --quiet || exit 0
 
   - id: ImagePushTAG
     name: gcr.io/cloud-builders/docker
-    args: ['push', 'gcr.io/${PROJECT_ID}/hello-front:${_APP_TAG}']
+    args: ['push', 'gcr.io/${PROJECT_ID}/hello-front-next:${_APP_TAG}']
 
   - id: ImagePushLatestTAG
     name: gcr.io/cloud-builders/docker
-    args: ['push', 'gcr.io/${PROJECT_ID}/hello-front:latest']
+    args: ['push', 'gcr.io/${PROJECT_ID}/hello-front-next:latest']
