@@ -4,9 +4,9 @@ info:
   description: "hello-api endpoints"
   title: "hello-api endpoints"
   version: "1.0.0"
-host: hello-api.endpoints.samyn-project4.cloud.goog
+host: hello-api.endpoints.samyn-project5.cloud.goog
 x-google-endpoints:
-  - name: "hello-api.endpoints.samyn-project4.cloud.goog"
+  - name: "hello-api.endpoints.samyn-project5.cloud.goog"
 security:
   - api_key: []
 paths:

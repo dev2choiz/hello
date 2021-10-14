@@ -10,7 +10,7 @@ services:
     command:
         - "--listener_port=9000"
         - "--backend=grpc://hello-api:7080"
-        - "--service=hello-api.endpoints.samyn-project4.cloud.goog"
+        - "--service=hello-api.endpoints.samyn-project5.cloud.goog"
         - "--rollout_strategy=managed"
         - "--service_account_key=/etc/nginx/creds/credentials.json"
         - "--cors_preset=basic"

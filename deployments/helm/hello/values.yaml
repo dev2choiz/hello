@@ -2,7 +2,7 @@
 environment: staging
 
 gcp:
-  projectId: samyn-project4
+  projectId: samyn-project5
   region: europe-west1
   namespace: lazone
 

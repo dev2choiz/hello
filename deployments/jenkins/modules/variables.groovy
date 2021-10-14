@@ -7,7 +7,7 @@ def helmTag = '3.2.4'
 @Field
 def projectName = 'hello-api'
 @Field
-def projectId = "samyn-project4"
+def projectId = "samyn-project5"
 @Field
 def gcloudCredentialsId = projectId
 @Field

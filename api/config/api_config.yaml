@@ -1,7 +1,7 @@
 type: google.api.Service
 config_version: 3
 
-name: hello-api.endpoints.samyn-project4.cloud.goog
+name: hello-api.endpoints.samyn-project5.cloud.goog
 
 title: Hello gRPC API
 apis:
