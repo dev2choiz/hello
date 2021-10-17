@@ -3,7 +3,7 @@ environment: staging
 
 gcp:
   projectId: samyn-project5
-  region: europe-west1
+  region: us-central1
   namespace: lazone
 
 useSvcMesh: false

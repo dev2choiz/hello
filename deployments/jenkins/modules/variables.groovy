@@ -11,9 +11,9 @@ def projectId = "samyn-project5"
 @Field
 def gcloudCredentialsId = projectId
 @Field
-def gcpRegion    = "europe-west1"
+def gcpRegion    = "us-central1"
 @Field
-def clusterZone = "europe-west1-d"
+def clusterZone = "us-central1-a"
 @Field
 def clusterName = "samyn-cluster"
 @Field

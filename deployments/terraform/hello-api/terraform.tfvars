@@ -1,7 +1,7 @@
 project_id    = "samyn-project5"
 cluster_name  = "samyn-cluster"
-region        = "europe-west1"
-zone          = "europe-west1-d"
+region        = "us-central1"
+zone          = "us-central1-a"
 gke_num_nodes = 1
 machine_type  = "e2-medium"
 disk_size     = 25
