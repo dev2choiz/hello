@@ -44,7 +44,6 @@ output "hello-api-address" {
 
 # BackendConfig + FrontConfig + nodePort + ingress
 resource "kubernetes_manifest" "hello-api-backend-config" {
-  provider = kubernetes-alpha
   manifest = {
     apiVersion = "cloud.google.com/v1"
     kind = "BackendConfig"
@@ -74,7 +73,6 @@ resource "kubernetes_manifest" "hello-api-backend-config" {
 }
 
 resource "kubernetes_manifest" "hello-api-frontend-config" {
-  provider = kubernetes-alpha
   manifest = {
     apiVersion = "networking.gke.io/v1beta1"
     kind = "FrontendConfig"

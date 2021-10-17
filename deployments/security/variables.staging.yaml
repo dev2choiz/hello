@@ -7,4 +7,4 @@ POSTGRES_DB: "hello-db"
 POSTGRES_PORT: "5432"
 KMS_CRYPTO_KEYS: "projects/samyn-project5/locations/us-central1/keyRings/kr-hello/cryptoKeys/key-default-hello"
 ## kms encrypted
-POSTGRES_PASSWORD: "CiQAXT+Fx812iRUNft0IjGmOkAH5zi5WkzN4xj2hWHYnzXJkMi4SMgDWvIbjxSvLY2W+ygrjHxgOEV6VSA7kZx3t/tHXkfEO7Ev4IdvPL9ylNEGB3xtYeHCR"
+POSTGRES_PASSWORD: "CiQA7uC3IMnCKs1s6snZvNoiUZwDxoK5x+ZESkoAoWDQcQDSkjQSMgBXex+rqVmhDgYU0JNjdT7GaZVceVEconzZHVBKCWxcvgD6d84tZr9GKE1od7kjENxZ"
