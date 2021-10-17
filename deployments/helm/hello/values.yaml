@@ -48,7 +48,7 @@ api:
         max: 30Mi
 
   postgres:
-    instance: 'hello-db-instance'
+    instance: 'hello-pg-instance'
     host: 'localhost'
     port: '5432'
     user: 'hello'

@@ -17,5 +17,5 @@ membership_id = "samyn-cluster-mi"
 dir_output    = "./../../../local/files"
 
 # postgresql
-sql_instance = "hello-db-instance"
+sql_instance = "hello-pg-instance"
 db_name      = "hello-db"
