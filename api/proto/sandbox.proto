@@ -3,6 +3,8 @@ syntax = "proto3";
 package hello.endpoints.sandbox;
 option go_package="pkg/protobuf/sandboxpb";
 
+import "google/api/annotations.proto";
+
 message UnaryRequest{
     string name = 1;
 }
@@ -19,7 +21,9 @@ message ServerStreamResponse{
 }
 
 service Sandbox {
-    rpc Unary(UnaryRequest) returns (UnaryResponse) {}
+    rpc Unary(UnaryRequest) returns (UnaryResponse) {
+        option (google.api.http) = { get: "/sandbox/unary/{name}" };
+    }
     rpc ServerStream(ServerStreamRequest) returns (stream ServerStreamResponse) {}
     rpc ClientStream(stream UnaryRequest) returns (UnaryResponse) {}
     rpc BidirectionalStream(stream UnaryRequest) returns (stream UnaryResponse) {}
