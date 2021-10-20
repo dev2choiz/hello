@@ -19,6 +19,21 @@ services:
     networks:
       - hello
 
+  # container to generate protobuf files
+  protoc:
+      build:
+          context: .
+          dockerfile: ./docker/protoc/Dockerfile
+          target: release_dev
+      entrypoint: ["tail"]
+      command: ["-f", "/dev/null"]
+      volumes:
+          - .:/app/front-vue
+          - ./../api:/app/api:ro
+          - ./../third_party:/app/third_party:ro
+      networks:
+          - hello
+
 networks:
   hello:
     name: hello

@@ -23,3 +23,6 @@ install: ## Run npm install in docker
 ## VUE
 serve: ## npm run serve
 	docker-compose exec hello-front-vue npm run serve
+
+gen-proto: ## Generate typescript protobuf
+	docker-compose exec protoc ./scripts/generate_proto.sh
