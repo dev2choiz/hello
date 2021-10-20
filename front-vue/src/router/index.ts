@@ -4,7 +4,12 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
         name: 'Homepage',
-        component: () => import('@pages/Homepage.tsx')
+        component: () => import('@pages/Homepage')
+    },
+    {
+        path: '/server-stream',
+        name: 'ServerStream',
+        component: () => import('@pages/ServerStream')
     },
 ]
 

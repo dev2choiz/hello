@@ -1,6 +1,6 @@
 import { grpc } from '@improbable-eng/grpc-web'
-import { UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
-import { SandboxClient } from '@protobuf/sandbox_pb_service'
+import { ServerStreamRequest, ServerStreamResponse, UnaryRequest, UnaryResponse } from '@protobuf/sandbox_pb'
+import { ResponseStream, SandboxClient } from '@protobuf/sandbox_pb_service'
 
 class GrpcSvc {
     private baseUrl: string = process.env.VUE_APP_GRPC_BASE_URL
@@ -21,6 +21,15 @@ class GrpcSvc {
                 resolve((res as UnaryResponse).toObject())
             })
         })
+    }
+
+    public sandboxServerStream = (): ResponseStream<ServerStreamResponse> => {
+        const req = new ServerStreamRequest()
+        req.setNumber(10)
+        req.setMsPerResponse(1000)
+
+        const client = new SandboxClient(this.baseUrl)
+        return client.serverStream(req)
     }
 }
 

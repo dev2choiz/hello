@@ -20,6 +20,7 @@ module.exports = {
         semi: [ 'error', 'never' ],
         "comma-dangle": 0,
         "spaced-comment": 0,
+        '@typescript-eslint/no-empty-function': 0,
     },
     ignorePatterns: ['./src/protobuf/*',]
 }
