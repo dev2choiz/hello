@@ -7,8 +7,10 @@ export default defineComponent({
     setup () {
         let cancel: (() => void) | null = null
         const data = ref<Array<string>>([])
+
         onMounted(async () => {
             const res = await grpcSvc.sandboxServerStream()
+            // receive stream data from the server
             res.on('data', msg => {
                 data.value.push(msg.getMessage())
             })
@@ -16,11 +18,12 @@ export default defineComponent({
         })
 
         onBeforeUnmount(() => {
+            // stop the stream on unmount
             if (cancel) cancel()
         })
 
         return () => <div>
-            <pre>{ JSON.stringify(data.value, null, 2) }</pre>
+            { data.value.map(v => <div>{v}</div>) }
         </div>
     }
 })

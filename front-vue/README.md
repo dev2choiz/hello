@@ -1,24 +1,14 @@
-# testtt
+# Vue 3 front  
 
 ## Project setup
+Start docker environment, install npm dependencies and generate protobuf  
 ```
-npm install
+make start install gen-proto
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+make serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+http://localhost:4000

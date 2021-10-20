@@ -1,11 +1,12 @@
 import { defineComponent } from 'vue'
+import { RouterView, RouterLink } from 'vue-router'
 
 export default defineComponent({
     setup () {
         return () => <div id="nav">
-            <router-link to="/">Unary</router-link><br/>
-            <router-link to="/server-stream">ServerStream</router-link><br/>
-            <router-view/>
+            <RouterLink to="/">Unary</RouterLink><br/>
+            <RouterLink to="/server-stream">ServerStream</RouterLink><br/>
+            <RouterView/>
         </div>
     }
 })

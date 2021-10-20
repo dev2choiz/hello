@@ -5,6 +5,10 @@ import { ResponseStream, SandboxClient } from '@protobuf/sandbox_pb_service'
 class GrpcSvc {
     private baseUrl: string = process.env.VUE_APP_GRPC_BASE_URL
 
+    /**
+     * Request the server
+     * @param name
+     */
     public sandboxUnary = async (name: string): Promise<UnaryResponse.AsObject | null> => {
         const req = new UnaryRequest()
         req.setName(name)
@@ -23,6 +27,9 @@ class GrpcSvc {
         })
     }
 
+    /**
+     * Do a stream call to the gRPC server
+     */
     public sandboxServerStream = (): ResponseStream<ServerStreamResponse> => {
         const req = new ServerStreamRequest()
         req.setNumber(10)

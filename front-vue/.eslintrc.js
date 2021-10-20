@@ -22,5 +22,5 @@ module.exports = {
         "spaced-comment": 0,
         '@typescript-eslint/no-empty-function': 0,
     },
-    ignorePatterns: ['./src/protobuf/*',]
+    ignorePatterns: ['./src/protobuf/**',]
 }
