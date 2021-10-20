@@ -17,6 +17,8 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@pages/*": ["./src/pages/*"],
+      "@protobuf/*": ["./src/protobuf/*"],
+      "@services/*": ["./src/services/*"],
       "@/*": ["./src/*"]
     },
     "lib": [
