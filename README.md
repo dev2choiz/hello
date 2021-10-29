@@ -23,7 +23,7 @@ This application is an example of how to do **SSR**, **SSG, **ISR** and **SPA** 
 ### Start the stack
 _Go to the directory_
 ```shell
-cd front
+cd front-next
 ```
 _Start the containers_
 ```shell
@@ -37,7 +37,7 @@ _Generate the typescript protobufs from `.proto` files_
 ```shell
 make gen-proto
 ```
-_Start next app on http://localhost:3000_
+_Start next.js app on http://localhost:3000_
 ```shell
 make dev
 ```
